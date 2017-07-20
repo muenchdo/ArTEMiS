@@ -15,6 +15,7 @@
 /node_tmp/**
 /node_modules/**
 /npm-cache
+package-lock.json
 
 ######################
 # SASS
@@ -66,6 +67,7 @@ local.properties
 *.ipr
 *.ids
 *.orig
+out/
 
 ######################
 # Maven
