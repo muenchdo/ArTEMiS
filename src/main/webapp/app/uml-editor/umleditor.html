@@ -1,5 +1,10 @@
 <div class="editor-wrapper">
 
+    <link rel="stylesheet" href="/content/css/uml-editor/style.css">
+    <link rel="stylesheet" href="/content/css/uml-editor/uml-type.css">
+    <link rel="stylesheet" href="/content/css/uml-editor/bootstrap-theme.css">
+    <link rel="stylesheet" href="/content/css/uml-editor/bootstrap.css">
+
     <nav class="navbar navbar-default editor-top" role="navigation">
         <div class="">
             <div class="navbar-header" >
@@ -46,8 +51,7 @@
 
         </div>
 
-        <script src="/app/uml-editor/frame/EditorBundled.js"></script>
-        <script>
+        <script src="/content/js/uml-editor/UmlEditorBundled.js">
 
             var Repository = angular.element('*[ng-app]').injector().get("Repository");
             var RepositoryFile = angular.element('*[ng-app]').injector().get("RepositoryFile");
@@ -55,6 +59,7 @@
             var url = window.window.location.href;
             var urlIndex = url.lastIndexOf('/');
             var participationId = Number(url.substring(urlIndex + 1));
+            console.log("ParticipationId" +participationId);
 
 
             //
