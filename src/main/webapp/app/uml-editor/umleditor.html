@@ -1,4 +1,4 @@
-<div class="editor-wrapper">
+<div class="editor-wrapper" id="uml-editor-root">
 
     <link rel="stylesheet" href="/static/uml-editor/css/style.css">
     <link rel="stylesheet" href="/static/uml-editor/css/uml-type.css">
@@ -54,13 +54,23 @@
         <script src="/static/uml-editor/js/UmlEditorBundled.js"></script>
 
         <script>
+
+
+            function start() {
+
             var Repository = angular.element('*[ng-app]').injector().get("Repository");
             var RepositoryFile = angular.element('*[ng-app]').injector().get("RepositoryFile");
-           // var parentController = angular.element(document.getElementById('uml-editor-root')).scope();
+
             var url = window.window.location.href;
             var urlIndex = url.lastIndexOf('/');
             var participationId = Number(url.substring(urlIndex + 1));
             console.log("ParticipationId" +participationId);
+
+
+            // store url on load
+            var currentPage = window.location.href;
+
+
 
 
             //
@@ -115,6 +125,24 @@
 
 
             UmlClassEditor.startUmlEditor(loadFile, saveAndCommitFile, null, true);
+
+            }
+
+
+            if (window.location.href.indexOf("umleditor") !== -1){ // means string.contains("umleditor)
+                start();
+            } else {
+               var startOnHashChanged = function () {
+                    if (window.location.href.indexOf("umleditor") !== -1){ // means string.contains("umleditor)
+                        start();
+                    }
+
+                    window.removeEventListener("hashchange", startOnHashChanged)
+                };
+
+                window.addEventListener("hashchange", startOnHashChanged);
+            }
+
 
         </script>
 
