@@ -138,7 +138,7 @@
         function showWelcomeAlert() {
             AlertService.add({
                 type: 'info',
-                msg: '<strong>Welcome to the TUM Exercise Application!</strong> We have automatically created an account for you. Click the <i>Start Exercise</i> button to get started!'
+                msg: '<strong>Welcome to ArTEMiS!</strong> We have automatically created an account for you. Click the <i>Start Exercise</i> button to get started!'
             });
         }
 

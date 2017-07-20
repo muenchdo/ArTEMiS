@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "TUM LS1 Exercises",
+        "title": "ArTEMiS",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
@@ -127,5 +127,5 @@
         "invalid.build.plan.id": "The Build Plan ID seems to be invalid. Please make sure it exists and is accessible for the Exercise Application.",
         "invalid.repository.url": "The Repository URL seems to be invalid. Please make sure it exists and is accessible for the Exercise Application."
     },
-    "footer": "Found a bug or have some feedback? Please <a href=\"mailto:muenchdo@in.tum.de\">let us know</a>!"
+    "footer": "Found a bug or have some feedback? Please <a href=\"mailto:krusche@in.tum.de\">let us know</a>!"
 }

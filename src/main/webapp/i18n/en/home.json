@@ -1,19 +1,9 @@
 {
     "home": {
-        "title": "Welcome to the TUM LS1 Exercise Application!",
-        "subtitle": "This application allows you take part in interactive programming exercises.",
+        "title": "Welcome to ArTEMiS!",
+        "subtitle": "Interactive Learning with an AuTomated assEssment Management System",
         "logged": {
-            "message": "You are logged in as user \"{{username}}\". View your <a class=\"alert-link\" ui-sref=\"courses\">courses</a> to get started."
-        },
-        "question": "If you have any question on JHipster:",
-        "link": {
-            "homepage": "JHipster homepage",
-            "stackoverflow": "JHipster on Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "chat": "JHipster public chat room",
-            "follow": "follow @java_hipster on Twitter"
-        },
-        "like": "If you like JHipster, don't forget to give us a star on",
-        "github": "GitHub"
+            "message": "You are logged in as user \"{{username}}\". Go to your <a class=\"alert-link\" ui-sref=\"courses\">courses</a> to get started."
+        }
     }
 }
