@@ -212,23 +212,25 @@ loadUmlDocument,
  * Save the uml document
  */
 saveUmlDocument) {
-  var logging = true;
-  var initialState = ViewState_1.initialViewState();
-  if (logging) {
-    intents$ = intents$.do(function (intent) {
-      return console.log("Intent: " + intent);
-    }); // Add some console logging
-  }
-  // TODO error recovery
-  var lastSuccessfulState = null;
-  var reducers$ = Rx.Observable.merge(UmlTypeReducer_1.addUmlTypeAtPositionReducer(intents$, logging), UmlRelationReducer_1.addConnectionPointReducer(intents$, logging), UmlTypeReducer_1.renameUmlTypeReducer(intents$, logging), UmlTypeReducer_1.cancelRenamingUmlTypeReducer(intents$, logging), UmlCanvasReducer_1.deselectAllOnUmlCanvasClickReducer(intents$, logging), UmlCanvasReducer_1.cancelEverythingReducer(intents$, logging), InteractionTransactionReducer_1.menuAddUmlTypeClickedReducer(intents$, logging), InteractionTransactionReducer_1.menuInheritanceClickedReducer(intents$, logging), InteractionTransactionReducer_1.menuImplementsInterfaceClickedReducer(intents$, logging), InteractionTransactionReducer_1.menuAddUmlReactionClickedReducer(intents$, logging), InteractionTransactionReducer_1.transactionSelectedFirstTypeForInheritanceReducer(intents$, logging), InteractionTransactionReducer_1.transactionSelectedClassForInterfaceImplementationReducer(intents$, logging), InteractionTransactionReducer_1.transactionSelectedStartTypeForRelationReducer(intents$, logging), UmlInheritanceReducer_1.addInheritanceReducer(intents$, logging), UmlCanvasReducer_1.selectUmlTypeOnUmCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlTypeOnUmCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlTypeAndMethodOnUmCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlTypeAndPropertyOnUmCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlInheritanceOnCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlImplementInterfacenReducer(intents$, logging), UmlCanvasReducer_1.selectUmlRelationReducer(intents$, logging), UmlCanvasReducer_1.openContextMenuReducer(intents$, logging), UmlTypeReducer_1.convertUmlClassToInterfaceReducer(intents$, logging), UmlTypeReducer_1.convertUmlInterfaceToClassReducer(intents$, logging), UmlTypeReducer_1.makeUmlClassAbstractReducer(intents$, logging), UmlTypeReducer_1.makeUmlClassInstantiableReducer(intents$, logging), UmlTypeReducer_1.startRenamingUmlTypeReducer(intents$, logging), UmlTypeReducer_1.addUmlMethodReducer(intents$, logging), UmlTypeReducer_1.startEditingUmlMethodReducer(intents$, logging), UmlTypeReducer_1.cancelEditingUmlMethodReducer(intents$, logging), UmlTypeReducer_1.changeUmlMethodSpecificationReducer(intents$, logging), UmlTypeReducer_1.addUmlPropertyReducer(intents$, logging), UmlTypeReducer_1.startEditingUmlPropertyReducer(intents$, logging), UmlTypeReducer_1.cancelEditingUmlPropertyReducer(intents$, logging), UmlTypeReducer_1.changeUmlPropertyReducer(intents$, logging), UmlCanvasReducer_1.deleteSelectedElementsReducer(intents$, logging), UmlInterfaceImplementationReducer_1.addInterfaceImplementationReducer(intents$, logging), UmlRelationReducer_1.addRelationReducer(intents$, logging), UmlCanvasReducer_1.startEditinUmlRelationTextFieldReducer(intents$, logging), UmlCanvasReducer_1.cancelEditinUmlRelationTextFieldReducer(intents$, logging), UmlCanvasReducer_1.changeUmlRelationTextFieldReducer(intents$, logging), UmlRelationReducer_1.startMovingConnectionAnchorPointReducer(intents$, logging), UmlRelationReducer_1.stopMovingConnectionAnchorPointReducer(intents$, logging), UmlRelationReducer_1.moveConnectionAnchorPointReducer(intents$, logging), UmlCanvasReducer_1.moveSelectedElementsReducer(intents$, logging), UmlRelationReducer_1.startMovingConnectionPointReducer(intents$, logging), UmlRelationReducer_1.moveConnectionPointReducer(intents$, logging), UmlRelationReducer_1.stopMovingConnectionPointReducer(intents$, logging), UmlRelationReducer_1.deleteConnectionPointReducer(intents$, logging), LoadSaveReducer_1.loadUmlDocumentReducer(intents$, logging, loadUmlDocument), LoadSaveReducer_1.saveUmlDocumentReducer(intents$, logging, saveUmlDocument), LoadSaveReducer_1.importAssessmentResultsReducer(intents$, logging));
-  return reducers$.scan(function (oldState, reducerFunc) {
-    return reducerFunc(oldState);
-  }, initialState).do(function (newState) {
-    return lastSuccessfulState = newState;
-  }).do(function (newState) {
-    if (logging) console.log("New State " + JSON.stringify(newState, null, 1));
-  });
+    var initialState = ViewState_1.initialViewState();
+    var logging = false;
+    if (logging) {
+        console.log("No logging");
+        intents$ = intents$.do(function (intent) {
+            return console.log("Intent: " + intent);
+        }); // Add some console logging
+    }
+    // TODO error recovery
+    var lastSuccessfulState = null;
+    var reducers$ = Rx.Observable.merge(UmlTypeReducer_1.addUmlTypeAtPositionReducer(intents$, logging), UmlRelationReducer_1.addConnectionPointReducer(intents$, logging), UmlTypeReducer_1.renameUmlTypeReducer(intents$, logging), UmlTypeReducer_1.cancelRenamingUmlTypeReducer(intents$, logging), UmlCanvasReducer_1.deselectAllOnUmlCanvasClickReducer(intents$, logging), UmlCanvasReducer_1.cancelEverythingReducer(intents$, logging), InteractionTransactionReducer_1.menuAddUmlTypeClickedReducer(intents$, logging), InteractionTransactionReducer_1.menuInheritanceClickedReducer(intents$, logging), InteractionTransactionReducer_1.menuImplementsInterfaceClickedReducer(intents$, logging), InteractionTransactionReducer_1.menuAddUmlReactionClickedReducer(intents$, logging), InteractionTransactionReducer_1.transactionSelectedFirstTypeForInheritanceReducer(intents$, logging), InteractionTransactionReducer_1.transactionSelectedClassForInterfaceImplementationReducer(intents$, logging), InteractionTransactionReducer_1.transactionSelectedStartTypeForRelationReducer(intents$, logging), UmlInheritanceReducer_1.addInheritanceReducer(intents$, logging), UmlCanvasReducer_1.selectUmlTypeOnUmCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlTypeOnUmCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlTypeAndMethodOnUmCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlTypeAndPropertyOnUmCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlInheritanceOnCanvasReducer(intents$, logging), UmlCanvasReducer_1.selectUmlImplementInterfacenReducer(intents$, logging), UmlCanvasReducer_1.selectUmlRelationReducer(intents$, logging), UmlCanvasReducer_1.openContextMenuReducer(intents$, logging), UmlTypeReducer_1.convertUmlClassToInterfaceReducer(intents$, logging), UmlTypeReducer_1.convertUmlInterfaceToClassReducer(intents$, logging), UmlTypeReducer_1.makeUmlClassAbstractReducer(intents$, logging), UmlTypeReducer_1.makeUmlClassInstantiableReducer(intents$, logging), UmlTypeReducer_1.startRenamingUmlTypeReducer(intents$, logging), UmlTypeReducer_1.addUmlMethodReducer(intents$, logging), UmlTypeReducer_1.startEditingUmlMethodReducer(intents$, logging), UmlTypeReducer_1.cancelEditingUmlMethodReducer(intents$, logging), UmlTypeReducer_1.changeUmlMethodSpecificationReducer(intents$, logging), UmlTypeReducer_1.addUmlPropertyReducer(intents$, logging), UmlTypeReducer_1.startEditingUmlPropertyReducer(intents$, logging), UmlTypeReducer_1.cancelEditingUmlPropertyReducer(intents$, logging), UmlTypeReducer_1.changeUmlPropertyReducer(intents$, logging), UmlCanvasReducer_1.deleteSelectedElementsReducer(intents$, logging), UmlInterfaceImplementationReducer_1.addInterfaceImplementationReducer(intents$, logging), UmlRelationReducer_1.addRelationReducer(intents$, logging), UmlCanvasReducer_1.startEditinUmlRelationTextFieldReducer(intents$, logging), UmlCanvasReducer_1.cancelEditinUmlRelationTextFieldReducer(intents$, logging), UmlCanvasReducer_1.changeUmlRelationTextFieldReducer(intents$, logging), UmlRelationReducer_1.startMovingConnectionAnchorPointReducer(intents$, logging), UmlRelationReducer_1.stopMovingConnectionAnchorPointReducer(intents$, logging), UmlRelationReducer_1.moveConnectionAnchorPointReducer(intents$, logging), UmlCanvasReducer_1.moveSelectedElementsReducer(intents$, logging), UmlRelationReducer_1.startMovingConnectionPointReducer(intents$, logging), UmlRelationReducer_1.moveConnectionPointReducer(intents$, logging), UmlRelationReducer_1.stopMovingConnectionPointReducer(intents$, logging), UmlRelationReducer_1.deleteConnectionPointReducer(intents$, logging), LoadSaveReducer_1.loadUmlDocumentReducer(intents$, logging, loadUmlDocument), LoadSaveReducer_1.saveUmlDocumentReducer(intents$, logging, saveUmlDocument), LoadSaveReducer_1.importAssessmentResultsReducer(intents$, logging));
+    var state$ = reducers$.scan(function (oldState, reducerFunc) {
+        return reducerFunc(oldState);
+    }, initialState);
+    //.do(newState => lastSuccessfulState = newState)
+    if (logging) state$ = state$.do(function (newState) {
+        console.log("New State " + JSON.stringify(newState, null, 1));
+    });
+    return state$;
 }
 exports.modelFunction = modelFunction;
 
@@ -3832,13 +3834,15 @@ exports.changeUmlRelationTextFieldReducer = changeUmlRelationTextFieldReducer;
  * State reducer that reacts on selecting a single UmlRelation by clicking on it
  */
 function moveSelectedElementsReducer(intent$, log) {
-    return intent$.filter(function (intent) {
+    var moving = intent$.filter(function (intent) {
         return intent instanceof UmlCanvasIntents_1.MoveSelectedElementsIntent;
     }).map(function (intent) {
         return intent;
-    }).do(function (i) {
+    });
+    if (log === true) moving = moving.do(function (i) {
         return ViewStateReducer_1.logReducer(log, "moveSelectedElementsReducer");
-    }).switchMap(function (intent) {
+    });
+    var reducer = moving.switchMap(function (intent) {
         return Rx.Observable.of(function (oldState) {
             if (oldState.selectedElements.isEmpty()) {
                 return oldState;
@@ -3887,6 +3891,7 @@ function moveSelectedElementsReducer(intent$, log) {
             };
         });
     });
+    return reducer;
 }
 exports.moveSelectedElementsReducer = moveSelectedElementsReducer;
 /**
