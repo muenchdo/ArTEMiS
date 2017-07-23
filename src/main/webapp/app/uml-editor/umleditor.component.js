@@ -12,7 +12,7 @@
                 repository: '<',
                 file: '<',
             },
-            templateUrl: 'app/uml-editor/umleditor.html',
+                templateUrl: 'app/uml-editor/umleditor.html',
             controller: UmlEditorController
         });
 

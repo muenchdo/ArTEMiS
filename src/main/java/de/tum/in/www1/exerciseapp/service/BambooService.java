@@ -4,6 +4,8 @@ import de.tum.in.www1.exerciseapp.domain.BuildLogEntry;
 import de.tum.in.www1.exerciseapp.domain.Participation;
 import de.tum.in.www1.exerciseapp.domain.Repository;
 import de.tum.in.www1.exerciseapp.domain.Result;
+import de.tum.in.www1.exerciseapp.domain.enumeration.ExerciseType;
+import de.tum.in.www1.exerciseapp.domain.umlresult.UmlAssessmentResult;
 import de.tum.in.www1.exerciseapp.exception.BambooException;
 import de.tum.in.www1.exerciseapp.exception.GitException;
 import de.tum.in.www1.exerciseapp.repository.ResultRepository;
@@ -284,10 +286,56 @@ public class BambooService implements ContinuousIntegrationService {
         result.setBuildSuccessful((boolean) buildResults.get("buildSuccessful"));
         result.setResultString((String) buildResults.get("buildTestSummary"));
         result.setBuildCompletionDate((ZonedDateTime) buildResults.get("buildCompletedDate"));
-        result.setScore(calculateScoreForResult(result));
         result.setBuildArtifact(buildResults.containsKey("artifact"));
         result.setParticipation(participation);
+
+        // TODO Apply strategy pattern, but the existing code is so breakable, I don't want to touch it (no unit tests!)
+        if (participation.getExercise().getExerciseType() == ExerciseType.UML_CLASS_DIAGRAM) {
+            String artifactUrl = (String) buildResults.get("artifact");
+            if (artifactUrl != null) {
+                if (!result.isBuildSuccessful())
+                    result.setScore(0L);
+                else
+                    result.setScore(calculateScoreForResultForUmlExercise(artifactUrl));
+            } else {
+                log.error("UML Exercise must have a artifact url. See README. participationId = "+participation.getId()+" buildplanId = "+participation.getBuildPlanId()+" exerciseId: "+participation.getExercise().getId()+" exerciseTitle"+participation.getExercise().getTitle());
+                result.setScore(0L);
+            }
+        } else {
+            result.setScore(calculateScoreForResult(result));
+        }
+
         resultRepository.save(result);
+    }
+
+    /**
+     * Calculates the score for an Exercise of type {@link ExerciseType#UML_CLASS_DIAGRAM}
+     * @param artifactUrl The url where to load the {@link UmlAssessmentResult}
+     * @return the score between 0 and 100 (100 means 100% correct)
+     */
+    private long calculateScoreForResultForUmlExercise(String artifactUrl) {
+
+        // Uml Coding Exercise must provide an Artifact with the latest Assessment Result
+        // Read README
+
+        HttpHeaders headers = HeaderUtil.createAuthorization(BAMBOO_USER, BAMBOO_PASSWORD);
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<UmlAssessmentResult> umlAssessmentResponse = restTemplate.exchange(
+                artifactUrl,
+                HttpMethod.GET,
+                entity,
+                UmlAssessmentResult.class);
+
+            UmlAssessmentResult assessmentResult = umlAssessmentResponse.getBody();
+
+            // Save result
+            return ((long) (assessmentResult.getScore() / assessmentResult.getMaxReachableScore()) * 100);
+        } catch (Exception e) {
+            log.error("HttpError while retrieving results", e);
+            return 0;
+        }
     }
 
     /**
@@ -353,9 +401,9 @@ public class BambooService implements ContinuousIntegrationService {
             ZonedDateTime buildCompletedDate = ZonedDateTime.parse(dateString);
             result.put("buildCompletedDate", buildCompletedDate);
 
-            if(response.getBody().containsKey("artifacts")) {
-                Map<String, Object> artifacts = (Map<String, Object>)response.getBody().get("artifacts");
-                if((int)artifacts.get("size") > 0 && artifacts.containsKey("artifact")) {
+            if (response.getBody().containsKey("artifacts")) {
+                Map<String, Object> artifacts = (Map<String, Object>) response.getBody().get("artifacts");
+                if ((int) artifacts.get("size") > 0 && artifacts.containsKey("artifact")) {
                     Map<String, Object> firstArtifact = (Map<String, Object>) ((ArrayList<Map>) artifacts.get("artifact")).get(0);
                     String artifact = (String) ((Map<String, Object>) firstArtifact.get("link")).get("href");
                     result.put("artifact", artifact);
@@ -438,7 +486,7 @@ public class BambooService implements ContinuousIntegrationService {
     /**
      * Gets the latest available artifact for the given plan key
      *
-      * @param participation
+     * @param participation
      * @return
      */
     public ResponseEntity retrieveLatestArtifact(Participation participation) {
@@ -446,10 +494,10 @@ public class BambooService implements ContinuousIntegrationService {
         Map<String, Object> latestResult = retrieveLatestBuildResult(planKey);
         // If the build has an artifact, the resppnse contains an artifact key.
         // It seems this key is only available if the "Share" checkbox in Bamboo was used.
-        if(latestResult.containsKey("artifact")) {
+        if (latestResult.containsKey("artifact")) {
             // The URL points to the directory. Bamboo returns an "Index of" page.
             // Recursively walk through the responses until we get the actual artifact.
-            return retrievArtifactPage((String)latestResult.get("artifact"));
+            return retrievArtifactPage((String) latestResult.get("artifact"));
         } else {
             throw new BambooException("No build artifact available for this plan");
         }
@@ -482,7 +530,7 @@ public class BambooService implements ContinuousIntegrationService {
         }
 
 
-        if(response.getHeaders().containsKey("Content-Type") && response.getHeaders().get("Content-Type").get(0).equals("text/html")) {
+        if (response.getHeaders().containsKey("Content-Type") && response.getHeaders().get("Content-Type").get(0).equals("text/html")) {
             // This is an "Index of" HTML page.
             String html = new String(response.getBody(), StandardCharsets.UTF_8);
             Pattern p = Pattern.compile("href=\"(.*?)\"", Pattern.CASE_INSENSITIVE);

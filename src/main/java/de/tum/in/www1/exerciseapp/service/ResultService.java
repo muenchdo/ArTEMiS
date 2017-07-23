@@ -1,6 +1,7 @@
 package de.tum.in.www1.exerciseapp.service;
 
 import de.tum.in.www1.exerciseapp.domain.Participation;
+import de.tum.in.www1.exerciseapp.domain.enumeration.ExerciseType;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class ResultService {
         continuousIntegrationService.onBuildCompleted(participation);
         // notify user via websocket
         messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/newResults", true);
+        if (participation.getExercise().getExerciseType() == ExerciseType.UML_CLASS_DIAGRAM){
+
+            messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/newResults", true);
+        }
         // handles new results and sends them to LTI consumers
         ltiService.onNewBuildResult(participation);
     }
