@@ -127,16 +127,16 @@
             //
             function saveAndCommitFile(umlDocumentAsJson, successCallback, errorCallback) {
 
+                saveButton.prop("disabled", true);
+                saveButtonText.html("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Testing");
+                var controller = angular.element(document.getElementById("uml-editor-container")).controller('umleditor');
+                controller.isBuilding = true;
+
                 RepositoryFile.update({
                     participationId: participationId,
                     file: "submission.json"
                 }, JSON.stringify(umlDocumentAsJson), function () {
-                    var controller = angular.element(document.getElementById("uml-editor-container")).controller('umleditor');
-                    controller.isBuilding = true;
-
-                    console.log("Saved file");
-                    saveButton.prop("disabled", true);
-                    saveButtonText.html("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Testing");
+                   console.log("Saved file");
 
                     Repository.commit({
                         participationId: participationId
@@ -145,7 +145,10 @@
                         successCallback()
                     }, function (err) {
                         console.log(err);
-                        errorCallback(err)
+                        errorCallback(err);
+                        controller.isBuilding = false;
+                        saveButton.prop("disabled", false);
+                        saveButtonText.html("<i class=\"fa fa-play-circle-o\"></i> Save & Run Tests");
                     });
 
                 }, function (err) {
