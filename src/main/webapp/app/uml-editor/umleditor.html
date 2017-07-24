@@ -49,16 +49,30 @@
 
     </div>
 
-    <div id="instructionsContainer" class="panel-body instructions"
-         style="width: 200px; height: 200px; position:fixed; right: 0; bottom: 0;background: red;">
 
+    <div id="panelInstructions" style="width: 200px; height: 80%; position:fixed; right: 0; bottom: 10%; top:10%;"
+         class="panel panel-primary" resizable r-directions="['left']" r-width="$ctrl.initialInstructionsWidth">
+        <div class="panel-heading">
+            <span class="pull-right "><i class="glyphicon glyphicon-chevron-right"></i></span>
+            <h3 class="panel-title">
+                <i class="glyphicon glyphicon glyphicon-list-alt"></i>
+                <span> &nbsp; Instructions &nbsp; </span>
+            </h3>
+
+        </div>
+
+
+            <div class="panel-body instructions" style="height: calc(100% - 40px); overflow: scroll; background: none;" id="instructionsMarkdown"></div>
     </div>
+
+
     <script src="/static/uml-editor/js/UmlEditorBundled.js"></script>
 
     <script>
         var saveButton = $("#umlSaveButton");
         var saveButtonText = $("#umlSaveButtonText");
-        var instructionsContainer = $("#instructionsContainer");
+        var realContainer = $("#panelInstructions");
+        var instructionsMarkDown = $("#instructionsMarkdown");
 
         function start() {
 
@@ -167,21 +181,21 @@
                 saveTrigger();
             });
 
-            instructionsContainer.html(markdown.render('Loading ...'));
+            instructionsMarkDown.html(markdown.render('Loading ...'));
 
             RepositoryFile.get({
                     participationId: participationId,
                     file: "README.md"
                 }, function (fileObj) {
                     try {
-                        instructionsContainer.html(markdown.render(fileObj.fileContent));
+                        instructionsMarkDown.html(markdown.render(fileObj.fileContent));
                     } catch (e) {
                         console.log(e);
-                        instructionsContainer.html(markdown.render('Unexpected Error has occurred'));
+                        instructionsMarkDown.html(markdown.render('Unexpected Error has occurred'));
                     }
                 },
                 function (error) {
-                    instructionsContainer.html(markdown.render("Couldn't load Instructions. No Instructions provided."));
+                    instructionsMarkDown.html(markdown.render("Couldn't load Instructions. No Instructions provided."));
                 }
             );
 
