@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/static/uml-editor/css/bootstrap-theme.css">
     <link rel="stylesheet" href="/static/uml-editor/css/bootstrap.css">
 
-    <nav class="navbar navbar-default editor-top" role="navigation">
+    <nav class="navbar navbar-default editor-top" role="navigation" style="margin-bottom: 0px;">
         <div class="">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" ng-click="vm.toggleNavbar()">
@@ -27,6 +27,11 @@
 
                     <result participation="$ctrl.participation" ng-hide="$ctrl.isBuilding"
                             on-new-result="$ctrl.updateLatestResult($event)" show-score="true"></result>
+
+                    <button id="umlSaveButton" type="button" class="btn btn-primary navbar-btn">
+                        <span id="umlSaveButtonText"><i class="fa fa-play-circle-o"></i> Save & Run Tests</span>
+                    </button>
+
                 </div>
 
             </div>
@@ -44,24 +49,22 @@
         <script src="/static/uml-editor/js/UmlEditorBundled.js"></script>
 
         <script>
-
+            var saveButton = $("#umlSaveButton");
+            var saveButtonText = $("#umlSaveButtonText");
 
             function start() {
 
                 var Repository = angular.element('*[ng-app]').injector().get("Repository");
                 var RepositoryFile = angular.element('*[ng-app]').injector().get("RepositoryFile");
-
-
-                var controller = angular.element(document.getElementById("uml-editor-container")).controller('umleditor');
-
-
-                console.log("controller ");
-                console.log(controller);
+                var JhiWebsocketService = angular.element('*[ng-app]').injector().get("JhiWebsocketService");
 
                 var url = window.location.href;
                 var urlIndex = url.lastIndexOf('/');
                 var participationId = Number(url.substring(urlIndex + 1));
-                console.log("ParticipationId" + participationId);
+
+                if (isNaN(participationId)){
+                    alert("Oops, something went wrong. Please reload page.");
+                }
 
 
                 // store url on load
@@ -98,7 +101,12 @@
                         participationId: participationId,
                         file: "submission.json"
                     }, JSON.stringify(umlDocumentAsJson), function () {
+                        var controller = angular.element(document.getElementById("uml-editor-container")).controller('umleditor');
+                        controller.isBuilding = true;
+
                         console.log("Saved file");
+                        saveButton.prop("disabled", true);
+                        saveButtonText.html("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Testing");
 
                         Repository.commit({
                             participationId: participationId
@@ -119,7 +127,54 @@
                 } // End save Function
 
 
-                UmlClassEditor.startUmlEditor(loadFile, saveAndCommitFile, null, true);
+                //
+                // Connect to business logic of UML Editor
+                //
+                var triggerFuncs = UmlClassEditor.startUmlEditor(loadFile, saveAndCommitFile, true);
+                var saveTrigger = triggerFuncs[0];
+                var errorImportTrigger = triggerFuncs[1];
+
+                var websocketChannel = '/topic/participation/'+participationId +'/umlexercise/assessmentResults';
+                JhiWebsocketService.subscribe(websocketChannel);
+                JhiWebsocketService.receive(websocketChannel).then(null, null, function(notification) {
+                    console.log(notification);
+                    if (errorImportTrigger !== null) {
+                        errorImportTrigger(notification);
+                    }
+                });
+
+                //
+                // Setup UI
+                //
+
+                saveButton.click(function () {
+                    saveTrigger();
+                });
+
+
+                //
+                // Clean up
+                //
+                (function($){
+                    $.event.special.destroyed = {
+                        remove: function(o) {
+                            if (o.handler) {
+                                o.handler()
+                            }
+                        }
+                    }
+                })(jQuery);
+
+
+                var container = $("#uml-editor-container");
+                console.log("Container");
+                console.log(container);
+                container.bind('destroyed', function() {
+                    // unsubscribe websocket
+                    JhiWebsocketService.unsubscribe(websocketChannel);
+                    errorImportTrigger = null;
+                });
+
 
             }
 
@@ -137,7 +192,6 @@
 
                 window.addEventListener("hashchange", startOnHashChanged);
             }
-
 
         </script>
 

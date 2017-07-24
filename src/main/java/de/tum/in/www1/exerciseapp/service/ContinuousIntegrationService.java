@@ -51,8 +51,9 @@ public interface ContinuousIntegrationService {
      * Important: The implementation is responsible for retrieving and saving the result from the CI system.
      *
      * @param participation participation for which build has completed
+     * @return The payload that should be send to the client result
      */
-    void onBuildCompleted(Participation participation);
+    Object onBuildCompleted(Participation participation);
 
     /**
      * Get the current status of the build for the given participation, i.e. INACTIVE, QUEUED, or BUILDING.

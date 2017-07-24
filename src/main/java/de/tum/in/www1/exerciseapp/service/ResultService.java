@@ -32,12 +32,13 @@ public class ResultService {
     @Async
     public void onResultNotified(Participation participation) {
         // fetches the new build result
-        continuousIntegrationService.onBuildCompleted(participation);
+        Object websocketPayload = continuousIntegrationService.onBuildCompleted(participation);
         // notify user via websocket
         messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/newResults", true);
-        if (participation.getExercise().getExerciseType() == ExerciseType.UML_CLASS_DIAGRAM){
 
-            messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/newResults", true);
+        if (participation.getExercise().getExerciseType() == ExerciseType.UML_CLASS_DIAGRAM && websocketPayload != null){
+
+            messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/umlexercise/assessmentResults", websocketPayload);
         }
         // handles new results and sends them to LTI consumers
         ltiService.onNewBuildResult(participation);

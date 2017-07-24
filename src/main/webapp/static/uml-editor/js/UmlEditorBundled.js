@@ -215,7 +215,6 @@ saveUmlDocument) {
     var initialState = ViewState_1.initialViewState();
     var logging = false;
     if (logging) {
-        console.log("No logging");
         intents$ = intents$.do(function (intent) {
             return console.log("Intent: " + intent);
         }); // Add some console logging
@@ -4937,6 +4936,7 @@ var Editor = function (_super) {
         _this.intentEmitter = new Intent_1.IntentEmitter(_this.intentSubject);
         _this.subscription = null;
         _this.assesmentResultSubscription = null;
+        _this.saveTriggerSubscription = null;
         _this.currentState = null; // For performance reasons
         _this.movingElement = false;
         _this.umlCanvasElement = null;
@@ -5022,15 +5022,26 @@ var Editor = function (_super) {
                 // TODO error handling
             });
         }
+        if (this.props.saveTrigger != null) {
+            var self_2 = this;
+            this.saveTriggerSubscription = this.props.saveTrigger.map(function (ignored) {
+                return new LoadSaveIntents_1.SaveUmlDocumentIntent();
+            }).subscribe(function (intent) {
+                return self_2.intentEmitter.emit(intent);
+            });
+        }
     };
     Editor.prototype.componentWillUnmount = function () {
+        document.body.removeEventListener("keydown", this.handleKeyDown);
         if (this.subscription != null) {
             this.subscription.unsubscribe();
         }
         if (this.assesmentResultSubscription != null) {
             this.assesmentResultSubscription.unsubscribe();
         }
-        document.body.removeEventListener("keydown", this.handleKeyDown);
+        if (this.saveTriggerSubscription != null) {
+            this.saveTriggerSubscription.unsubscribe();
+        }
     };
     Editor.prototype.onMouseDownInUmlCanvas = function (event) {};
     Editor.prototype.onMouseUpInUmlCanvas = function (event) {
@@ -6418,17 +6429,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Editor_1 = require("./components/editor/Editor");
 var React = require("react");
 var ReactDOM = require("react-dom");
-function startUmlEditor(loadUml, saveUmlDocument, assessmentResults, autoStartLoadingUmlDocument) {
-    ReactDOM.render(getEditor(loadUml, saveUmlDocument, assessmentResults, autoStartLoadingUmlDocument), document.getElementById("main-container"));
+var Rx = require("@reactivex/rxjs");
+var ErrorMessage_1 = require("./businesslogic/ErrorMessage");
+/**
+ *
+ * @param loadUml The function that is triggered to load the uml document
+ * @param saveUmlDocument The function that is triggered to save the uml document
+ * @param assessmentResults The
+ * @param autoStartLoadingUmlDocument
+ * @returns A Pair (array) with two functions that can be invoked from the web frontend to trigger intents. The fist function is the save function, the second one is the function to give errorResults back
+ */
+function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument) {
+    var saveTrigger = new Rx.Subject();
+    var assessmentResultTrigger = new Rx.Subject();
+    function saveTriggerFunc() {
+        saveTrigger.next(true);
+    }
+    function assesmentResultsFunc(assementResult) {
+        var errorMap = ErrorMessage_1.newErrorsMap();
+        assementResult.errors.forEach(function (error) {
+            var errors = errorMap.withMutations(function (map) {
+                if (error.warning === false) map.set(error.id, error.errorMessage);
+            });
+            assessmentResultTrigger.next(errors);
+        });
+    }
+    ReactDOM.render(getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResultTrigger, autoStartLoadingUmlDocument), document.getElementById("main-container"));
+    return [saveTriggerFunc, assesmentResultsFunc];
 }
 exports.startUmlEditor = startUmlEditor;
-function getEditor(loadUml, saveUmlDocument, assessmentResults, autoStartLoadingUmlDocument) {
-    return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument });
+function getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResults, autoStartLoadingUmlDocument) {
+    return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, saveTrigger: saveTrigger, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument });
 }
 exports.getEditor = getEditor;
 
 
-},{"./components/editor/Editor":30,"react":582,"react-dom":430}],36:[function(require,module,exports){
+},{"./businesslogic/ErrorMessage":1,"./components/editor/Editor":30,"@reactivex/rxjs":381,"react":582,"react-dom":430}],36:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];

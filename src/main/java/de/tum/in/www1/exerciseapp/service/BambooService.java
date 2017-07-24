@@ -126,10 +126,44 @@ public class BambooService implements ContinuousIntegrationService {
         }
     }
 
+    private Map<String, Object> retrieveLatestBuildResultDetailsForUmlExercise(String buildPlanId) {
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> buildResults = retrieveLatestBuildResult(buildPlanId);
+        String artifactUrl = (String) buildResults.get("artifact");
+        if (artifactUrl != null) {
+
+            try {
+                UmlAssessmentResult umlAssessmentResult = getUmlAssessmentResult(artifactUrl);
+                List<String> resultDetails = new ArrayList(umlAssessmentResult.getErrors().size());
+                for (UmlAssessmentResult.ErrorMessage msg : umlAssessmentResult.getErrors()) {
+                    resultDetails.add(msg.getErrorMessage());
+                }
+                result.put("details", resultDetails);
+                return result;
+            } catch (Exception e) {
+                log.error("Couldn't load artifact for " + buildPlanId + " to get the test result for UML Exercise", e);
+                result.put("details", Arrays.asList("Coudn't load the Test Result details: " + e.getMessage()));
+                return result;
+            }
+
+        } else {
+            log.error("UML Exercise must have a artifact url. See README.buildplanId = " + buildPlanId);
+            result.put("details", Arrays.asList("Something is not configured properly. No artifact found. Please contact your instructor."));
+            return result;
+        }
+    }
+
     @Override
     public Map<String, Object> getLatestBuildResultDetails(Participation participation) {
-        Map<String, Object> details = retrieveLatestBuildResultDetails(participation.getBuildPlanId());
-        return details;
+
+        if (participation.getExercise().getExerciseType() == ExerciseType.UML_CLASS_DIAGRAM) {
+            Map<String, Object> details = retrieveLatestBuildResultDetailsForUmlExercise(participation.getBuildPlanId());
+            return details;
+        } else {
+            Map<String, Object> details = retrieveLatestBuildResultDetails(participation.getBuildPlanId());
+            return details;
+        }
     }
 
     @Override
@@ -260,7 +294,7 @@ public class BambooService implements ContinuousIntegrationService {
      * @param participation
      */
     @Override
-    public void onBuildCompleted(Participation participation) {
+    public Object onBuildCompleted(Participation participation) {
         log.info("Retrieving build result...");
         Boolean isOldBuildResult = true;
         Map buildResults = new HashMap<>();
@@ -282,6 +316,7 @@ public class BambooService implements ContinuousIntegrationService {
             buildResults = retrieveLatestBuildResult(participation.getBuildPlanId());
         }
 
+        Object returnValue = null;
         Result result = new Result();
         result.setBuildSuccessful((boolean) buildResults.get("buildSuccessful"));
         result.setResultString((String) buildResults.get("buildTestSummary"));
@@ -295,10 +330,22 @@ public class BambooService implements ContinuousIntegrationService {
             if (artifactUrl != null) {
                 if (!result.isBuildSuccessful())
                     result.setScore(0L);
-                else
-                    result.setScore(calculateScoreForResultForUmlExercise(artifactUrl));
+                else {
+                    // Uml Coding Exercise must provide an Artifact with the latest Assessment Result
+                    // Read README
+                    long score = 0;
+                    try {
+                        UmlAssessmentResult assessmentResult = getUmlAssessmentResult(artifactUrl);
+                        score = ((long) (assessmentResult.getScore() / assessmentResult.getMaxReachableScore()) * 100);
+                        returnValue = assessmentResult;
+                    } catch (Exception e) {
+                        log.error("HttpError while retrieving results", e);
+                        // Score is 0
+                    }
+                    result.setScore(score);
+                }
             } else {
-                log.error("UML Exercise must have a artifact url. See README. participationId = "+participation.getId()+" buildplanId = "+participation.getBuildPlanId()+" exerciseId: "+participation.getExercise().getId()+" exerciseTitle"+participation.getExercise().getTitle());
+                log.error("UML Exercise must have a artifact url. See README. participationId = " + participation.getId() + " buildplanId = " + participation.getBuildPlanId() + " exerciseId: " + participation.getExercise().getId() + " exerciseTitle" + participation.getExercise().getTitle());
                 result.setScore(0L);
             }
         } else {
@@ -306,37 +353,31 @@ public class BambooService implements ContinuousIntegrationService {
         }
 
         resultRepository.save(result);
+        return returnValue;
     }
 
+
     /**
-     * Calculates the score for an Exercise of type {@link ExerciseType#UML_CLASS_DIAGRAM}
-     * @param artifactUrl The url where to load the {@link UmlAssessmentResult}
-     * @return the score between 0 and 100 (100 means 100% correct)
+     * Get the {@link UmlAssessmentResult}
+     *
+     * @param artifactUrl The Url of the artifact (which is a {@link UmlAssessmentResult}
+     * @return {@link UmlAssessmentResult}
+     * @throws Exception
      */
-    private long calculateScoreForResultForUmlExercise(String artifactUrl) {
-
-        // Uml Coding Exercise must provide an Artifact with the latest Assessment Result
-        // Read README
-
+    private UmlAssessmentResult getUmlAssessmentResult(String artifactUrl) throws Exception {
         HttpHeaders headers = HeaderUtil.createAuthorization(BAMBOO_USER, BAMBOO_PASSWORD);
         HttpEntity<?> entity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<UmlAssessmentResult> umlAssessmentResponse = restTemplate.exchange(
-                artifactUrl,
-                HttpMethod.GET,
-                entity,
-                UmlAssessmentResult.class);
 
-            UmlAssessmentResult assessmentResult = umlAssessmentResponse.getBody();
+        ResponseEntity<UmlAssessmentResult> umlAssessmentResponse = restTemplate.exchange(
+            artifactUrl,
+            HttpMethod.GET,
+            entity,
+            UmlAssessmentResult.class);
 
-            // Save result
-            return ((long) (assessmentResult.getScore() / assessmentResult.getMaxReachableScore()) * 100);
-        } catch (Exception e) {
-            log.error("HttpError while retrieving results", e);
-            return 0;
-        }
+        return umlAssessmentResponse.getBody();
     }
+
 
     /**
      * Calculates the score for a result. Therefore is uses the number of successful tests in the latest build.
@@ -423,7 +464,7 @@ public class BambooService implements ContinuousIntegrationService {
      * @param planKey the key of the plan for which to retrieve the details
      * @return
      */
-    public Map<String, Object> retrieveLatestBuildResultDetails(String planKey) {
+    private Map<String, Object> retrieveLatestBuildResultDetails(String planKey) {
         HttpHeaders headers = HeaderUtil.createAuthorization(BAMBOO_USER, BAMBOO_PASSWORD);
         HttpEntity<?> entity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
