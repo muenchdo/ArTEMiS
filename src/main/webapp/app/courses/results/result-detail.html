@@ -7,7 +7,7 @@
     <div class="text-muted" id="result-detail-spinner" ng-switch-when="true"><i
         class="fa fa-circle-o-notch fa-lg fa-spin "></i></div>
     <div ng-switch-when="false" ng-repeat="detail in $ctrl.details track by $index" ng-init="lastDetail = $last">
-        <p>Error in method <code>{{detail.methodName}}</code>:</p>
+        <p>Error in <code>{{detail.methodName}}</code>:</p>
         <div ng-repeat="error in detail.errors.error">
             <pre ng-bind="error.message.split('\n')[0]"></pre>
         </div>

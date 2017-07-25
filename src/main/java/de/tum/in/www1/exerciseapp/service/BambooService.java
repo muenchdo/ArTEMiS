@@ -1,15 +1,22 @@
 package de.tum.in.www1.exerciseapp.service;
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import de.tum.in.www1.exerciseapp.domain.BuildLogEntry;
 import de.tum.in.www1.exerciseapp.domain.Participation;
 import de.tum.in.www1.exerciseapp.domain.Repository;
 import de.tum.in.www1.exerciseapp.domain.Result;
 import de.tum.in.www1.exerciseapp.domain.enumeration.ExerciseType;
+import de.tum.in.www1.exerciseapp.domain.umlresult.TestResultDetailsDTO;
 import de.tum.in.www1.exerciseapp.domain.umlresult.UmlAssessmentResult;
 import de.tum.in.www1.exerciseapp.exception.BambooException;
 import de.tum.in.www1.exerciseapp.exception.GitException;
 import de.tum.in.www1.exerciseapp.repository.ResultRepository;
 import de.tum.in.www1.exerciseapp.web.rest.util.HeaderUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +75,11 @@ public class BambooService implements ContinuousIntegrationService {
 
     @Inject
     private ResultRepository resultRepository;
+
+    // TODO make this AutoWired or Injectable
+    private OkHttpClient okhttp = new OkHttpClient();
+
+    private JsonAdapter<UmlAssessmentResult> umlAssessmentResultAdapter = new Moshi.Builder().build().adapter(UmlAssessmentResult.class);
 
     @Override
     public String copyBuildPlan(String baseBuildPlanId, String wantedPlanKey) {
@@ -135,10 +147,14 @@ public class BambooService implements ContinuousIntegrationService {
 
             try {
                 UmlAssessmentResult umlAssessmentResult = getUmlAssessmentResult(artifactUrl);
-                List<String> resultDetails = new ArrayList(umlAssessmentResult.getErrors().size());
+                List<TestResultDetailsDTO> resultDetails = new ArrayList(umlAssessmentResult.getErrors().size());
+
+                int checkerCount = 1;
                 for (UmlAssessmentResult.ErrorMessage msg : umlAssessmentResult.getErrors()) {
-                    resultDetails.add(msg.getErrorMessage());
+                    resultDetails.add(TestResultDetailsDTO.create("Check " + checkerCount, msg.getErrorMessage()));
+                    checkerCount++;
                 }
+
                 result.put("details", resultDetails);
                 return result;
             } catch (Exception e) {
@@ -328,22 +344,23 @@ public class BambooService implements ContinuousIntegrationService {
         if (participation.getExercise().getExerciseType() == ExerciseType.UML_CLASS_DIAGRAM) {
             String artifactUrl = (String) buildResults.get("artifact");
             if (artifactUrl != null) {
-                if (!result.isBuildSuccessful())
-                    result.setScore(0L);
-                else {
-                    // Uml Coding Exercise must provide an Artifact with the latest Assessment Result
-                    // Read README
-                    long score = 0;
-                    try {
-                        UmlAssessmentResult assessmentResult = getUmlAssessmentResult(artifactUrl);
-                        score = ((long) (assessmentResult.getScore() / assessmentResult.getMaxReachableScore()) * 100);
-                        returnValue = assessmentResult;
-                    } catch (Exception e) {
-                        log.error("HttpError while retrieving results", e);
-                        // Score is 0
+                // Uml Coding Exercise must provide an Artifact with the latest Assessment Result
+                // Read README
+                long score = 0;
+                try {
+                    UmlAssessmentResult assessmentResult = getUmlAssessmentResult(artifactUrl);
+                    if (assessmentResult.getMaxScore() == 0) {
+                        throw new Exception("UML Assessment Max. score is 0 for AssessmentReport " + artifactUrl + ". That is not allowed. Max. Reachable score must be greater than 0. Probably something with the Sample Solution is wrong or misses.");
                     }
-                    result.setScore(score);
+                    double preciseScore = (assessmentResult.getScore() / assessmentResult.getMaxScore()) * 100;
+                    score = Math.min(100L, Math.round(preciseScore));
+                    returnValue = assessmentResult;
+                } catch (Exception e) {
+                    log.error("HttpError while retrieving results", e);
+                    score = 0;
                 }
+                result.setScore(score);
+
             } else {
                 log.error("UML Exercise must have a artifact url. See README. participationId = " + participation.getId() + " buildplanId = " + participation.getBuildPlanId() + " exerciseId: " + participation.getExercise().getId() + " exerciseTitle" + participation.getExercise().getTitle());
                 result.setScore(0L);
@@ -366,16 +383,24 @@ public class BambooService implements ContinuousIntegrationService {
      */
     private UmlAssessmentResult getUmlAssessmentResult(String artifactUrl) throws Exception {
         HttpHeaders headers = HeaderUtil.createAuthorization(BAMBOO_USER, BAMBOO_PASSWORD);
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<UmlAssessmentResult> umlAssessmentResponse = restTemplate.exchange(
-            artifactUrl,
-            HttpMethod.GET,
-            entity,
-            UmlAssessmentResult.class);
+        Request.Builder requestBuilder = new Request.Builder()
+            .url(artifactUrl);
 
-        return umlAssessmentResponse.getBody();
+        for (Map.Entry<String, List<String>> header : headers.entrySet()) {
+            for (String headerValue : header.getValue())
+                requestBuilder.addHeader(header.getKey(), headerValue);
+        }
+
+        Request request = requestBuilder.build();
+        Response response = okhttp.newCall(request).execute();
+
+        ResponseBody body = response.body();
+        if (body != null)
+            return umlAssessmentResultAdapter.fromJson(body.source());
+        else
+            throw new NullPointerException("The Response for " + artifactUrl + " didn't contain any body to parse the json");
+
     }
 
 

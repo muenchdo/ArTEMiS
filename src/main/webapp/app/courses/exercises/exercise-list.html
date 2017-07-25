@@ -33,7 +33,7 @@
         </td>
         <td>
             <span class="text-muted" ng-switch-when="false">You have not started this exercise yet.</span>
-            <span ng-switch-when="true"><result participation="exercise.participation"></result></span>
+            <span ng-switch-when="true"><result participation="exercise.participation" show-artifact="exercise.exerciseType!='UML_CLASS_DIAGRAM'"></result></span>
         </td>
         <td class="text-center">
             <button class="btn btn-primary btn-sm btn-block" id="btn-student-action"

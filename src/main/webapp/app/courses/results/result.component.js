@@ -11,6 +11,7 @@
                 participation: '<',
                 showScore: '<',
                 onNewResult: '&',
+                showArtifact:'<',
             },
             templateUrl: 'app/courses/results/result.html',
             controller: ResultController
@@ -109,6 +110,9 @@
                             } else {
                                 vm.loading = false;
                             }
+                        }, function (error) {
+                            console.log("An error has occurred ");
+                            console.log(error);
                         });
                     }
                 }],

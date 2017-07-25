@@ -19,6 +19,6 @@
         </span> (<span am-time-ago="$ctrl.results[0].buildCompletionDate" ng-if="!$ctrl.showScore"></span><strong ng-if="$ctrl.showScore">{{$ctrl.results[0].score}}%</strong>)
     </span>
 </span>
-<span ng-if="$ctrl.results[0].buildArtifact">
+<span ng-if="$ctrl.results[0].buildArtifact && $ctrl.showArtifact">
     <a href="/api/participations/{{$ctrl.results[0].participation.id}}/buildArtifact"> &nbsp; <i class="fa fa-file"></i> Download Build Result</a>
 </span>

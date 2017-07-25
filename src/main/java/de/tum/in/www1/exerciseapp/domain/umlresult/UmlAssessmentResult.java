@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class UmlAssessmentResult {
     private double score;
-    private double maxReachableScore;
+    private double maxScore;
     private int errorsCount;
     private List<ErrorMessage> errors;
 
@@ -17,8 +17,8 @@ public class UmlAssessmentResult {
         return score;
     }
 
-    public double getMaxReachableScore() {
-        return maxReachableScore;
+    public double getMaxScore() {
+        return maxScore;
     }
 
     public int getErrorsCount() {
@@ -38,7 +38,7 @@ public class UmlAssessmentResult {
         UmlAssessmentResult that = (UmlAssessmentResult) o;
 
         if (Double.compare(that.score, score) != 0) return false;
-        if (Double.compare(that.maxReachableScore, maxReachableScore) != 0) return false;
+        if (Double.compare(that.maxScore, maxScore) != 0) return false;
         if (errorsCount != that.errorsCount) return false;
         return errors != null ? errors.equals(that.errors) : that.errors == null;
     }
@@ -49,7 +49,7 @@ public class UmlAssessmentResult {
         long temp;
         temp = Double.doubleToLongBits(score);
         result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(maxReachableScore);
+        temp = Double.doubleToLongBits(maxScore);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + errorsCount;
         result = 31 * result + (errors != null ? errors.hashCode() : 0);
@@ -60,7 +60,7 @@ public class UmlAssessmentResult {
     public String toString() {
         return "UmlAssessmentResult{" +
             "score=" + score +
-            ", maxReachableScore=" + maxReachableScore +
+            ", maxScore=" + maxScore +
             ", errorsCount=" + errorsCount +
             ", errors=" + errors +
             '}';
@@ -70,7 +70,7 @@ public class UmlAssessmentResult {
     /**
      * Represents an error message produced by uml assessment algorithm
      */
-    public class ErrorMessage {
+    public static class ErrorMessage {
         private String id;
         private String errorMessage;
         private boolean warning;
