@@ -6469,7 +6469,7 @@ exports.getEditor = getEditor;
  * Stops the editor by unmounting the Editor component
  */
 function stopUmlEditor() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("main-container"));
+    return ReactDOM.unmountComponentAtNode(document.getElementById("main-container"));
 }
 exports.stopUmlEditor = stopUmlEditor;
 
