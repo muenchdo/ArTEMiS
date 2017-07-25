@@ -354,6 +354,11 @@ public class BambooService implements ContinuousIntegrationService {
                     }
                     double preciseScore = (assessmentResult.getScore() / assessmentResult.getMaxScore()) * 100;
                     score = Math.min(100L, Math.round(preciseScore));
+
+                    if (assessmentResult.getNumberOfErrors() > 0) {
+                        // Override the result string, as junit doesn't show all failed tests, because we may want to explicitly hide all failed tests from student.
+                        result.setResultString(assessmentResult.getNumberOfErrors() + " of " + assessmentResult.getNumberOfTests() + " failed");
+                    }
                     returnValue = assessmentResult;
                 } catch (Exception e) {
                     log.error("HttpError while retrieving results", e);

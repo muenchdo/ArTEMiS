@@ -10,7 +10,8 @@ import java.util.List;
 public class UmlAssessmentResult {
     private double score;
     private double maxScore;
-    private int errorsCount;
+    private int numberOfErrors;
+    private int numberOfTests;
     private List<ErrorMessage> errors;
 
     public double getScore() {
@@ -21,14 +22,37 @@ public class UmlAssessmentResult {
         return maxScore;
     }
 
-    public int getErrorsCount() {
-        return errorsCount;
+    /**
+     * The number of failed tests
+     * @return
+     */
+    public int getNumberOfErrors() {
+        return numberOfErrors;
     }
 
     public List<ErrorMessage> getErrors() {
         return errors;
     }
 
+
+    /**
+     * Get the number of how many tests were run int total
+     * @return
+     */
+    public int getNumberOfTests() {
+        return numberOfTests;
+    }
+
+    @Override
+    public String toString() {
+        return "UmlAssessmentResult{" +
+            "score=" + score +
+            ", maxScore=" + maxScore +
+            ", numberOfErrors=" + numberOfErrors +
+            ", numberOfTests=" + numberOfTests +
+            ", errors=" + errors +
+            '}';
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -39,7 +63,8 @@ public class UmlAssessmentResult {
 
         if (Double.compare(that.score, score) != 0) return false;
         if (Double.compare(that.maxScore, maxScore) != 0) return false;
-        if (errorsCount != that.errorsCount) return false;
+        if (numberOfErrors != that.numberOfErrors) return false;
+        if (numberOfTests != that.numberOfTests) return false;
         return errors != null ? errors.equals(that.errors) : that.errors == null;
     }
 
@@ -51,21 +76,11 @@ public class UmlAssessmentResult {
         result = (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(maxScore);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + errorsCount;
+        result = 31 * result + numberOfErrors;
+        result = 31 * result + numberOfTests;
         result = 31 * result + (errors != null ? errors.hashCode() : 0);
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "UmlAssessmentResult{" +
-            "score=" + score +
-            ", maxScore=" + maxScore +
-            ", errorsCount=" + errorsCount +
-            ", errors=" + errors +
-            '}';
-    }
-
 
     /**
      * Represents an error message produced by uml assessment algorithm

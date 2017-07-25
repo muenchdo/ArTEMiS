@@ -5666,7 +5666,10 @@ var UmlConnectionCanvas = function (_super) {
         return this.runRenderingOnceDependingUmlElementsAreReady();
     };
     UmlConnectionCanvas.prototype.getElement = function (domId) {
+        //var t0 = performance.now();
         return document.getElementById(domId);
+        //var t1 = performance.now();
+        //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
     };
     UmlConnectionCanvas.prototype.renderCanvas = function () {
         var _this = this;
