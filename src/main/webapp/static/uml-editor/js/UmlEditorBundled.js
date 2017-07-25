@@ -1497,7 +1497,7 @@ function getMethodPlaceholder(globalMeta) {
     var type = globalMeta.get(EditorUmlDocument_1.EditorGlobalMetaInformations.UmlDiagramType);
     switch (type) {
         case EditorUmlDocument_1.EditorGlobalMetaUmlDiagramType.AnalysisObjectModel:
-            return "Method()";
+            return "method()";
         case EditorUmlDocument_1.EditorGlobalMetaUmlDiagramType.ClassDiagram:
             return "+ method()";
         default:
@@ -1509,7 +1509,7 @@ function getPropertyPlaceholer(globalMeta) {
     var type = globalMeta.get(EditorUmlDocument_1.EditorGlobalMetaInformations.UmlDiagramType);
     switch (type) {
         case EditorUmlDocument_1.EditorGlobalMetaUmlDiagramType.AnalysisObjectModel:
-            return "Property";
+            return "property";
         case EditorUmlDocument_1.EditorGlobalMetaUmlDiagramType.ClassDiagram:
             return "- property : int";
         default:
