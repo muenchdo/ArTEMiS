@@ -243,6 +243,8 @@
                 JhiWebsocketService.unsubscribe(websocketChannelUml);
                 JhiWebsocketService.unsubscribe(websocketChannelResult);
                 errorImportTrigger = null;
+                UmlClassEditor.stopUmlEditor();
+                console.log("Removed UmlEditor. cleanup done.")
             });
 
 

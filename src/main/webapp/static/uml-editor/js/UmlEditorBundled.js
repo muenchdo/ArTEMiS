@@ -6465,6 +6465,13 @@ function getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResults, aut
     return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, saveTrigger: saveTrigger, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument });
 }
 exports.getEditor = getEditor;
+/**
+ * Stops the editor by unmounting the Editor component
+ */
+function stopUmlEditor() {
+    ReactDOM.unmountComponentAtNode(document.getElementById("main-container"));
+}
+exports.stopUmlEditor = stopUmlEditor;
 
 
 },{"./businesslogic/ErrorMessage":1,"./components/editor/Editor":30,"@reactivex/rxjs":381,"react":582,"react-dom":430}],36:[function(require,module,exports){
