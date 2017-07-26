@@ -2,7 +2,7 @@
 
 Please follow these instructions carefully to set up a new exercise for the students in course. The instructions demonstrate setting up a Java exercise, however this can be adapted to any programming language supported by the build server.
 
-## Exercise Preparation
+## Coding Exercise Preparation
 **Requirements:** [Apache Maven](https://maven.apache.org/), [Git](https://git-scm.com/)
 1. Create a new Maven project using the CLI (insert your own group ID and exercise name):
 
@@ -25,7 +25,7 @@ Please follow these instructions carefully to set up a new exercise for the stud
     - Add and commit files.
 
 
-## Bitbucket Setup
+### Bitbucket Setup
 
 You will need to create a unique Bitbucket project per exercise.
 
@@ -35,7 +35,7 @@ You will need to create a unique Bitbucket project per exercise.
     1. Repository containing the exercise code for the students. Since the repository contains no reference to the Bitbucket project outside of the Bitbucket UI, we recommend to name this repository with the project key. Add this repository as a remote for your local exercise repository and push.
     2. Repository containing the testing code. Choose a descriptive name, e.g. "*TEST*". Add this repository as a remote for your local exercise’s test repository and push.
 
-## Bamboo Setup
+### Bamboo Setup
 
 1. Create a new plan:
     1. Choose to create it inside a new project. Preferably you should use the same project key as in Bitbucket.
@@ -58,6 +58,61 @@ You will need to create a unique Bitbucket project per exercise.
 
                 curl -k -X POST https://exercisebruegge.in.tum.de/api/results/${bamboo.planKey}
         5. *Optional*: Add a requirement "*AgentType equals Amazon*" to the job if it should only be built on remote build agents.
+
+
+## UML Diagram Exercise
+**Requirements:** [Gradle](https://gradle.org) on your local machine (not on build agent)
+
+1. Create Sample Solution:
+    1. Create a new git repository (i.e. in BitBucket) and clone it locally on your machine.
+    2. Use our [UML Editor](https://TODO)  stand alone app to create a sample solution.
+    3. Save the sample solution as `solution.json` in the root directory of your git repo.
+    4. Within the root directory of your repository: Initialize gradle from command line with `gradle wrapper  --gradle-version=4.0.1` (insert latest version instead of 4.0.1). This downloads a standalone gradle executable called `gradlew` ("Gradle Wrapper"). This executable is then used on CI / Build Agents to execute the uml model assessment without requiring to actually have installed Gradle on CI / Build Agent.
+    5. Create a `build.gradle`  (within root directory of repository) with the following content:
+         ```
+        buildscript {
+            dependencies {
+               classpath 'com.hannesdorfmann.model-asessment:gradle-plugin:1.0.0' // Insert latest version
+           }
+        }
+        
+        apply plugin: 'com.hannesdorfmann.assessment'
+        
+        // Optional configuration
+        assessment {
+           ... 
+        }
+        
+         ```
+        Please note that the part ` assessment { ... }` is optional and allows you to apply custom configuration like file names, the number of errors that should be visible to the student, how strict the assessment algorithm works when comparing submission with sample solution etc. For more details see [here](http://TODO).
+    6. Commit and push all files.
+    
+2. Create the base repository. Students will fork from this repositoy.
+    1. Create a new git repository (i.e. in BitBucket) and clone it locally on your machine.
+    2. Use our [UML Editor](https://TODO) and save an empty uml document as `submission.json` in the root directory of the git repository. If you want to provide some pre defined UML Classes, Interfaces and relationships you can do so. 
+    3. Commit and push (git repository only contains `submission.json` file)
+    
+3. Bamboo setup:
+    1. Create a new Build Plan inside a new project. Preferably you should use the same project key as in Bitbucket.
+    2. Configure the plan (`Open plan` -> `Actions` -> `Configure plan`):
+        1. Permissions: Remove the *View* permission for logged in and anonymous users. Add admin permissions for the user *exerciseapp*.
+        2. Remove any repository which was linked during the initial setup.
+        3. Click "*Add repository*".
+        3. Add the repository which contains the `submission.json` file. **Important:** Give it the name “*Assignment*”.
+        4. Add the repository which contains `solution.json`. Here, an arbitrary name can be chosen.
+        5. Choose the default job in the default stage.
+        6. Edit the source code checkout task: First, checkout **Assignment** Repository into **Checkout Directory = submission** (unless configured differently in `build.gradle` file). Then press the "add repository" button and checkout the repository that contains the sample solution (no checkout directory).
+        7. Add a script task with the following content.
+            ```
+            ./gradlew assessment
+            ```
+        8. Add a JUnit Parser Task: put `**/test-reports/*.xml` into the textfield with the label **specify custom results directory**
+        9. Add a script task with the following (inline) content (as final task):
+
+                curl -k -X POST https://exercisebruegge.in.tum.de/api/results/${bamboo.planKey}
+    3. Configure Artifacts (there is an Artifacts tab in while editing the job). Click on the "Create definition" button. Insert any name. Set "Location" to `artifact` and set "Copy Pattern" to `AssessmentResult.json`
+
+
 
 ## [ArTEMiS Application Setup](https://exercisebruegge.in.tum.de)
 
