@@ -4970,8 +4970,9 @@ var Editor = function (_super) {
     }
     Editor.prototype.render = function () {
         var _this = this;
+        console.log("Editor render - images at " + this.props.imagesPath);
         var menuItems = this.state.menuItems.map(function (item) {
-            return React.createElement(MenuButton_1.MenuButton, { key: item.type, menuItem: item, menuItemClicked: _this.onMenuItemClicked, iconDirectoryPath: _this.props.menuIconPath });
+            return React.createElement(MenuButton_1.MenuButton, { key: item.type, menuItem: item, menuItemClicked: _this.onMenuItemClicked, iconDirectoryPath: _this.props.imagesPath });
         });
         var allowAddingPropertiesAndMethods = this.movingElement === false && InteractionTransaction_2.isNoInteractionRunning(this.state.currentInteractionTransaction);
         var umlClasses = this.state.umlDocument.types.map(function (umlClass) {
@@ -5172,6 +5173,7 @@ var MenuButton = function (_super) {
         var menuItem = this.props.menuItem;
         var cssClasses = "btn btn-default menu-button" + (menuItem.selected ? " btn-primary" : "");
         var iconUrl = this.props.iconDirectoryPath + (menuItem.selected ? menuItem.iconSelected : menuItem.icon);
+        console.log("Menu Item render: " + iconUrl);
         return React.createElement("button", { className: cssClasses, onClick: this.handleClick, tabIndex: -1 }, React.createElement("img", { src: iconUrl, className: "menu-button-icon" }), React.createElement("br", null), React.createElement("span", { className: "menu-button-text" }, this.props.menuItem.name));
     };
     MenuButton.prototype.handleClick = function () {
@@ -6451,7 +6453,7 @@ var ErrorMessage_1 = require("./businesslogic/ErrorMessage");
  * @param autoStartLoadingUmlDocument
  * @returns A Pair (array) with two functions that can be invoked from the web frontend to trigger intents. The fist function is the save function, the second one is the function to give errorResults back
  */
-function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument, menuIconPath) {
+function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument, imagesPath) {
     var saveTrigger = new Rx.Subject();
     var assessmentResultTrigger = new Rx.Subject();
     function saveTriggerFunc() {
@@ -6466,12 +6468,14 @@ function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument, m
             assessmentResultTrigger.next(errors);
         });
     }
-    ReactDOM.render(getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResultTrigger, autoStartLoadingUmlDocument, menuIconPath), document.getElementById("main-container"));
+    console.log("startUmlEditor images " + imagesPath);
+    ReactDOM.render(getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResultTrigger, autoStartLoadingUmlDocument, imagesPath), document.getElementById("main-container"));
     return [saveTriggerFunc, assesmentResultsFunc];
 }
 exports.startUmlEditor = startUmlEditor;
-function getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResults, autoStartLoadingUmlDocument, menuIconPath) {
-    return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, saveTrigger: saveTrigger, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument, menuIconPath: menuIconPath });
+function getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResults, autoStartLoadingUmlDocument, imagesPath) {
+    console.log("getEditor() images " + imagesPath);
+    return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, saveTrigger: saveTrigger, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument, imagesPath: imagesPath });
 }
 exports.getEditor = getEditor;
 /**
