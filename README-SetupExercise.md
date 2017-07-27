@@ -90,7 +90,8 @@ You will need to create a unique Bitbucket project per exercise.
 2. Create the base repository. Students will fork from this repositoy.
     1. Create a new git repository (i.e. in BitBucket) and clone it locally on your machine.
     2. Use our [UML Editor](https://TODO) and save an empty uml document as `submission.json` in the root directory of the git repository. If you want to provide some pre defined UML Classes, Interfaces and relationships you can do so. 
-    3. Commit and push (git repository only contains `submission.json` file)
+    3. Optionally (but strongly recommended): Create a `README.md` file with the instructions for the exercise. This file can be seen by the student in the online uml editor.
+    4. Commit and push (git repository only contains `submission.json` file and optionally `README.md file`)
     
 3. Bamboo setup:
     1. Create a new Build Plan inside a new project. Preferably you should use the same project key as in Bitbucket.
