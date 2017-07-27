@@ -222,9 +222,8 @@ loadUmlDocument,
 /**
  * Save the uml document
  */
-saveUmlDocument) {
+saveUmlDocument, logging) {
     var initialState = ViewState_1.initialViewState();
-    var logging = false;
     if (logging) {
         intents$ = intents$.do(function (intent) {
             return console.log("Intent: " + intent);
@@ -3444,6 +3443,43 @@ function deselectAllOnUmlCanvasClickReducer(intent$, log) {
         return Rx.Observable.of(function (oldState) {
             // Memory optimization. Nothing has changed
             if (oldState.selectedElements.isEmpty()) return oldState;
+            // Check if we quit editing a method or property and name might be empty
+            var selectedPropertyOrMethod = SelectedElement_1.getSelectedPropertyOrMethod(oldState.selectedElements);
+            if (selectedPropertyOrMethod instanceof SelectedElement_1.MethodSelectedElement) {
+                var umlType = oldState.umlDocument.types.get(selectedPropertyOrMethod.umlTypeId);
+                if (umlType == null) throw new Error("Couldn't find Uml Type with id = " + selectedPropertyOrMethod.umlTypeId);
+                var method = umlType.methods.get(selectedPropertyOrMethod.elementId);
+                if (method == null) throw new Error("Couldn't find method with id =" + selectedPropertyOrMethod.elementId);
+                if (method.methodSepcification.trim() === "") {
+                    var document_1 = EditorUmlDocument_1.removeMethodFromType(oldState.umlDocument, selectedPropertyOrMethod.umlTypeId, selectedPropertyOrMethod.elementId);
+                    var errors = ErrorMessage_1.removeError(oldState.errors, selectedPropertyOrMethod.elementId);
+                    return {
+                        menuItems: oldState.menuItems,
+                        umlDocument: document_1,
+                        currentInteractionTransaction: oldState.currentInteractionTransaction,
+                        errors: errors,
+                        infoMessages: oldState.infoMessages,
+                        selectedElements: SelectedElement_1.noSelectedElements(oldState.selectedElements)
+                    };
+                }
+            } else if (selectedPropertyOrMethod instanceof SelectedElement_1.PropertySelectedElement) {
+                var umlType = oldState.umlDocument.types.get(selectedPropertyOrMethod.umlTypeId);
+                if (umlType == null) throw new Error("Couldn't find Uml Type with id = " + selectedPropertyOrMethod.umlTypeId);
+                var property = umlType.properties.get(selectedPropertyOrMethod.elementId);
+                if (property == null) throw new Error("Couldn't find property with id =" + selectedPropertyOrMethod.elementId);
+                if (property.propertySpec.trim() === "") {
+                    var document_2 = EditorUmlDocument_1.removePropertyFromType(oldState.umlDocument, selectedPropertyOrMethod.umlTypeId, selectedPropertyOrMethod.elementId);
+                    var errors = ErrorMessage_1.removeError(oldState.errors, selectedPropertyOrMethod.elementId);
+                    return {
+                        menuItems: oldState.menuItems,
+                        umlDocument: document_2,
+                        currentInteractionTransaction: oldState.currentInteractionTransaction,
+                        errors: errors,
+                        infoMessages: oldState.infoMessages,
+                        selectedElements: SelectedElement_1.noSelectedElements(oldState.selectedElements)
+                    };
+                }
+            }
             return {
                 menuItems: oldState.menuItems,
                 umlDocument: oldState.umlDocument,
@@ -4629,6 +4665,21 @@ function cancelEditingUmlMethodReducer(intent$, log) {
         return ViewStateReducer_1.logReducer(log, "cancelEditingUmlMethodReducer");
     }).switchMap(function (intent) {
         return Rx.Observable.of(function (oldState) {
+            var method = intent.umlType.methods.get(intent.methodId);
+            if (method == null) {
+                throw new Error("Couldn't find a method with id = " + intent.methodId);
+            }
+            if (method.methodSepcification.trim() === "") {
+                var document_1 = EditorUmlDocument_1.removeMethodFromType(oldState.umlDocument, intent.umlType.id, intent.methodId);
+                return {
+                    menuItems: oldState.menuItems,
+                    umlDocument: document_1,
+                    currentInteractionTransaction: InteractionTransaction_1.NoInteractionTransactionRunning.getInstance(),
+                    errors: ErrorMessage_1.removeError(oldState.errors, intent.methodId),
+                    infoMessages: oldState.infoMessages,
+                    selectedElements: SelectedElement_1.setSelected(new SelectedElement_1.UmlTypeSelected(intent.umlType.id, false))
+                };
+            }
             return {
                 menuItems: oldState.menuItems,
                 umlDocument: oldState.umlDocument,
@@ -4654,6 +4705,17 @@ function changeUmlMethodSpecificationReducer(intent$, log) {
         return ViewStateReducer_1.logReducer(log, "changeUmlMethodSpecificationReducer");
     }).switchMap(function (intent) {
         return Rx.Observable.of(function (oldState) {
+            if (intent.stopEditing === true && intent.newMethodSpec.trim() === "") {
+                var document_2 = EditorUmlDocument_1.removeMethodFromType(oldState.umlDocument, intent.umlType.id, intent.methodId);
+                return {
+                    menuItems: oldState.menuItems,
+                    umlDocument: document_2,
+                    currentInteractionTransaction: InteractionTransaction_1.NoInteractionTransactionRunning.getInstance(),
+                    errors: ErrorMessage_1.removeError(oldState.errors, intent.methodId),
+                    infoMessages: oldState.infoMessages,
+                    selectedElements: SelectedElement_1.setSelected(new SelectedElement_1.UmlTypeSelected(intent.umlType.id, false))
+                };
+            }
             var _a = EditorUmlDocument_1.changeUmlMethodSpecification(oldState.umlDocument, intent.umlType.id, intent.methodId, intent.newMethodSpec),
                 document = _a[0],
                 errorMsg = _a[1];
@@ -4736,6 +4798,21 @@ function cancelEditingUmlPropertyReducer(intent$, log) {
         return ViewStateReducer_1.logReducer(log, "cancelEditingUmlPropertyReducer");
     }).switchMap(function (intent) {
         return Rx.Observable.of(function (oldState) {
+            var property = intent.umlType.properties.get(intent.propertyId);
+            if (property == null) {
+                throw new Error("Couldn't find a property with id = " + intent.propertyId);
+            }
+            if (property.propertySpec.trim() === "") {
+                var document_3 = EditorUmlDocument_1.removePropertyFromType(oldState.umlDocument, intent.umlType.id, intent.propertyId);
+                return {
+                    menuItems: oldState.menuItems,
+                    umlDocument: document_3,
+                    currentInteractionTransaction: InteractionTransaction_1.NoInteractionTransactionRunning.getInstance(),
+                    errors: ErrorMessage_1.removeError(oldState.errors, intent.propertyId),
+                    infoMessages: oldState.infoMessages,
+                    selectedElements: SelectedElement_1.setSelected(new SelectedElement_1.UmlTypeSelected(intent.umlType.id, false))
+                };
+            }
             return {
                 menuItems: oldState.menuItems,
                 umlDocument: oldState.umlDocument,
@@ -4761,6 +4838,17 @@ function changeUmlPropertyReducer(intent$, log) {
         return ViewStateReducer_1.logReducer(log, "changeUmlPropertyReducer");
     }).switchMap(function (intent) {
         return Rx.Observable.of(function (oldState) {
+            if (intent.stopEditing === true && intent.newPropertySpec.trim() === "") {
+                var document_4 = EditorUmlDocument_1.removePropertyFromType(oldState.umlDocument, intent.umlType.id, intent.propertyId);
+                return {
+                    menuItems: oldState.menuItems,
+                    umlDocument: document_4,
+                    currentInteractionTransaction: InteractionTransaction_1.NoInteractionTransactionRunning.getInstance(),
+                    errors: ErrorMessage_1.removeError(oldState.errors, intent.propertyId),
+                    infoMessages: oldState.infoMessages,
+                    selectedElements: SelectedElement_1.setSelected(new SelectedElement_1.UmlTypeSelected(intent.umlType.id, false))
+                };
+            }
             var _a = EditorUmlDocument_1.changeUmlProperty(oldState.umlDocument, intent.umlType.id, intent.propertyId, intent.newPropertySpec),
                 document = _a[0],
                 errorMsg = _a[1];
@@ -4970,7 +5058,6 @@ var Editor = function (_super) {
     }
     Editor.prototype.render = function () {
         var _this = this;
-        console.log("Editor render - images at " + this.props.imagesPath);
         var menuItems = this.state.menuItems.map(function (item) {
             return React.createElement(MenuButton_1.MenuButton, { key: item.type, menuItem: item, menuItemClicked: _this.onMenuItemClicked, iconDirectoryPath: _this.props.imagesPath });
         });
@@ -5007,7 +5094,7 @@ var Editor = function (_super) {
     };
     Editor.prototype.componentDidMount = function () {
         var _this = this;
-        this.subscription = ModelFunc_1.modelFunction(this.intentSubject, this.props.loadUmlDocument, this.props.saveUmlDocument).subscribe(function (newState) {
+        this.subscription = ModelFunc_1.modelFunction(this.intentSubject, this.props.loadUmlDocument, this.props.saveUmlDocument, this.props.logging).subscribe(function (newState) {
             // only renders if state has been changed
             if (_this.currentState !== newState) {
                 _this.setState(newState);
@@ -5173,7 +5260,6 @@ var MenuButton = function (_super) {
         var menuItem = this.props.menuItem;
         var cssClasses = "btn btn-default menu-button" + (menuItem.selected ? " btn-primary" : "");
         var iconUrl = this.props.iconDirectoryPath + (menuItem.selected ? menuItem.iconSelected : menuItem.icon);
-        console.log("Menu Item render: " + iconUrl);
         return React.createElement("button", { className: cssClasses, onClick: this.handleClick, tabIndex: -1 }, React.createElement("img", { src: iconUrl, className: "menu-button-icon" }), React.createElement("br", null), React.createElement("span", { className: "menu-button-text" }, this.props.menuItem.name));
     };
     MenuButton.prototype.handleClick = function () {
@@ -5405,7 +5491,7 @@ var UmlClass = function (_super) {
                 return React.createElement(TextInput_1.TextInput, { key: property.id, id: property.id, idType: ID_TYPE_PROPERTY, focused: propertyEditing, selected: propertySelected, text: property.propertySpec, bold: false, onClicked: _this.onTextInputClicked, onTextChanged: _this.onTextChanged, onChangingTextCanceled: _this.onTextCanceled, onFocusRequired: _this.onTextInputRequiresFocus, errorMessage: errors.get(property.id) });
             }).toArray();
             if (this.state.showAddPropertiesButton) {
-                propertiesTextInputs.push(React.createElement("button", { key: "AddProperty" + this.props.umlType.id, className: "uml-type-add-to-section-button", onClick: this.onAddPropertyClicked, onMouseDown: this.stopMouseEventPropagation, onMouseUp: this.stopMouseEventPropagation }, "+"));
+                propertiesTextInputs.push(React.createElement("button", { key: "AddProperty" + this.props.umlType.id, className: "uml-type-add-to-section-button", onClick: this.onAddPropertyClicked, onMouseDown: this.stopMouseEventPropagation, onMouseUp: this.stopMouseEventPropagation, title: "Add a Property" }, "+"));
             }
         }
         this.methodTextInputHasFocus = false;
@@ -5419,7 +5505,7 @@ var UmlClass = function (_super) {
             return React.createElement(TextInput_1.TextInput, { key: method.id, id: method.id, idType: ID_TYPE_METHOD, focused: methodEditing, selected: methodSelected, text: method.methodSepcification, bold: false, onClicked: _this.onTextInputClicked, onTextChanged: _this.onTextChanged, onChangingTextCanceled: _this.onTextCanceled, onFocusRequired: _this.onTextInputRequiresFocus, errorMessage: errors.get(method.id) });
         }).toArray();
         if (this.state.showAddMethodsButton) {
-            methodTextInputs.push(React.createElement("button", { key: "AddMethod" + this.props.umlType.id, className: "uml-type-add-to-section-button", onClick: this.onAddMethodClicked, onMouseDown: this.stopMouseEventPropagation, onMouseUp: this.stopMouseEventPropagation }, "+"));
+            methodTextInputs.push(React.createElement("button", { key: "AddMethod" + this.props.umlType.id, className: "uml-type-add-to-section-button", onClick: this.onAddMethodClicked, onMouseDown: this.stopMouseEventPropagation, onMouseUp: this.stopMouseEventPropagation, title: "Add a Method" }, "+"));
         }
         var selectedElement = this.props.selectionMap.get(uml.id);
         var editingTypeName = false;
@@ -6453,7 +6539,7 @@ var ErrorMessage_1 = require("./businesslogic/ErrorMessage");
  * @param autoStartLoadingUmlDocument
  * @returns A Pair (array) with two functions that can be invoked from the web frontend to trigger intents. The fist function is the save function, the second one is the function to give errorResults back
  */
-function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument, imagesPath) {
+function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument, imagesPath, logging) {
     var saveTrigger = new Rx.Subject();
     var assessmentResultTrigger = new Rx.Subject();
     function saveTriggerFunc() {
@@ -6468,14 +6554,12 @@ function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument, i
             assessmentResultTrigger.next(errors);
         });
     }
-    console.log("startUmlEditor images " + imagesPath);
-    ReactDOM.render(getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResultTrigger, autoStartLoadingUmlDocument, imagesPath), document.getElementById("main-container"));
+    ReactDOM.render(getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResultTrigger, autoStartLoadingUmlDocument, imagesPath, logging), document.getElementById("main-container"));
     return [saveTriggerFunc, assesmentResultsFunc];
 }
 exports.startUmlEditor = startUmlEditor;
-function getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResults, autoStartLoadingUmlDocument, imagesPath) {
-    console.log("getEditor() images " + imagesPath);
-    return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, saveTrigger: saveTrigger, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument, imagesPath: imagesPath });
+function getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResults, autoStartLoadingUmlDocument, imagesPath, logging) {
+    return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, saveTrigger: saveTrigger, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument, imagesPath: imagesPath, logging: logging });
 }
 exports.getEditor = getEditor;
 /**

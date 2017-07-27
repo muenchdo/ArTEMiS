@@ -17,7 +17,7 @@
 
     ExerciseListController.$inject = ['$sce', '$window', 'AlertService', 'CourseExercises', 'Participation', 'ExerciseParticipation', '$http', '$location', 'Principal', '$rootScope'];
 
-    function ExerciseListController($sce, $window, AlertService, CourseExercises, Participation, ExerciseParticipation, $http,  $location, Principal, $rootScope) {
+    function ExerciseListController($sce, $window, AlertService, CourseExercises, Participation, ExerciseParticipation, $http, $location, Principal, $rootScope) {
         var vm = this;
 
         vm.clonePopover = {
@@ -37,11 +37,9 @@
         vm.showOverdueExercises = false;
 
 
-
-
         function init() {
 
-            if($location.search().welcome) {
+            if ($location.search().welcome) {
                 showWelcomeAlert();
             }
 
@@ -50,8 +48,10 @@
             });
 
 
-
-            CourseExercises.query({courseId: vm.course.id, withLtiOutcomeUrlExisting: true}).$promise.then(function (exercises) {
+            CourseExercises.query({
+                courseId: vm.course.id,
+                withLtiOutcomeUrlExisting: true
+            }).$promise.then(function (exercises) {
 
                 if (vm.filterByExerciseId) {
                     exercises = _.filter(exercises, {id: vm.filterByExerciseId})
@@ -63,12 +63,11 @@
                 }).length;
 
                 // hide not released exercises
-                if(!Principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_TA'])) {
+                if (!Principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_TA'])) {
                     exercises = _.filter(exercises, function (exercise) {
                         return vm.isReleased(exercise);
                     });
                 }
-
 
 
                 angular.forEach(exercises, function (exercise) {
@@ -78,7 +77,6 @@
                     });
                 });
                 vm.exercises = exercises;
-
 
 
             });
@@ -123,6 +121,7 @@
         function isNotOverdue(exercise) {
             return vm.showOverdueExercises || _.isEmpty(exercise.dueDate) || vm.now <= Date.parse(exercise.dueDate);
         }
+
         vm.isNotOverdue = isNotOverdue;
 
         function getRepositoryPassword() {
@@ -150,16 +149,19 @@
             }).then(function (returnedExercise) {
                 exercise['participation'] = returnedExercise.participation;
                 exercise['participation'].toJSON = exercise.toJSON;
+                var msg =  'Your personal repository has been set up. Click the <i>Clone repository</i> button to get started!';
+                if (exercise.exerciseType === 'UML_CLASS_DIAGRAM')
+                    msg =   'Exercise has been prepared for you. Press the <i>Open exercise</i> button to get started!';
                 AlertService.add({
                     type: 'success',
-                    msg: 'Your personal repository has been set up. Click the <i>Clone repository</i> button to get started!',
+                    msg: msg ,
                     timeout: 10000
                 });
             }).catch(function (e) {
                 console.log(e);
                 AlertService.add({
                     type: 'danger',
-                    msg: '<strong>Uh oh! Something went wrong... Please try again in a few seconds.</strong> If this problem persists, please <a href="mailto:' + $rootScope.CONTACT_EMAIL + '?subject=Exercise%20Application%20Error%20Report&body=' + e.data.description+ '">send us an error report</a>.',
+                    msg: '<strong>Uh oh! Something went wrong... Please try again in a few seconds.</strong> If this problem persists, please <a href="mailto:' + $rootScope.CONTACT_EMAIL + '?subject=Exercise%20Application%20Error%20Report&body=' + e.data.description + '">send us an error report</a>.',
                     timeout: 30000
                 });
             }).finally(function () {
@@ -170,6 +172,7 @@
         function toggleShowOverdueExercises() {
             vm.showOverdueExercises = true;
         }
+
         vm.toggleShowOverdueExercises = toggleShowOverdueExercises;
 
     }

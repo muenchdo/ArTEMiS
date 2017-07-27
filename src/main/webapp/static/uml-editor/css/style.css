@@ -22,7 +22,7 @@ body, html{
     display: flex;
     flex-direction: column;
     -ms-flex-direction: column;
-    width: 86px;
+    width: 96px;
     height: 100%;
     background: #f8f8f8;
     padding-left: 8px;
@@ -32,7 +32,7 @@ body, html{
 
 .menu-button {
     margin-top: 8px;
-    width: 70px;
+    width: 80px;
     height: 60px;
     font-size: 10px;
 }
@@ -43,7 +43,7 @@ body, html{
 }
 
 .menu-button-text {
-    font-size: 8px;
+    font-size: 10px;
 }
 
 #uml-canvas {
