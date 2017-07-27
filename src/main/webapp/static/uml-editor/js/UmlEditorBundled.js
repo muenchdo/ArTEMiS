@@ -125,7 +125,6 @@ var MenuItemType;
     MenuItemType[MenuItemType["ASSOCIATION"] = 4] = "ASSOCIATION";
     MenuItemType[MenuItemType["COMPOSITION"] = 5] = "COMPOSITION";
     MenuItemType[MenuItemType["AGGREGATION"] = 6] = "AGGREGATION";
-    MenuItemType[MenuItemType["SAVE_AND_RUN"] = 7] = "SAVE_AND_RUN";
 })(MenuItemType = exports.MenuItemType || (exports.MenuItemType = {}));
 /**
  * Get the initial list of menut items in unselected state
@@ -134,35 +133,45 @@ function unselectedItems() {
     return immutable_1.List([{
         type: MenuItemType.CLASS,
         name: "Class",
-        selected: false
+        selected: false,
+        icon: "menu/class.png",
+        iconSelected: "menu/class_selected.png"
     }, {
         type: MenuItemType.INTERFACE,
         name: "Interface",
-        selected: false
+        selected: false,
+        icon: "menu/interface.png",
+        iconSelected: "menu/interface_selected.png"
     }, {
         type: MenuItemType.INHERITANCE,
         name: "Inheritance",
-        selected: false
+        selected: false,
+        icon: "menu/inheritance.png",
+        iconSelected: "menu/inheritance_selected.png"
     }, {
         type: MenuItemType.IMPLEMENT_INTERFACE,
-        name: "Implement Interface",
-        selected: false
+        name: "Implements",
+        selected: false,
+        icon: "menu/implements_interface.png",
+        iconSelected: "menu/implements_interface_selected.png"
     }, {
         type: MenuItemType.ASSOCIATION,
         name: "Association",
-        selected: false
+        selected: false,
+        icon: "menu/association.png",
+        iconSelected: "menu/association_selected.png"
     }, {
         type: MenuItemType.COMPOSITION,
         name: "Composition",
-        selected: false
+        selected: false,
+        icon: "menu/composition.png",
+        iconSelected: "menu/composition_selected.png"
     }, {
         type: MenuItemType.AGGREGATION,
         name: "Aggregation",
-        selected: false
-    }, {
-        type: MenuItemType.SAVE_AND_RUN,
-        name: "Save",
-        selected: false
+        selected: false,
+        icon: "menu/aggregation.png",
+        iconSelected: "menu/aggregation_selected.png"
     }]);
 }
 exports.unselectedItems = unselectedItems;
@@ -180,7 +189,9 @@ function selectMenuItem(menuItemType) {
     return items.set(index, {
         type: menuItem.type,
         name: menuItem.name,
-        selected: true
+        selected: true,
+        icon: menuItem.icon,
+        iconSelected: menuItem.iconSelected
     });
 }
 exports.selectMenuItem = selectMenuItem;
@@ -4960,7 +4971,7 @@ var Editor = function (_super) {
     Editor.prototype.render = function () {
         var _this = this;
         var menuItems = this.state.menuItems.map(function (item) {
-            return React.createElement(MenuButton_1.MenuButton, { key: item.type, menuItem: item, menuItemClicked: _this.onMenuItemClicked });
+            return React.createElement(MenuButton_1.MenuButton, { key: item.type, menuItem: item, menuItemClicked: _this.onMenuItemClicked, iconDirectoryPath: _this.props.menuIconPath });
         });
         var allowAddingPropertiesAndMethods = this.movingElement === false && InteractionTransaction_2.isNoInteractionRunning(this.state.currentInteractionTransaction);
         var umlClasses = this.state.umlDocument.types.map(function (umlClass) {
@@ -5092,10 +5103,6 @@ var Editor = function (_super) {
             case MenuItem_1.MenuItemType.IMPLEMENT_INTERFACE:
                 this.intentEmitter.emit(new InteractionTransactionIntent_2.StartSelectingElementsIntent(menuType));
                 break;
-            case MenuItem_1.MenuItemType.SAVE_AND_RUN:
-                this.intentEmitter.emit(new LoadSaveIntents_1.SaveUmlDocumentIntent());
-                break;
-            // TODO implement others
             default:
                 throw Error("Don't know what to do on click on MenuItem of type " + menuType);
         }
@@ -5162,8 +5169,10 @@ var MenuButton = function (_super) {
         return _this;
     }
     MenuButton.prototype.render = function () {
-        var cssClasses = "btn btn-default menu-button" + (this.props.menuItem.selected ? " btn-primary" : "");
-        return React.createElement("button", { className: cssClasses, onClick: this.handleClick }, this.props.menuItem.name);
+        var menuItem = this.props.menuItem;
+        var cssClasses = "btn btn-default menu-button" + (menuItem.selected ? " btn-primary" : "");
+        var iconUrl = this.props.iconDirectoryPath + (menuItem.selected ? menuItem.iconSelected : menuItem.icon);
+        return React.createElement("button", { className: cssClasses, onClick: this.handleClick, tabIndex: -1 }, React.createElement("img", { src: iconUrl, className: "menu-button-icon" }), React.createElement("br", null), React.createElement("span", { className: "menu-button-text" }, this.props.menuItem.name));
     };
     MenuButton.prototype.handleClick = function () {
         var menuType = this.props.menuItem.type;
@@ -6442,7 +6451,7 @@ var ErrorMessage_1 = require("./businesslogic/ErrorMessage");
  * @param autoStartLoadingUmlDocument
  * @returns A Pair (array) with two functions that can be invoked from the web frontend to trigger intents. The fist function is the save function, the second one is the function to give errorResults back
  */
-function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument) {
+function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument, menuIconPath) {
     var saveTrigger = new Rx.Subject();
     var assessmentResultTrigger = new Rx.Subject();
     function saveTriggerFunc() {
@@ -6457,12 +6466,12 @@ function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument) {
             assessmentResultTrigger.next(errors);
         });
     }
-    ReactDOM.render(getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResultTrigger, autoStartLoadingUmlDocument), document.getElementById("main-container"));
+    ReactDOM.render(getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResultTrigger, autoStartLoadingUmlDocument, menuIconPath), document.getElementById("main-container"));
     return [saveTriggerFunc, assesmentResultsFunc];
 }
 exports.startUmlEditor = startUmlEditor;
-function getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResults, autoStartLoadingUmlDocument) {
-    return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, saveTrigger: saveTrigger, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument });
+function getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResults, autoStartLoadingUmlDocument, menuIconPath) {
+    return React.createElement(Editor_1.Editor, { loadUmlDocument: loadUml, saveUmlDocument: saveUmlDocument, saveTrigger: saveTrigger, assessmentResults: assessmentResults, triggerLoadingUmlDocumentAtStart: autoStartLoadingUmlDocument, menuIconPath: menuIconPath });
 }
 exports.getEditor = getEditor;
 /**

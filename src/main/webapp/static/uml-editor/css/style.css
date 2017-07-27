@@ -22,15 +22,28 @@ body, html{
     display: flex;
     flex-direction: column;
     -ms-flex-direction: column;
-    width: 150px;
+    width: 86px;
     height: 100%;
-    background: #e6e6e6;
+    background: #f8f8f8;
     padding-left: 8px;
     padding-right: 8px;
+    border-right: 1px solid #e7e7e7;
 }
 
 .menu-button {
     margin-top: 8px;
+    width: 70px;
+    height: 60px;
+    font-size: 10px;
+}
+
+.menu-button-icon{
+    width: 30px;
+    height: 30px;
+}
+
+.menu-button-text {
+    font-size: 8px;
 }
 
 #uml-canvas {
@@ -45,11 +58,6 @@ body, html{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-
-.test-rect {
-    background-color: red;
 }
 
 .toast-big {
