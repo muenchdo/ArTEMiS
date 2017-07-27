@@ -92,7 +92,10 @@
                 <i class="fa fa-file-code-o"></i>&nbsp;Build plan
             </button>
 
-            <a ui-sref="editor({participationId:result.participation.id})" class="btn btn-default btn-xs" ng-show="result.participation.exercise.allowOnlineEditor">
+            <a ui-sref="editor({participationId:result.participation.id})" class="btn btn-default btn-xs" ng-show="result.participation.exercise.allowOnlineEditor && result.participation.exercise.exerciseType !== 'UML_CLASS_DIAGRAM'">
+                <i class="fa fa-folder-open fa-fw"></i>&nbsp;Online editor
+            </a>
+            <a ui-sref="umleditor({participationId:result.participation.id})" class="btn btn-default btn-xs" ng-show="result.participation.exercise.exerciseType === 'UML_CLASS_DIAGRAM'">
                 <i class="fa fa-folder-open fa-fw"></i>&nbsp;Online editor
             </a>
 
