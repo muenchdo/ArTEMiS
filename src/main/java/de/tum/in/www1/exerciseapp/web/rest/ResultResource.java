@@ -45,7 +45,7 @@ public class ResultResource {
     private ParticipationService participationService;
 
     @Inject
-    private ContinuousIntegrationService continuousIntegrationService;
+    private Optional<ContinuousIntegrationService> continuousIntegrationService;
 
     @Inject
     private ResultService resultService;
@@ -268,7 +268,7 @@ public class ResultResource {
         GrantedAuthority adminAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN);
         GrantedAuthority taAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.TEACHING_ASSISTANT);
         if (result.getParticipation().getStudent().getLogin().equals(user.getName()) || (user.getAuthorities().contains(adminAuthority) || user.getAuthorities().contains(taAuthority))) {
-            Map<String, Object> details = continuousIntegrationService.getLatestBuildResultDetails(result.getParticipation());
+            Map<String, Object> details = continuousIntegrationService.get().getLatestBuildResultDetails(result.getParticipation());
             return Optional.ofNullable(details.get("details"))
                 .map(resultDetails -> new ResponseEntity<>(
                     details.get("details"),

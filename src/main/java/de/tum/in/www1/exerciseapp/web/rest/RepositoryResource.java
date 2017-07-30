@@ -49,7 +49,7 @@ public class RepositoryResource {
     private ParticipationService participationService;
 
     @Inject
-    private ContinuousIntegrationService continuousIntegrationService;
+    private Optional<ContinuousIntegrationService> continuousIntegrationService;
 
     private GrantedAuthority adminAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN);
     private GrantedAuthority taAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.TEACHING_ASSISTANT);
@@ -372,7 +372,7 @@ public class RepositoryResource {
         }
 
 
-        List<BuildLogEntry> logs = continuousIntegrationService.getLatestBuildLogs(participation);
+        List<BuildLogEntry> logs = continuousIntegrationService.get().getLatestBuildLogs(participation);
 
         return new ResponseEntity<>(logs, HttpStatus.OK);
 

@@ -41,10 +41,10 @@ public class ParticipationService {
     private GitService gitService;
 
     @Inject
-    private ContinuousIntegrationService continuousIntegrationService;
+    private Optional<ContinuousIntegrationService> continuousIntegrationService;
 
     @Inject
-    private VersionControlService versionControlService;
+    private Optional<VersionControlService> versionControlService;
 
     /**
      * Save a participation.
@@ -89,7 +89,7 @@ public class ParticipationService {
 
     private Participation copyRepository(Participation participation) {
         if (!participation.getInitializationState().hasCompletedState(ParticipationState.REPO_COPIED)) {
-            URL repositoryUrl = versionControlService.copyRepository(
+            URL repositoryUrl = versionControlService.get().copyRepository(
                 participation.getExercise().getBaseRepositoryUrlAsUrl(),
                 participation.getStudent().getLogin());
             if (Optional.ofNullable(repositoryUrl).isPresent()) {
@@ -104,7 +104,7 @@ public class ParticipationService {
 
     private Participation configureRepository(Participation participation) {
         if (!participation.getInitializationState().hasCompletedState(ParticipationState.REPO_CONFIGURED)) {
-            versionControlService.configureRepository(participation.getRepositoryUrlAsUrl(), participation.getStudent().getLogin());
+            versionControlService.get().configureRepository(participation.getRepositoryUrlAsUrl(), participation.getStudent().getLogin());
             participation.setInitializationState(ParticipationState.REPO_CONFIGURED);
             return save(participation);
         } else {
@@ -114,7 +114,7 @@ public class ParticipationService {
 
     private Participation copyBuildPlan(Participation participation) {
         if (!participation.getInitializationState().hasCompletedState(ParticipationState.BUILD_PLAN_COPIED)) {
-            String buildPlanId = continuousIntegrationService.copyBuildPlan(
+            String buildPlanId = continuousIntegrationService.get().copyBuildPlan(
                 participation.getExercise().getBaseBuildPlanId(),
                 participation.getStudent().getLogin());
             participation.setBuildPlanId(buildPlanId);
@@ -127,7 +127,7 @@ public class ParticipationService {
 
     private Participation configureBuildPlan(Participation participation) {
         if (!participation.getInitializationState().hasCompletedState(ParticipationState.BUILD_PLAN_CONFIGURED)) {
-            continuousIntegrationService.configureBuildPlan(
+            continuousIntegrationService.get().configureBuildPlan(
                 participation.getBuildPlanId(),
                 participation.getRepositoryUrlAsUrl(),
                 participation.getStudent().getLogin());
@@ -195,10 +195,10 @@ public class ParticipationService {
         Participation participation = participationRepository.findOne(id);
         if (Optional.ofNullable(participation).isPresent()) {
             if (deleteBuildPlan && participation.getBuildPlanId() != null) {
-                continuousIntegrationService.deleteBuildPlan(participation.getBuildPlanId());
+                continuousIntegrationService.get().deleteBuildPlan(participation.getBuildPlanId());
             }
             if (deleteRepository && participation.getRepositoryUrl() != null) {
-                versionControlService.deleteRepository(participation.getRepositoryUrlAsUrl());
+                versionControlService.get().deleteRepository(participation.getRepositoryUrlAsUrl());
             }
 
             // delete local repository cache

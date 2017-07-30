@@ -83,7 +83,7 @@ public class LtiService {
     private PasswordEncoder passwordEncoder;
 
     @Inject
-    private JiraAuthenticationProvider jiraAuthenticationProvider;
+    private Optional<JiraAuthenticationProvider> jiraAuthenticationProvider;
 
     @Inject
     private LtiUserIdRepository ltiUserIdRepository;
@@ -245,12 +245,12 @@ public class LtiService {
              */
 
             // check if an JIRA user with this email address exists
-            Optional<String> jiraLookupByEmail = jiraAuthenticationProvider.getUsernameForEmail(email);
+            Optional<String> jiraLookupByEmail = jiraAuthenticationProvider.get().getUsernameForEmail(email);
 
 
             if (jiraLookupByEmail.isPresent()) {
                 log.debug("Signing in as {}", jiraLookupByEmail.get());
-                User user = jiraAuthenticationProvider.getOrCreateUser(new UsernamePasswordAuthenticationToken(jiraLookupByEmail.get(), ""), true);
+                User user = jiraAuthenticationProvider.get().getOrCreateUser(new UsernamePasswordAuthenticationToken(jiraLookupByEmail.get(), ""), true);
 
                 return Optional.of(new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword(), Arrays.asList(new SimpleGrantedAuthority(AuthoritiesConstants.USER))));
             }
@@ -315,7 +315,7 @@ public class LtiService {
 
             // try to sync with JIRA
             try {
-                jiraAuthenticationProvider.addUserToGroup(user.getLogin(), courseGroup);
+                jiraAuthenticationProvider.get().addUserToGroup(user.getLogin(), courseGroup);
             } catch (JiraException e) {
             /*
                 This might throw exceptions, for example if the group does not exist on JIRA.

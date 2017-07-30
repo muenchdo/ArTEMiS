@@ -45,10 +45,10 @@ public class ExerciseResource {
     private ExerciseService exerciseService;
 
     @Inject
-    private ContinuousIntegrationService continuousIntegrationService;
+    private Optional<ContinuousIntegrationService> continuousIntegrationService;
 
     @Inject
-    private VersionControlService versionControlService;
+    private Optional<VersionControlService> versionControlService;
 
     /**
      * POST  /exercises : Create a new exercise.
@@ -67,10 +67,10 @@ public class ExerciseResource {
         if (exercise.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("exercise", "idexists", "A new exercise cannot already have an ID")).body(null);
         }
-        if(!continuousIntegrationService.buildPlanIdIsValid(exercise.getBaseBuildPlanId())) {
+        if(!continuousIntegrationService.get().buildPlanIdIsValid(exercise.getBaseBuildPlanId())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("exercise", "invalid.build.plan.id", "The Base Build Plan ID seems to be invalid.")).body(null);
         }
-        if(!versionControlService.repositoryUrlIsValid(exercise.getBaseRepositoryUrlAsUrl())) {
+        if(!versionControlService.get().repositoryUrlIsValid(exercise.getBaseRepositoryUrlAsUrl())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("exercise", "invalid.repository.url", "The Repository URL seems to be invalid.")).body(null);
         }
         Exercise result = exerciseRepository.save(exercise);
@@ -98,10 +98,10 @@ public class ExerciseResource {
         if (exercise.getId() == null) {
             return createExercise(exercise);
         }
-        if(!continuousIntegrationService.buildPlanIdIsValid(exercise.getBaseBuildPlanId())) {
+        if(!continuousIntegrationService.get().buildPlanIdIsValid(exercise.getBaseBuildPlanId())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("exercise", "invalid.build.plan.id", "The Base Build Plan ID seems to be invalid.")).body(null);
         }
-        if(!versionControlService.repositoryUrlIsValid(exercise.getBaseRepositoryUrlAsUrl())) {
+        if(!versionControlService.get().repositoryUrlIsValid(exercise.getBaseRepositoryUrlAsUrl())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("exercise", "invalid.repository.url", "The Repository URL seems to be invalid.")).body(null);
         }
         Exercise result = exerciseRepository.save(exercise);
@@ -210,6 +210,4 @@ public class ExerciseResource {
         exerciseService.reset(exercise);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("exercise", id.toString())).build();
     }
-
-
 }

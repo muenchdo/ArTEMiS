@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 /**
  * Created by Josias Montag on 06.10.16.
@@ -14,7 +15,7 @@ import javax.inject.Inject;
 public class ResultService {
 
     @Inject
-    private ContinuousIntegrationService continuousIntegrationService;
+    private Optional<ContinuousIntegrationService> continuousIntegrationService;
 
     @Inject
     private LtiService ltiService;
@@ -31,7 +32,7 @@ public class ResultService {
     @Async
     public void onResultNotified(Participation participation) {
         // fetches the new build result
-        continuousIntegrationService.onBuildCompleted(participation);
+        continuousIntegrationService.get().onBuildCompleted(participation);
         // notify user via websocket
         messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/newResults", true);
         // handles new results and sends them to LTI consumers

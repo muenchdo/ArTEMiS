@@ -50,10 +50,10 @@ public class ParticipationResource {
     private ExerciseService exerciseService;
 
     @Inject
-    private ContinuousIntegrationService continuousIntegrationService;
+    private Optional<ContinuousIntegrationService> continuousIntegrationService;
 
     @Inject
-    private VersionControlService versionControlService;
+    private Optional<VersionControlService> versionControlService;
 
 
     private GrantedAuthority adminAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN);
@@ -220,7 +220,7 @@ public class ParticipationResource {
             //return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        URL url = versionControlService.getRepositoryWebUrl(participation);
+        URL url = versionControlService.get().getRepositoryWebUrl(participation);
         return Optional.ofNullable(url)
             .map(result -> new ResponseEntity<>(
                 url.toString(),
@@ -241,7 +241,7 @@ public class ParticipationResource {
             //return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        URL url = continuousIntegrationService.getBuildPlanWebUrl(participation);
+        URL url = continuousIntegrationService.get().getBuildPlanWebUrl(participation);
         return Optional.ofNullable(url)
             .map(result -> new ResponseEntity<>(
                 url.toString(),
@@ -259,7 +259,7 @@ public class ParticipationResource {
         log.debug("REST request to get Participation build artifact: {}", id);
         Participation participation = participationService.findOne(id);
 
-        return continuousIntegrationService.retrieveLatestArtifact(participation);
+        return continuousIntegrationService.get().retrieveLatestArtifact(participation);
 
     }
 
@@ -289,9 +289,7 @@ public class ParticipationResource {
     /**
      * GET  /courses/:courseId/exercises/:exerciseId/participation/status: get build status of the user's participation for the "id" exercise.
      *
-     * @param courseId   only included for API consistency, not actually used
-     * @param exerciseId the id of the exercise for which to retrieve the participation status
-     * @return the ResponseEntity with status 200 (OK) and with body the participation, or with status 404 (Not Found)
+     * @return the ResponseEntity with status 200 (OK) and with body the build status, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/participations/{id}/status",
         method = RequestMethod.GET,
@@ -300,7 +298,7 @@ public class ParticipationResource {
     @Timed
     public ResponseEntity<?> getParticipationStatus(@PathVariable Long id) {
         Participation participation = participationService.findOne(id);
-        ContinuousIntegrationService.BuildStatus buildStatus = continuousIntegrationService.getBuildStatus(participation);
+        ContinuousIntegrationService.BuildStatus buildStatus = continuousIntegrationService.get().getBuildStatus(participation);
         return Optional.ofNullable(buildStatus)
             .map(status -> new ResponseEntity<>(
                 status,
