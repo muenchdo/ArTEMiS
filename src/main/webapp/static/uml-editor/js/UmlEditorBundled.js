@@ -5446,6 +5446,7 @@ var InteractionTransaction_2 = require("../../businesslogic/interaction/Interact
 var KEY_BACKSPACE = 8;
 var KEY_DELETE = 46;
 var KEY_ESC = 27;
+exports.SELECTED_COLOR = "#2979FF";
 exports.CANVAS_WIDTH_PX = 3000;
 exports.CANVAS_HEIGHT_PX = 3000;
 var Editor = function (_super) {
@@ -5468,6 +5469,7 @@ var Editor = function (_super) {
         _this.onUmlTypeRightClicked = _this.onUmlTypeRightClicked.bind(_this);
         _this.onMenuItemClicked = _this.onMenuItemClicked.bind(_this);
         _this.handleKeyDown = _this.handleKeyDown.bind(_this);
+        _this.preventDefaultRightClick = _this.preventDefaultRightClick.bind(_this);
         _this.getBigInfoNotification = _this.getBigInfoNotification.bind(_this);
         _this.isConnectionSelected = _this.isConnectionSelected.bind(_this);
         _this.onMouseDownInUmlCanvas = _this.onMouseDownInUmlCanvas.bind(_this);
@@ -5726,6 +5728,7 @@ var Editor = function (_super) {
             // i.e. reload the page
         });
         document.body.addEventListener("keydown", this.handleKeyDown);
+        document.addEventListener("contextmenu", this.preventDefaultRightClick, false);
         // Load the file
         if (this.props.triggerLoadingUmlDocumentAtStart === true) {
             this.intentEmitter.emit(new LoadSaveIntents_1.LoadUmlDocumentIntent());
@@ -5753,6 +5756,7 @@ var Editor = function (_super) {
     };
     Editor.prototype.componentWillUnmount = function () {
         document.body.removeEventListener("keydown", this.handleKeyDown);
+        document.removeEventListener("contextmenu", this.preventDefaultRightClick);
         if (this.subscription != null) {
             this.subscription.unsubscribe();
         }
@@ -5842,6 +5846,10 @@ var Editor = function (_super) {
     Editor.prototype.isConnectionSelected = function (id) {
         if (this.state.selectedElements.get(id) === undefined) return false;else return true;
     };
+    Editor.prototype.preventDefaultRightClick = function (e) {
+        e.preventDefault();
+    };
+    ;
     return Editor;
 }(React.Component);
 exports.Editor = Editor;
@@ -5956,6 +5964,7 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var Editor_1 = require("../editor/Editor");
 var KEY_CODE_ENTER = 13;
 var KEY_CODE_ESC = 27;
 var TextInput = function (_super) {
@@ -6013,7 +6022,7 @@ var TextInput = function (_super) {
         } else {
             styleProps.userSelect = "none";
             if (this.props.selected === true) {
-                styleProps.color = "blue";
+                styleProps.color = Editor_1.SELECTED_COLOR;
             }
             return React.createElement("div", { onDoubleClick: this.onDoubleClick, onClick: this.onClicked, title: this.props.errorMessage }, React.createElement("input", { type: "text",
                 // ref={(input) => { this.inputElement = input; }}
@@ -6055,7 +6064,7 @@ var TextInput = function (_super) {
 exports.TextInput = TextInput;
 
 
-},{"react":572}],34:[function(require,module,exports){
+},{"../editor/Editor":30,"react":572}],34:[function(require,module,exports){
 "use strict";
 
 var __extends = undefined && undefined.__extends || function () {
@@ -6432,7 +6441,7 @@ var UmlConnectionCanvas = function (_super) {
             if (selected === true) {
                 editingStartMultiplicity = selectedElement.editingStartMultiplicity;
                 editingEndMultiplicity = selectedElement.editingEndMultiplicity;
-                lineColor = "blue";
+                lineColor = Editor_1.SELECTED_COLOR;
             }
             var isCompositionOrAggregation = rel.relationType === EditorUmlRelation_1.UmlRelationType.COMPOSITION || rel.relationType === EditorUmlRelation_1.UmlRelationType.AGGREGATION;
             var positions = calculatePosition(_this.getElement(rel.startTypeId), _this.getElement(rel.endTypeId), rel.startTypeAnchorPoint, rel.endTypeAnchorPoint, rel.points.toArray());
@@ -6450,7 +6459,7 @@ var UmlConnectionCanvas = function (_super) {
             var positions = calculatePosition(_this.getElement(inh.subTypeId), _this.getElement(inh.superTypeId), inh.subTypeAnchorPoint, inh.superTypeAnchorPoint, inh.points.toArray());
             var selectedElement = _this.props.selectedElementsMap.get(inh.id);
             var selected = selectedElement == null ? false : true;
-            var lineColor = selected === true ? "blue" : " black";
+            var lineColor = selected === true ? Editor_1.SELECTED_COLOR : " black";
             shapes.push(_this.renderInheritanceOrInterfaceImplementation(inh, UmlConnectionType.INHERITANCE, positions, lineColor, selected));
         });
         //
@@ -6460,7 +6469,7 @@ var UmlConnectionCanvas = function (_super) {
             var positions = calculatePosition(_this.getElement(impl.classId), _this.getElement(impl.interfaceId), impl.classAnchorPoint, impl.interfaceAnchorPoint, impl.points.toArray());
             var selectedElement = _this.props.selectedElementsMap.get(impl.id);
             var selected = selectedElement == null ? false : true;
-            var lineColor = selected === true ? "blue" : " black";
+            var lineColor = selected === true ? Editor_1.SELECTED_COLOR : " black";
             shapes.push(_this.renderInheritanceOrInterfaceImplementation(impl, UmlConnectionType.INTERFACE_IMPLEMENTATION, positions, lineColor, selected));
         });
         return React.createElement("div", { className: cssClass, onClick: this.onClickedOnContainer, onDoubleClick: this.onDoubleClickedOnContainer, onMouseMove: this.onMouseMoveInCanvas, onMouseDown: this.onMouseDownInCanvas, onMouseUp: this.onMouseUpInCanvas }, React.createElement(react_konva_1.Stage, { key: "uml-canvas-stage", width: Editor_1.CANVAS_WIDTH_PX, height: Editor_1.CANVAS_HEIGHT_PX }, React.createElement(react_konva_1.Layer, { key: "uml-canvas-layer" }, shapes)), multiplicityElements);

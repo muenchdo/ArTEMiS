@@ -107,8 +107,9 @@ body, html{
     -moz-user-select: none;    
     -ms-user-select: none;      
     user-select: none;
+    cursor: default;
 }
 
 .context-menu-item:hover {
-    background: #337ab7;
+    background: #2979FF;
 }
