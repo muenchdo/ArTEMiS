@@ -2,6 +2,7 @@ package de.tum.in.www1.exerciseapp.service;
 
 import com.google.common.io.Files;
 import de.tum.in.www1.exerciseapp.ExerciseApplicationApp;
+import de.tum.in.www1.exerciseapp.domain.File;
 import de.tum.in.www1.exerciseapp.domain.Participation;
 import de.tum.in.www1.exerciseapp.domain.Repository;
 import org.apache.commons.io.FileUtils;
@@ -17,16 +18,15 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -38,9 +38,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ActiveProfiles(profiles = "dev,jira,bamboo,bitbucket")
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ExerciseApplicationApp.class)
+@ContextConfiguration(classes = ExerciseApplicationApp.class)
 @WebAppConfiguration
-@IntegrationTest
+@SpringBootTest
 @Transactional
 public class GitServiceIntTest {
 
@@ -187,7 +187,7 @@ public class GitServiceIntTest {
         Ref oldHead = repo.findRef("HEAD");
 
         // commit
-        File tempDir = Files.createTempDir();
+        java.io.File tempDir = Files.createTempDir();
         Git git = Git.cloneRepository()
             .setURI(remoteTestRepo)
             .setCredentialsProvider(new UsernamePasswordCredentialsProvider(GIT_USER, GIT_PASSWORD))

@@ -3,6 +3,7 @@ package de.tum.in.www1.exerciseapp.config.apidoc;
 import de.tum.in.www1.exerciseapp.config.Constants;
 import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 
+import java.util.ArrayList;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -59,7 +61,8 @@ public class SwaggerConfiguration {
             jHipsterProperties.getSwagger().getTermsOfServiceUrl(),
             contact,
             jHipsterProperties.getSwagger().getLicense(),
-            jHipsterProperties.getSwagger().getLicenseUrl());
+            jHipsterProperties.getSwagger().getLicenseUrl(),
+            new ArrayList<VendorExtension>());
 
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
             .apiInfo(apiInfo)

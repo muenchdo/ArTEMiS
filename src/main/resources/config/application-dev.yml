@@ -23,12 +23,18 @@ spring:
         username: root
         password:
         hikari:
+            maximumPoolSize: 130
             data-source-properties:
                 cachePrepStmts: true
                 prepStmtCacheSize: 250
                 prepStmtCacheSqlLimit: 2048
                 useServerPrepStmts: true
     jpa:
+        hibernate:
+            connection:
+            charSet: utf8mb4
+            characterEncoding: utf8mb4
+            useUnicode: true
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: MYSQL
         show_sql: true

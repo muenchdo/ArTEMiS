@@ -10,9 +10,9 @@ import de.tum.in.www1.exerciseapp.service.util.RandomUtil;
 import java.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -30,9 +30,9 @@ import static org.assertj.core.api.Assertions.*;
  */
 @ActiveProfiles(profiles = "dev,jira,bamboo,bitbucket")
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ExerciseApplicationApp.class)
+@ContextConfiguration(classes = ExerciseApplicationApp.class)
 @WebAppConfiguration
-@IntegrationTest
+@SpringBootTest
 @Transactional
 public class UserServiceIntTest {
 

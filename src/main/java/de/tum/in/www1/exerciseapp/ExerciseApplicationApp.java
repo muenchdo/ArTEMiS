@@ -3,11 +3,11 @@ package de.tum.in.www1.exerciseapp;
 import de.tum.in.www1.exerciseapp.config.Constants;
 import de.tum.in.www1.exerciseapp.config.DefaultProfileUtil;
 import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.*;
+import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.hazelcast.HazelcastAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
@@ -48,7 +48,7 @@ public class ExerciseApplicationApp {
                 "with both the 'dev' and 'prod' profiles at the same time.");
         }
         if (activeProfiles.contains(Constants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(Constants.SPRING_PROFILE_CLOUD)) {
-            log.error("You have misconfigured your application! It should not" +
+            log.error("You have mmisconfigured your application! It should not" +
                 "run with both the 'dev' and 'cloud' profiles at the same time.");
         }
     }
@@ -71,7 +71,6 @@ public class ExerciseApplicationApp {
             env.getProperty("server.port"),
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"));
-
     }
 
 }

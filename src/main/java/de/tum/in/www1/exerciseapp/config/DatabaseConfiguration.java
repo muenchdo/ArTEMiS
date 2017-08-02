@@ -3,7 +3,7 @@ package de.tum.in.www1.exerciseapp.config;
 import de.tum.in.www1.exerciseapp.config.liquibase.AsyncSpringLiquibase;
 
 import com.codahale.metrics.MetricRegistry;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.zaxxer.hikari.HikariDataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
@@ -89,7 +89,7 @@ public class DatabaseConfiguration {
     }
 
     @Bean
-    public Hibernate4Module hibernate4Module() {
-        return new Hibernate4Module();
+    public Hibernate5Module hibernate5Module() {
+        return new Hibernate5Module();
     }
 }
