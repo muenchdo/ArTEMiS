@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ArTEMiS" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+      <pattern>
+        <option name="PATTERN" value="de.tum.in.www1.exerciseapp.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="de.tum.in.www1.exerciseapp.ExerciseApplicationApp" />
+    <option name="PROGRAM_PARAMETERS" value="--spring.profiles.active=dev,bamboo,bitbucket,jira " />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <module name="exercise-application_main" />
+    <envs />
+    <method />
+  </configuration>
+</component>
