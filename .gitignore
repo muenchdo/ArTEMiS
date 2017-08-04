@@ -60,8 +60,6 @@ local.properties
 ######################
 # Intellij
 ######################
-.idea/**
-*.iml
 *.iws
 *.ipr
 *.ids
@@ -145,4 +143,4 @@ Desktop.ini
 .eslintcache
 
 vpproject
-out
+/out
