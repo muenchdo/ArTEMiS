@@ -6,10 +6,11 @@
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <option name="SPRING_BOOT_MAIN_CLASS" value="de.tum.in.www1.exerciseapp.ExerciseApplicationApp" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="de.tum.in.www1.exerciseapp.ArTEMiSApp" />
+    <option name="SHOW_IN_DASHBOARD" value="true" />
     <option name="PROGRAM_PARAMETERS" value="--spring.profiles.active=dev,bamboo,bitbucket,jira " />
     <option name="ALTERNATIVE_JRE_PATH" />
-    <module name="exercise-application_main" />
+    <module name="ArTEMiS_main" />
     <envs />
     <method />
   </configuration>

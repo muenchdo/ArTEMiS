@@ -8,7 +8,7 @@ module.exports = function() {
     // Send error to notification center with gulp-notify
     if(notification) {
         notify.onError({
-            title:    "JHipster Gulp Build",
+            title:    "Artemis Gulp Build",
             subtitle: "Failure!",
             message:  "Error: <%= error.message %>",
             sound:    "Beep"

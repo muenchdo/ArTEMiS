@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('exerciseApplicationApp')
+        .module('artemisApp')
         .controller('UserManagementController', UserManagementController);
 
     UserManagementController.$inject = ['Principal', 'User', 'ParseLinks', '$state', 'pagingParams', 'paginationConstants', 'JhiLanguageService'];
@@ -27,7 +27,7 @@
         vm.transition = transition;
 
         vm.loadAll();
-        
+
         JhiLanguageService.getAll().then(function (languages) {
             vm.languages = languages;
         });

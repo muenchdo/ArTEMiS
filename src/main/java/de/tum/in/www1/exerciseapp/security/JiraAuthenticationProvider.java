@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 @ComponentScan("de.tum.in.www1.exerciseapp.*")
 public class JiraAuthenticationProvider implements AuthenticationProvider {
 
-    private final Logger log = LoggerFactory.getLogger(GitService.class);
+    private final Logger log = LoggerFactory.getLogger(JiraAuthenticationProvider.class);
 
     @Value("${exerciseapp.jira.instructor-group-name}")
     private String INSTRUCTOR_GROUP_NAME;
@@ -66,6 +66,8 @@ public class JiraAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
+        log.debug("JiraAuthenticationProvider.authenticate invoked");
+
         User user = getOrCreateUser(authentication, false);
         List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
             .map(authority -> new SimpleGrantedAuthority(authority.getName()))
@@ -73,7 +75,6 @@ public class JiraAuthenticationProvider implements AuthenticationProvider {
         UsernamePasswordAuthenticationToken token;
         token = new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword(), grantedAuthorities);
         return token;
-
     }
 
     /**
@@ -90,11 +91,7 @@ public class JiraAuthenticationProvider implements AuthenticationProvider {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Map> authenticationResponse = null;
         try {
-            authenticationResponse = restTemplate.exchange(
-                JIRA_URL + "/rest/api/2/user?username=" + username + "&expand=groups",
-                HttpMethod.GET,
-                entity,
-                Map.class);
+            authenticationResponse = restTemplate.exchange(JIRA_URL + "/rest/api/2/user?username=" + username + "&expand=groups", HttpMethod.GET, entity, Map.class);
         } catch (HttpStatusCodeException e) {
             if (e.getStatusCode().value() == 401) {
                 throw new BadCredentialsException("Wrong credentials");
@@ -127,10 +124,7 @@ public class JiraAuthenticationProvider implements AuthenticationProvider {
         } else {
             throw new InternalAuthenticationServiceException("JIRA Authentication failed");
         }
-
     }
-
-
 
     @Override
     public boolean supports(Class<?> authentication) {

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('exerciseApplicationApp')
+        .module('artemisApp')
         .controller('CourseDeleteController',CourseDeleteController);
 
     CourseDeleteController.$inject = ['$uibModalInstance', 'entity', 'Course'];
@@ -13,7 +13,7 @@
         vm.course = entity;
         vm.clear = clear;
         vm.confirmDelete = confirmDelete;
-        
+
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }

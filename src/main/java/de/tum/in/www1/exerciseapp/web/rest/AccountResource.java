@@ -15,7 +15,7 @@ import de.tum.in.www1.exerciseapp.web.rest.dto.ManagedUserDTO;
 import de.tum.in.www1.exerciseapp.web.rest.dto.UserDTO;
 import de.tum.in.www1.exerciseapp.web.rest.util.HeaderUtil;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

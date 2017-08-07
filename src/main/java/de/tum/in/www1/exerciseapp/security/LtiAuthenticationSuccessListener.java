@@ -29,29 +29,19 @@ public class LtiAuthenticationSuccessListener implements ApplicationListener<Int
     @Inject
     private LtiService ltiService;
 
-
-
     @Override
-    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event)
-    {
-
+    public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
         /**
          * The InteractiveAuthenticationSuccessEvent is fired on manual logins and remember-me logins.
          * Not fired on programmatic logins!
          *
          */
-        if (event instanceof InteractiveAuthenticationSuccessEvent)
-        {
-
+        if (event instanceof InteractiveAuthenticationSuccessEvent) {
             AbstractAuthenticationToken token = (AbstractAuthenticationToken) event.getSource();
             WebAuthenticationDetails authDetails = (WebAuthenticationDetails) token.getDetails();
-            String sessionId= authDetails.getSessionId();
+            String sessionId = authDetails.getSessionId();
 
             ltiService.handleLaunchRequestForSession(sessionId);
-
         }
     }
-
-
-
 }

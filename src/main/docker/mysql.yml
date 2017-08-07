@@ -1,10 +1,8 @@
 version: '2'
 services:
-    exerciseapplication-mysql:
-        container_name: exerciseapplication-mysql
+    artemis-mysql:
+        container_name: artemis-mysql
         image: mysql:5.7.12
-        # volumes:
-        #     - ~/volumes/jhipster/ExerciseApplication/mysql/:/var/lib/mysql/
         environment:
             - MYSQL_USER=root
             - MYSQL_ALLOW_EMPTY_PASSWORD=yes

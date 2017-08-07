@@ -1,5 +1,6 @@
 package de.tum.in.www1.exerciseapp.repository;
 
+import de.tum.in.www1.exerciseapp.config.Constants;
 import de.tum.in.www1.exerciseapp.config.audit.AuditEventConverter;
 import de.tum.in.www1.exerciseapp.domain.PersistentAuditEvent;
 
@@ -24,13 +25,18 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
     private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
 
-    private static final String ANONYMOUS_USER = "anonymoususer";
-
     @Inject
     private PersistenceAuditEventRepository persistenceAuditEventRepository;
 
     @Inject
     private AuditEventConverter auditEventConverter;
+
+    @Override
+    public List<AuditEvent> find(Date after) {
+        Iterable<PersistentAuditEvent> persistentAuditEvents =
+            persistenceAuditEventRepository.findByAuditEventDateAfter(after.toInstant());
+        return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
+    }
 
     @Override
     public List<AuditEvent> find(String principal, Date after) {
@@ -41,34 +47,30 @@ public class CustomAuditEventRepository implements AuditEventRepository {
             persistentAuditEvents = persistenceAuditEventRepository.findByPrincipal(principal);
         } else {
             persistentAuditEvents =
-                persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfter(principal, LocalDateTime.from(after.toInstant()));
+                persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfter(principal, after.toInstant());
         }
         return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
     }
 
     @Override
     public List<AuditEvent> find(String principal, Date after, String type) {
-        return find(principal, after, null);
+        Iterable<PersistentAuditEvent> persistentAuditEvents =
+            persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfterAndAuditEventType(principal, after.toInstant(), type);
+        return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void add(AuditEvent event) {
         if (!AUTHORIZATION_FAILURE.equals(event.getType()) &&
-            !ANONYMOUS_USER.equals(event.getPrincipal().toString())) {
+            !Constants.ANONYMOUS_USER.equals(event.getPrincipal())) {
 
             PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
             persistentAuditEvent.setPrincipal(event.getPrincipal());
             persistentAuditEvent.setAuditEventType(event.getType());
-            Instant instant = Instant.ofEpochMilli(event.getTimestamp().getTime());
-            persistentAuditEvent.setAuditEventDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
+            persistentAuditEvent.setAuditEventDate(LocalDateTime.ofInstant(event.getTimestamp().toInstant(), ZoneId.systemDefault()));
             persistentAuditEvent.setData(auditEventConverter.convertDataToStrings(event.getData()));
             persistenceAuditEventRepository.save(persistentAuditEvent);
         }
-    }
-
-    @Override
-    public List<AuditEvent> find(Date after) {
-        return find(null, after, null);
     }
 }

@@ -1,6 +1,6 @@
 package de.tum.in.www1.exerciseapp.service;
 
-import de.tum.in.www1.exerciseapp.ExerciseApplicationApp;
+import de.tum.in.www1.exerciseapp.ArTEMiSApp;
 import de.tum.in.www1.exerciseapp.domain.PersistentToken;
 import de.tum.in.www1.exerciseapp.domain.User;
 import de.tum.in.www1.exerciseapp.repository.PersistentTokenRepository;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.*;
  */
 @ActiveProfiles(profiles = "dev,jira,bamboo,bitbucket")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ExerciseApplicationApp.class)
+@ContextConfiguration(classes = ArTEMiSApp.class)
 @WebAppConfiguration
 @SpringBootTest
 @Transactional

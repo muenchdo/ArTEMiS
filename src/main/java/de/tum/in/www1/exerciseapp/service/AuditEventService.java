@@ -2,6 +2,8 @@ package de.tum.in.www1.exerciseapp.service;
 
 import de.tum.in.www1.exerciseapp.config.audit.AuditEventConverter;
 import de.tum.in.www1.exerciseapp.repository.PersistenceAuditEventRepository;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
@@ -40,7 +42,7 @@ public class AuditEventService {
             .map(persistentAuditEvents -> auditEventConverter.convertToAuditEvent(persistentAuditEvents));
     }
 
-    public Page<AuditEvent> findByDates(LocalDateTime fromDate, LocalDateTime toDate, Pageable pageable) {
+    public Page<AuditEvent> findByDates(Instant fromDate, Instant toDate, Pageable pageable) {
         return persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate, pageable)
             .map(persistentAuditEvents -> auditEventConverter.convertToAuditEvent(persistentAuditEvents));
     }

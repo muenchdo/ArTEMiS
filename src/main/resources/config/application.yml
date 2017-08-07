@@ -59,11 +59,11 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: ExerciseApplication@localhost
+        from: ArTEMiS@localhost
     swagger:
-        title: ExerciseApplication API
-        description: ExerciseApplication API documentation
-        version: 0.0.1
+        title: ArTEMiS API
+        description: ArTEMiS API documentation
+        version: 1.0
         termsOfServiceUrl:
         contactName:
         contactUrl:

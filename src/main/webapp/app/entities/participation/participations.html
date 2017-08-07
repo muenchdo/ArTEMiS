@@ -9,7 +9,7 @@
             <div class="col-xs-4 no-padding-left" ng-hide="true">
                 <button class="btn btn-primary" ui-sref="participation.new" >
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span  translate="exerciseApplicationApp.participation.home.createLabel">
+                    <span  translate="artemisApp.participation.home.createLabel">
                         Create new Participation
                     </span>
                 </button>
@@ -30,12 +30,12 @@
             <thead>
                 <tr>
                     <th><span translate="global.field.id">ID</span></th>
-                    <th><span translate="exerciseApplicationApp.participation.repositoryUrl">Repository Url</span></th>
-                    <th><span translate="exerciseApplicationApp.participation.buildPlanId">Build Plan Id</span></th>
-                    <th><span translate="exerciseApplicationApp.participation.initializationState">Initialization State</span></th>
-                    <th><span translate="exerciseApplicationApp.participation.initializationDate">Initialization Date</span></th>
-                    <th><span translate="exerciseApplicationApp.participation.student">Student</span></th>
-                    <th ng-hide="vm.exercise"><span translate="exerciseApplicationApp.participation.exercise">Exercise</span></th>
+                    <th><span translate="artemisApp.participation.repositoryUrl">Repository Url</span></th>
+                    <th><span translate="artemisApp.participation.buildPlanId">Build Plan Id</span></th>
+                    <th><span translate="artemisApp.participation.initializationState">Initialization State</span></th>
+                    <th><span translate="artemisApp.participation.initializationDate">Initialization Date</span></th>
+                    <th><span translate="artemisApp.participation.student">Student</span></th>
+                    <th ng-hide="vm.exercise"><span translate="artemisApp.participation.exercise">Exercise</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -44,7 +44,7 @@
                     <td><a ui-sref="participation-detail({id:participation.id})">{{participation.id}}</a></td>
                     <td>{{participation.repositoryUrl}}</td>
                     <td>{{participation.buildPlanId}}</td>
-                    <td translate="{{'exerciseApplicationApp.ParticipationState.' + participation.initializationState}}">{{participation.initializationState}}</td>
+                    <td translate="{{'artemisApp.ParticipationState.' + participation.initializationState}}">{{participation.initializationState}}</td>
                     <td>{{participation.initializationDate | date:'medium'}}</td>
                     <td>
                         <a ui-sref="user-management-detail({login:participation.student.login})">{{participation.student.firstName}}</a>

@@ -15,6 +15,6 @@
     };
 
     angular
-        .module('exerciseApplicationApp')
+        .module('artemisApp')
         .component('jhiItemCount', jhiItemCount);
 })();

@@ -2,9 +2,9 @@
     'use strict';
 
     angular
-        .module('exerciseApplicationApp')
+        .module('artemisApp')
         .filter('characters', characters);
-        
+
     function characters () {
         return charactersFilter;
 

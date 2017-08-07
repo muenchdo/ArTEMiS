@@ -3,7 +3,7 @@ package de.tum.in.www1.exerciseapp.service;
 import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 import de.tum.in.www1.exerciseapp.domain.User;
 
-import org.apache.commons.lang.CharEncoding;
+import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -30,7 +30,7 @@ import java.util.Locale;
 public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
-    
+
     private static final String USER = "user";
     private static final String BASE_URL = "baseUrl";
 
@@ -101,5 +101,5 @@ public class MailService {
         String subject = messageSource.getMessage("email.reset.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
     }
-    
+
 }

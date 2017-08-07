@@ -2,7 +2,7 @@ package de.tum.in.www1.exerciseapp.web.rest.errors;
 
 import java.util.List;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
@@ -81,7 +81,7 @@ public class ExceptionTranslator {
             builder = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
             //errorDTO = new ErrorDTO(ErrorConstants.ERR_INTERNAL_SERVER_ERROR, "Internal server error");
 
-            errorDTO = new ErrorDTO(ErrorConstants.ERR_INTERNAL_SERVER_ERROR,  ExceptionUtils.getStackTrace(ex));
+            errorDTO = new ErrorDTO(ErrorConstants.ERR_INTERNAL_SERVER_ERROR, ExceptionUtils.getStackTrace(ex));
         }
         return builder.body(errorDTO);
     }

@@ -25,9 +25,9 @@ import java.util.Collection;
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class, HazelcastAutoConfiguration.class })
 @EnableConfigurationProperties({ JHipsterProperties.class, LiquibaseProperties.class })
-public class ExerciseApplicationApp {
+public class ArTEMiSApp {
 
-    private static final Logger log = LoggerFactory.getLogger(ExerciseApplicationApp.class);
+    private static final Logger log = LoggerFactory.getLogger(ArTEMiSApp.class);
 
     @Inject
     private Environment env;
@@ -60,17 +60,26 @@ public class ExerciseApplicationApp {
      * @throws UnknownHostException if the local host name could not be resolved into an address
      */
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplication(ExerciseApplicationApp.class);
+
+        SpringApplication app = new SpringApplication(ArTEMiSApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
+        String protocol = "http";
+        if (env.getProperty("server.ssl.key-store") != null) {
+            protocol = "https";
+        }
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application '{}' is running! Access URLs:\n\t" +
-                "Local: \t\thttp://127.0.0.1:{}\n\t" +
-                "External: \thttp://{}:{}\n----------------------------------------------------------",
+                "Local: \t\t{}://localhost:{}\n\t" +
+                "External: \t{}://{}:{}\n\t" +
+                "Profile(s): \t{}\n----------------------------------------------------------",
             env.getProperty("spring.application.name"),
+            protocol,
             env.getProperty("server.port"),
+            protocol,
             InetAddress.getLocalHost().getHostAddress(),
-            env.getProperty("server.port"));
+            env.getProperty("server.port"),
+            env.getActiveProfiles());
     }
 
 }

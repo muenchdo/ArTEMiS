@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('exerciseApplicationApp')
+        .module('artemisApp')
         .factory('notificationInterceptor', notificationInterceptor);
 
     notificationInterceptor.$inject = ['$q', 'AlertService'];
@@ -15,9 +15,9 @@
         return service;
 
         function response (response) {
-            var alertKey = response.headers('X-exerciseApplicationApp-alert');
+            var alertKey = response.headers('X-artemisApp-alert');
             if (angular.isString(alertKey)) {
-                AlertService.success(alertKey, { param : response.headers('X-exerciseApplicationApp-params')});
+                AlertService.success(alertKey, { param : response.headers('X-artemisApp-params')});
             }
             return response;
         }

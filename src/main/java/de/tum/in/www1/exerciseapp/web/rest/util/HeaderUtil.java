@@ -18,28 +18,28 @@ public class HeaderUtil {
 
     public static HttpHeaders createAlert(String message, String param) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-exerciseApplicationApp-alert", message);
-        headers.add("X-exerciseApplicationApp-params", param);
+        headers.add("X-artemisApp-alert", message);
+        headers.add("X-artemisApp-params", param);
         return headers;
     }
 
     public static HttpHeaders createEntityCreationAlert(String entityName, String param) {
-        return createAlert("exerciseApplicationApp." + entityName + ".created", param);
+        return createAlert("artemisApp." + entityName + ".created", param);
     }
 
     public static HttpHeaders createEntityUpdateAlert(String entityName, String param) {
-        return createAlert("exerciseApplicationApp." + entityName + ".updated", param);
+        return createAlert("artemisApp." + entityName + ".updated", param);
     }
 
     public static HttpHeaders createEntityDeletionAlert(String entityName, String param) {
-        return createAlert("exerciseApplicationApp." + entityName + ".deleted", param);
+        return createAlert("artemisApp." + entityName + ".deleted", param);
     }
 
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
         log.error("Entity creation failed, {}", defaultMessage);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-exerciseApplicationApp-error", "error." + errorKey);
-        headers.add("X-exerciseApplicationApp-params", entityName);
+        headers.add("X-artemisApp-error", "error." + errorKey);
+        headers.add("X-artemisApp-params", entityName);
         return headers;
     }
 

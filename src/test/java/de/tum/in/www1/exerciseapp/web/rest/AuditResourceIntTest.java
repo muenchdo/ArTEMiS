@@ -1,6 +1,6 @@
 package de.tum.in.www1.exerciseapp.web.rest;
 
-import de.tum.in.www1.exerciseapp.ExerciseApplicationApp;
+import de.tum.in.www1.exerciseapp.ArTEMiSApp;
 import de.tum.in.www1.exerciseapp.config.audit.AuditEventConverter;
 import de.tum.in.www1.exerciseapp.domain.PersistentAuditEvent;
 import de.tum.in.www1.exerciseapp.repository.PersistenceAuditEventRepository;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ActiveProfiles(profiles = "jira,bamboo,bitbucket")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ExerciseApplicationApp.class)
+@ContextConfiguration(classes = ArTEMiSApp.class)
 @WebAppConfiguration
 @SpringBootTest
 @Transactional

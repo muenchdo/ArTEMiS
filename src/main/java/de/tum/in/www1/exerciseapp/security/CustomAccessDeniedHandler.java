@@ -7,6 +7,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
@@ -24,6 +26,8 @@ import org.springframework.security.web.csrf.CsrfException;
  */
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
+    private final Logger log = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
+
     private AccessDeniedHandlerImpl accessDeniedHandlerImpl = new AccessDeniedHandlerImpl();
 
     public void handle(HttpServletRequest request, HttpServletResponse response,
@@ -38,6 +42,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             cookie.setPath("/");
             response.addCookie(cookie);
         }
+
+        log.debug("CustomAccessDeniedHandler.handle");
 
         accessDeniedHandlerImpl.handle(request, response, accessDeniedException);
     }

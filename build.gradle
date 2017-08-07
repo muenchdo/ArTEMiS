@@ -33,7 +33,7 @@ apply plugin: 'propdeps'
 defaultTasks 'bootRun'
 
 bootRepackage {
-   mainClass = 'de.tum.in.www1.exerciseapp.ExerciseApplicationApp'
+   mainClass = 'de.tum.in.www1.exerciseapp.ArTEMiSApp'
 }
 
 war {
@@ -41,7 +41,7 @@ war {
 }
 
 springBoot {
-    mainClass = 'de.tum.in.www1.exerciseapp.ExerciseApplicationApp'
+    mainClass = 'de.tum.in.www1.exerciseapp.ArTEMiSApp'
     executable = true
 }
 
@@ -93,7 +93,7 @@ if (project.hasProperty('prod')) {
 }
 
 group = 'de.tum.in.www1.exerciseapp'
-version = '1.2.3'
+version = '1.3.0'
 
 description = ''
 
@@ -189,6 +189,7 @@ dependencies {
     compile ("org.springframework:spring-context-support") {
         exclude(module: 'quartz')
     }
+    compile "org.springframework.security:spring-security-core:${spring_security_version}"
     compile "org.springframework.security:spring-security-config:${spring_security_version}"
     compile "org.springframework.security:spring-security-data:${spring_security_version}"
     compile "org.springframework.security:spring-security-web:${spring_security_version}"

@@ -1,7 +1,7 @@
 {
-  "name": "exercise-application",
+  "name": "ArTEMiS",
   "version": "0.0.0",
-  "description": "Description for ExerciseApplication",
+  "description": "AuTomated assEssment Management System",
   "private": true,
   "cacheDirectories": [
     "node_modules",
