@@ -10,7 +10,7 @@
             bindings: {
                 participation: '<',
                 loadDetails: '<',
-                showBuildDate:'<',
+                showBuildDate: '<',
                 onNewResult: '&',
             },
             templateUrl: 'app/uml-editor/results/uml-result.html',
@@ -22,6 +22,7 @@
     function UmlResultController($http, $uibModal, ParticipationResult, Repository, $interval, $scope, $sce, JhiWebsocketService, Result) {
         var vm = this;
         vm.result = null;
+        vm.loading = false;
         vm.$onInit = init;
         vm.hasResults = hasResults;
         vm.showDetails = showDetails;
@@ -32,7 +33,7 @@
 
 
             var websocketChannel = '/topic/participation/' + vm.participation.id + '/newResults';
-            console.log("uml-result: subscribing to "+websocketChannel+" for participation "+vm.participation.id );
+            console.log("uml-result: subscribing to " + websocketChannel + " for participation " + vm.participation.id);
 
             JhiWebsocketService.subscribe(websocketChannel);
 
@@ -59,16 +60,19 @@
         }
 
         function refresh() {
+            vm.loading = true;
             $http.get('api/participations/' + vm.participation.id + '/status', {
                 ignoreLoadingBar: true
             }).then(function (response) {
                 vm.queued = response.data === 'QUEUED';
                 vm.building = response.data === 'BUILDING';
             }).finally(function () {
+                console.log("finally " + vm.queued + " " + vm.building);
                 if (!vm.queued && !vm.building) {
 
                     var notifyObserver = function (result) {
                         vm.result = result;
+                        vm.loading = false;
                         if (vm.onNewResult) {
                             vm.onNewResult({
                                 $event: {
@@ -78,17 +82,25 @@
                         }
                     };
 
+                    var errorHandler = function (error) {
+                        console.log("Error while loading results: ");
+                        console.log(error);
+                        vm.loading = false;
+                    };
+
                     if (vm.loadDetails === false) {
                         // Don't load the details (UmlAssessmentResult), only load it in the details dialog
                         Result.umlExerciseResult({
                             id: vm.participation.id
-                        }, notifyObserver);
+                        }, notifyObserver, errorHandler);
                     } else {
                         // Also load the uml assessment result details (might be more expensive)
                         Result.umlExerciseResultWithAssessmentDetails({
                             id: vm.participation.id
-                        }, notifyObserver);
+                        }, notifyObserver, errorHandler);
                     }
+                } else {
+                    vm.loading = false;
                 }
             });
         }
@@ -97,14 +109,14 @@
             if (vm.result === null)
                 return "";
 
-            if (vm.result.buildSuccessful === false){
+            if (vm.result.buildSuccessful === false) {
                 return "text-danger";
             }
 
             if (vm.result.parityWithSampleSolution === "100%")
                 return "text-success";
-             else
-                 return "text-danger";
+            else
+                return "text-danger";
         }
 
         function hasResults() {
