@@ -165,7 +165,8 @@
             var saveTrigger = triggerFuncs[0];
             var errorImportTrigger = triggerFuncs[1];
 
-            var websocketChannelUml = '/topic/participation/' + participationId + '/umlexercise/assessmentResults';
+            var websocketChannelUml = '/topic/participation/' + participationId + '/newResults';
+
             console.log("Editor: subscribed to "+websocketChannelUml);
             JhiWebsocketService.subscribe(websocketChannelUml);
             JhiWebsocketService.receive(websocketChannelUml).then(null, null, function (umlBuildResult) {
@@ -238,7 +239,6 @@
             container.bind('destroyed', function () {
                 // unsubscribe websocket
                 JhiWebsocketService.unsubscribe(websocketChannelUml);
-                JhiWebsocketService.unsubscribe(websocketChannelResult);
                 errorImportTrigger = null;
                 var reactCleanupSuccessful = UmlClassEditor.stopUmlEditor();
                 console.log("Removed UmlEditor. cleanup done. React cleanup successful: "+reactCleanupSuccessful);

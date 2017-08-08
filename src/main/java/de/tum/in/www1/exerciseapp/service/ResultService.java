@@ -39,14 +39,9 @@ public class ResultService {
         Object websocketPayload = continuousIntegrationService.onBuildCompleted(participation);
         // notify user via websocket
 
-        if (participation.getExercise().getExerciseType() == ExerciseType.UML_CLASS_DIAGRAM && websocketPayload != null){
-            log.debug("Result for a "+ExerciseType.UML_CLASS_DIAGRAM+" participationId = "+participation.getId()+" Exercise: "+participation.getExercise().getTitle() + ". Have sent this result "+websocketPayload+" to the client (WebSocket)");
-            messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/umlexercise/assessmentResults", websocketPayload);
-        } else {
-            messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/newResults", true);
-            log.debug("Received new result for participationId = "+participation.getId()+" Exercise: "+participation.getExercise().getTitle() + ". Have sent this info to the client (WebSocket)");
+        messagingTemplate.convertAndSend("/topic/participation/" + participation.getId() + "/newResults", websocketPayload);
+        log.debug("Received new result for participationId = " + participation.getId() + " Exercise: " + participation.getExercise().getTitle() + ". Have sent this info to the client (WebSocket)");
 
-        }
         // handles new results and sends them to LTI consumers
         ltiService.onNewBuildResult(participation);
     }

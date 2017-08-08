@@ -31,7 +31,7 @@
             refresh();
 
 
-            var websocketChannel = 'topic/participation/' + vm.participation.id + '/umlexercise/assessmentResults';
+            var websocketChannel = '/topic/participation/' + vm.participation.id + '/newResults';
             console.log("uml-result: subscribing to "+websocketChannel+" for participation "+vm.participation.id );
 
             JhiWebsocketService.subscribe(websocketChannel);
@@ -68,6 +68,7 @@
                 if (!vm.queued && !vm.building) {
 
                     var notifyObserver = function (result) {
+                        vm.result = result;
                         if (vm.onNewResult) {
                             vm.onNewResult({
                                 $event: {
@@ -79,12 +80,12 @@
 
                     if (vm.loadDetails === false) {
                         // Don't load the details (UmlAssessmentResult), only load it in the details dialog
-                        vm.result = Result.umlExerciseResult({
+                        Result.umlExerciseResult({
                             id: vm.participation.id
                         }, notifyObserver);
                     } else {
                         // Also load the uml assessment result details (might be more expensive)
-                        vm.result = Result.umlExerciseResultWithAssessmentDetails({
+                        Result.umlExerciseResultWithAssessmentDetails({
                             id: vm.participation.id
                         }, notifyObserver);
                     }
@@ -107,7 +108,7 @@
         }
 
         function hasResults() {
-            return vm.result !== null
+            return vm.result !== null;
         }
 
         function showDetails(result) {

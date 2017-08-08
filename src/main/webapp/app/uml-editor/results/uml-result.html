@@ -1,9 +1,10 @@
 <span ng-if="!$ctrl.hasResults()">
-    <span class="text-muted" ng-if="!($ctrl.queued || $ctrl.building)"><i class="fa fa-circle-o fa-lg"></i>&nbsp;No results</span>
+    <span class="text-muted" ng-if="!($ctrl.queued) && !($ctrl.building)"><i class="fa fa-circle-o fa-lg"></i>&nbsp;No results</span>
     <span class="text-primary" ng-if="$ctrl.queued"><i class="fa fa-circle-o-notch fa-lg fa-spin"></i>&nbsp;Test is queued</span>
     <span class="text-primary" ng-if="$ctrl.building"><i class="fa fa-circle-o-notch fa-lg fa-spin"></i>&nbsp;Testing...</span>
 </span>
 <span ng-if="$ctrl.hasResults()" ng-switch on="$ctrl.result.buildSuccessful">
+
     <span ng-switch-when="true">
         <span class="{{$ctrl.textStyle()}}">
             <i class="fa fa-lg fa-check-circle-o"></i>&nbsp;

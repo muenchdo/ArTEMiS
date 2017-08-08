@@ -374,7 +374,7 @@ public class BambooService implements ContinuousIntegrationService {
             buildResults = retrieveLatestBuildResult(participation.getBuildPlanId());
         }
 
-        Object returnValue = null;
+        Object websocketPayload = true; // Coding exercise simply sends "true" as payload through the websocket to the client
         Result result = new Result();
         result.setBuildSuccessful((boolean) buildResults.get("buildSuccessful"));
         result.setResultString((String) buildResults.get("buildTestSummary"));
@@ -398,7 +398,7 @@ public class BambooService implements ContinuousIntegrationService {
                     score = Math.min(100L, Math.round(preciseScore));
                     result.setScore(score);
                     result.setResultString(score + " %");
-                    returnValue = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), assessmentResult);
+                    websocketPayload = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), assessmentResult);
 
                 } catch (Exception e) {
                     log.error("HttpError while retrieving results", e);
@@ -419,7 +419,7 @@ public class BambooService implements ContinuousIntegrationService {
         }
 
         resultRepository.save(result);
-        return returnValue;
+        return websocketPayload;
     }
 
 

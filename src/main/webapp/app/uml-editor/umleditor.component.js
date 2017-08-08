@@ -28,8 +28,6 @@
 
 
         console.log(vm.participation);
-        console.log(vm.file);
-
 
 
         vm.updateSaveStatusLabel = function ($event) {
