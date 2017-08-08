@@ -33,8 +33,7 @@
 
 
             var websocketChannel = '/topic/participation/' + vm.participation.id + '/newResults';
-            console.log("uml-result: subscribing to " + websocketChannel + " for participation " + vm.participation.id);
-
+            
             JhiWebsocketService.subscribe(websocketChannel);
 
             JhiWebsocketService.receive(websocketChannel).then(null, null, function (data) {
@@ -67,7 +66,6 @@
                 vm.queued = response.data === 'QUEUED';
                 vm.building = response.data === 'BUILDING';
             }).finally(function () {
-                console.log("finally " + vm.queued + " " + vm.building);
                 if (!vm.queued && !vm.building) {
 
                     var notifyObserver = function (result) {

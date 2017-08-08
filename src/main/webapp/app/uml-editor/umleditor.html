@@ -167,11 +167,8 @@
 
             var websocketChannelUml = '/topic/participation/' + participationId + '/newResults';
 
-            console.log("Editor: subscribed to "+websocketChannelUml);
             JhiWebsocketService.subscribe(websocketChannelUml);
             JhiWebsocketService.receive(websocketChannelUml).then(null, null, function (umlBuildResult) {
-                console.log("Editor: Received in editor update");
-                console.log(umlBuildResult);
                 saveButton.prop("disabled", false);
                 saveButtonText.html("<i class=\"fa fa-play-circle-o\"></i> Save & Run Tests");
 
