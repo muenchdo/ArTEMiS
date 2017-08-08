@@ -25,8 +25,8 @@
 
                 <div class=" navbar-nav navbar-right">
 
-                    <result participation="$ctrl.participation" ng-hide="$ctrl.isBuilding"
-                            on-new-result="$ctrl.updateLatestResult($event)" show-score="true" show-artifact="false"></result>
+                    <umlresult participation="$ctrl.participation" ng-hide="$ctrl.isBuilding"
+                            on-new-result="$ctrl.updateLatestResult($event)" show-build-date="false" load-details="true"></umlresult>
 
                     <button id="umlSaveButton" type="button" class="btn btn-primary navbar-btn">
                         <span id="umlSaveButtonText"><i class="fa fa-play-circle-o"></i> Save & Run Tests</span>
@@ -169,10 +169,10 @@
 
             var websocketChannelUml = '/topic/participation/' + participationId + '/umlexercise/assessmentResults';
             JhiWebsocketService.subscribe(websocketChannelUml);
-            JhiWebsocketService.receive(websocketChannelUml).then(null, null, function (notification) {
-                console.log(notification);
-                if (errorImportTrigger !== null) {
-                    errorImportTrigger(notification);
+            JhiWebsocketService.receive(websocketChannelUml).then(null, null, function (umlBuildResult) {
+                console.log(umlBuildResult);
+                if (errorImportTrigger !== null && umlBuildResult.result !== null) {
+                    errorImportTrigger(umlBuildResult.result);
                 }
             });
 
@@ -234,11 +234,9 @@
                 }
             })(jQuery);
 
-       
+
 
             var container = $("#uml-editor-container");
-            console.log("Container");
-            console.log(container);
             container.bind('destroyed', function () {
                 // unsubscribe websocket
                 JhiWebsocketService.unsubscribe(websocketChannelUml);

@@ -9,6 +9,7 @@ import de.tum.in.www1.exerciseapp.domain.Result;
 import de.tum.in.www1.exerciseapp.domain.enumeration.ExerciseType;
 import de.tum.in.www1.exerciseapp.domain.umlresult.TestResultDetailsDTO;
 import de.tum.in.www1.exerciseapp.domain.umlresult.UmlAssessmentResult;
+import de.tum.in.www1.exerciseapp.domain.umlresult.UmlBuildResult;
 import de.tum.in.www1.exerciseapp.exception.BambooException;
 import de.tum.in.www1.exerciseapp.exception.GitException;
 import de.tum.in.www1.exerciseapp.repository.ResultRepository;
@@ -138,16 +139,27 @@ public class BambooService implements ContinuousIntegrationService {
         }
     }
 
+    /**
+     * An UML Exercise provides the assessment result as artifact via CI.
+     *
+     * @param buildPlanId The buildplan ID
+     * @return the url to load the artifact that is the assessment result
+     */
+    private String loadArtifactUrlForUmlExercise(String buildPlanId) {
+        Map<String, Object> buildResults = retrieveLatestBuildResult(buildPlanId);
+        return (String) buildResults.get("artifact");
+    }
+
+    @Deprecated
     private Map<String, Object> retrieveLatestBuildResultDetailsForUmlExercise(String buildPlanId) {
 
         Map<String, Object> result = new HashMap<>();
-        Map<String, Object> buildResults = retrieveLatestBuildResult(buildPlanId);
-        String artifactUrl = (String) buildResults.get("artifact");
+        String artifactUrl = loadArtifactUrlForUmlExercise(buildPlanId);
         if (artifactUrl != null) {
 
             try {
                 UmlAssessmentResult umlAssessmentResult = getUmlAssessmentResult(artifactUrl);
-                List<TestResultDetailsDTO> resultDetails = new ArrayList(umlAssessmentResult.getErrors().size());
+                List<TestResultDetailsDTO> resultDetails = new ArrayList<>(umlAssessmentResult.getErrors().size());
 
                 int checkerCount = 1;
                 for (UmlAssessmentResult.ErrorMessage msg : umlAssessmentResult.getErrors()) {
@@ -180,6 +192,36 @@ public class BambooService implements ContinuousIntegrationService {
             Map<String, Object> details = retrieveLatestBuildResultDetails(participation.getBuildPlanId());
             return details;
         }
+    }
+
+    @Override
+    public Optional<UmlBuildResult> getLastUmlExerciseResultDetails(Participation participation, boolean loadAssessmentDetails) throws Exception {
+
+        if (participation.getExercise().getExerciseType() != ExerciseType.UML_CLASS_DIAGRAM) {
+            throw new IllegalArgumentException("The given participation is not on a Exercise of type " + ExerciseType.UML_CLASS_DIAGRAM + ". Participation: " + participation);
+        }
+
+        Optional<Result> resultFromDatabaseOptional = resultRepository.findFirstByParticipationIdOrderByBuildCompletionDateDesc(participation.getId());
+
+        if (!resultFromDatabaseOptional.isPresent())
+            return Optional.empty();
+
+        Result resultFromDatabase = resultFromDatabaseOptional.get();
+
+        String artifactUrl = loadArtifactUrlForUmlExercise(participation.getBuildPlanId());
+        if (artifactUrl == null) {
+            throw new NullPointerException("The participation with id = " + participation.getId() + " doesn't have an artifact url for latest build. " +
+                "BuildPlan: " + participation.getBuildPlanId() + " Exercise: " + participation.getExercise().getId() + " - " + participation.getExercise().getTitle());
+        }
+
+
+        UmlAssessmentResult umlAssessmentResult = null;
+        if (loadAssessmentDetails)
+            umlAssessmentResult = getUmlAssessmentResult(artifactUrl);
+
+        UmlBuildResult buildResult = new UmlBuildResult(resultFromDatabase.isBuildSuccessful(), resultFromDatabase.getResultString(), resultFromDatabase.getBuildCompletionDate(), umlAssessmentResult);
+        return Optional.of(buildResult);
+
     }
 
     @Override
@@ -354,23 +396,25 @@ public class BambooService implements ContinuousIntegrationService {
                     }
                     double preciseScore = (assessmentResult.getScore() / assessmentResult.getMaxScore()) * 100;
                     score = Math.min(100L, Math.round(preciseScore));
+                    result.setScore(score);
+                    result.setResultString(score + " %");
+                    returnValue = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), assessmentResult);
 
-                    if (assessmentResult.getNumberOfErrors() > 0) {
-                        // Override the result string, as junit doesn't show all failed tests, because we may want to explicitly hide all failed tests from student.
-                        result.setResultString(assessmentResult.getNumberOfErrors() + " of " + assessmentResult.getNumberOfTests() + " failed");
-                    }
-                    returnValue = assessmentResult;
                 } catch (Exception e) {
                     log.error("HttpError while retrieving results", e);
                     score = 0;
+                    result.setScore(score);
+                    result.setResultString(score + " %");
+                    result.setBuildSuccessful(false);
                 }
-                result.setScore(score);
-
             } else {
                 log.error("UML Exercise must have a artifact url. See README. participationId = " + participation.getId() + " buildplanId = " + participation.getBuildPlanId() + " exerciseId: " + participation.getExercise().getId() + " exerciseTitle" + participation.getExercise().getTitle());
                 result.setScore(0L);
+                result.setResultString(0 + " %");
+                result.setBuildSuccessful(false);
             }
         } else {
+            // Not uml exercise
             result.setScore(calculateScoreForResult(result));
         }
 

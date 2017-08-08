@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+            ng-click="$close()">&times;</button>
+    <h4 class="modal-title">Failed Build Details</h4>
+</div>
+<div class="modal-body" id="result-detail-body" style="position: relative;" ng-switch on="$ctrl.loading">
+    <div class="text-muted" id="result-detail-spinner" ng-switch-when="true"><i
+        class="fa fa-circle-o-notch fa-lg fa-spin "></i></div>
+    <div ng-switch-when="false" ng-repeat="detail in $ctrl.details track by $index" ng-init="lastDetail = $last">
+        <p>Error in <code>{{detail.methodName}}</code>:</p>
+        <div ng-repeat="error in detail.errors.error">
+            <pre ng-bind="error.message.split('\n')[0]"></pre>
+        </div>
+        <hr ng-if="!lastDetail">
+    </div>
+    <div ng-switch-when="false" ng-if="$ctrl.details.length == 0">
+        <dl class="buildoutput dl-horizontal" ng-hide="$ctrl.buildLogs.length == 0">
+            <dt ng-repeat-start="logEntry in $ctrl.buildLogs">{{logEntry.time | date:'yyyy-MM-dd HH:mm:ss'}}</dt>
+            <dd ng-repeat-end ng-bind-html="logEntry.log"></dd>
+        </dl>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default pull-right" ng-click="$close()">Close</button>
+</div>

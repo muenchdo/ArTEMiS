@@ -10,9 +10,13 @@ import java.util.List;
 public class UmlAssessmentResult {
     private double score;
     private double maxScore;
-    private int numberOfErrors;
-    private int numberOfTests;
+    private double penaltyScore;
+    private int percentageCorrectness;
     private List<ErrorMessage> errors;
+    private List<ErrorMessage> warnings;
+    private List<ErrorMessage> penalties;
+    private List<String> correct;
+    private List<String> partlyCorrect;
 
     public double getScore() {
         return score;
@@ -22,36 +26,32 @@ public class UmlAssessmentResult {
         return maxScore;
     }
 
-    /**
-     * The number of failed tests
-     * @return
-     */
-    public int getNumberOfErrors() {
-        return numberOfErrors;
-    }
-
     public List<ErrorMessage> getErrors() {
         return errors;
     }
 
-
-    /**
-     * Get the number of how many tests were run int total
-     * @return
-     */
-    public int getNumberOfTests() {
-        return numberOfTests;
+    public int getPercentageCorrectness() {
+        return percentageCorrectness;
     }
 
-    @Override
-    public String toString() {
-        return "UmlAssessmentResult{" +
-            "score=" + score +
-            ", maxScore=" + maxScore +
-            ", numberOfErrors=" + numberOfErrors +
-            ", numberOfTests=" + numberOfTests +
-            ", errors=" + errors +
-            '}';
+    public double getPenaltyScore() {
+        return penaltyScore;
+    }
+
+    public List<ErrorMessage> getWarnings() {
+        return warnings;
+    }
+
+    public List<ErrorMessage> getPenalties() {
+        return penalties;
+    }
+
+    public List<String> getCorrect() {
+        return correct;
+    }
+
+    public List<String> getPartlyCorrect() {
+        return partlyCorrect;
     }
 
     @Override
@@ -63,9 +63,13 @@ public class UmlAssessmentResult {
 
         if (Double.compare(that.score, score) != 0) return false;
         if (Double.compare(that.maxScore, maxScore) != 0) return false;
-        if (numberOfErrors != that.numberOfErrors) return false;
-        if (numberOfTests != that.numberOfTests) return false;
-        return errors != null ? errors.equals(that.errors) : that.errors == null;
+        if (Double.compare(that.penaltyScore, penaltyScore) != 0) return false;
+        if (percentageCorrectness != that.percentageCorrectness) return false;
+        if (errors != null ? !errors.equals(that.errors) : that.errors != null) return false;
+        if (warnings != null ? !warnings.equals(that.warnings) : that.warnings != null) return false;
+        if (penalties != null ? !penalties.equals(that.penalties) : that.penalties != null) return false;
+        if (correct != null ? !correct.equals(that.correct) : that.correct != null) return false;
+        return partlyCorrect != null ? partlyCorrect.equals(that.partlyCorrect) : that.partlyCorrect == null;
     }
 
     @Override
@@ -76,10 +80,29 @@ public class UmlAssessmentResult {
         result = (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(maxScore);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + numberOfErrors;
-        result = 31 * result + numberOfTests;
+        temp = Double.doubleToLongBits(penaltyScore);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + percentageCorrectness;
         result = 31 * result + (errors != null ? errors.hashCode() : 0);
+        result = 31 * result + (warnings != null ? warnings.hashCode() : 0);
+        result = 31 * result + (penalties != null ? penalties.hashCode() : 0);
+        result = 31 * result + (correct != null ? correct.hashCode() : 0);
+        result = 31 * result + (partlyCorrect != null ? partlyCorrect.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UmlAssessmentResult{" +
+            "score=" + score +
+            ", maxScore=" + maxScore +
+            ", penaltyScore=" + penaltyScore +
+            ", errors=" + errors +
+            ", warnings=" + warnings +
+            ", penalties=" + penalties +
+            ", correct=" + correct +
+            ", partlyCorrect=" + partlyCorrect +
+            '}';
     }
 
     /**
@@ -88,10 +111,10 @@ public class UmlAssessmentResult {
     public static class ErrorMessage {
         private String id;
         private String errorMessage;
-        private boolean warning;
 
         /**
          * Get the id of the element in the UML Diagram that has caused this error
+         *
          * @return The id of the UML Diagram element
          */
         public String getId() {
@@ -100,15 +123,13 @@ public class UmlAssessmentResult {
 
         /**
          * The error message
+         *
          * @return error message
          */
         public String getErrorMessage() {
             return errorMessage;
         }
 
-        public boolean isWarning() {
-            return warning;
-        }
 
         @Override
         public boolean equals(Object o) {
@@ -117,7 +138,6 @@ public class UmlAssessmentResult {
 
             ErrorMessage that = (ErrorMessage) o;
 
-            if (warning != that.warning) return false;
             if (id != null ? !id.equals(that.id) : that.id != null) return false;
             return errorMessage != null ? errorMessage.equals(that.errorMessage) : that.errorMessage == null;
         }
@@ -126,7 +146,6 @@ public class UmlAssessmentResult {
         public int hashCode() {
             int result = id != null ? id.hashCode() : 0;
             result = 31 * result + (errorMessage != null ? errorMessage.hashCode() : 0);
-            result = 31 * result + (warning ? 1 : 0);
             return result;
         }
 
@@ -135,7 +154,6 @@ public class UmlAssessmentResult {
             return "ErrorMessage{" +
                 "id='" + id + '\'' +
                 ", errorMessage='" + errorMessage + '\'' +
-                ", warning=" + warning +
                 '}';
         }
     }

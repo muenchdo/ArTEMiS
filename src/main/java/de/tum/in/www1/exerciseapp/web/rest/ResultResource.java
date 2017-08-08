@@ -3,6 +3,7 @@ package de.tum.in.www1.exerciseapp.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import de.tum.in.www1.exerciseapp.domain.Participation;
 import de.tum.in.www1.exerciseapp.domain.Result;
+import de.tum.in.www1.exerciseapp.domain.umlresult.UmlAssessmentResult;
 import de.tum.in.www1.exerciseapp.repository.ResultRepository;
 import de.tum.in.www1.exerciseapp.security.AuthoritiesConstants;
 import de.tum.in.www1.exerciseapp.service.ContinuousIntegrationService;
@@ -94,7 +95,7 @@ public class ResultResource {
         }
         Participation participation = participationService.findOneByBuildPlanId(planKey);
         if (Optional.ofNullable(participation).isPresent()) {
-            if(participation.getExercise().getDueDate() == null || ZonedDateTime.now().isBefore(participation.getExercise().getDueDate()) ) {
+            if (participation.getExercise().getDueDate() == null || ZonedDateTime.now().isBefore(participation.getExercise().getDueDate())) {
                 resultService.onResultNotified(participation);
                 return ResponseEntity.ok().build();
             } else {
@@ -174,12 +175,12 @@ public class ResultResource {
         List<Result> results = new ArrayList<>();
         Participation participation = participationService.findOne(participationId);
         if (participation != null && (participation.getStudent().getLogin().equals(user.getName()) || (user.getAuthorities().contains(adminAuthority) || user.getAuthorities().contains(taAuthority)))) {
-            if(showAllResults) {
+            if (showAllResults) {
                 results = resultRepository.findByParticipationIdOrderByBuildCompletionDateDesc(participationId);
             } else {
                 results = resultRepository.findFirstByParticipationIdOrderByBuildCompletionDateDesc(participationId)
-                .map(result -> Arrays.asList(result))
-                .orElse(new ArrayList<Result>());
+                    .map(result -> Arrays.asList(result))
+                    .orElse(new ArrayList<Result>());
             }
         }
         return results;
@@ -226,7 +227,6 @@ public class ResultResource {
         List<Result> results;
         return resultRepository.findEarliestSuccessfulResultsForCourse(courseId);
     }
-
 
 
     /**
@@ -278,6 +278,8 @@ public class ResultResource {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+
 
     /**
      * DELETE  /results/:id : delete the "id" result.

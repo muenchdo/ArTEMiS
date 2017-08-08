@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     angular
         .module('exerciseApplicationApp')
@@ -8,11 +8,11 @@
 
     Result.$inject = ['$resource', 'DateUtils'];
 
-    function Result ($resource, DateUtils) {
-        var resourceUrl =  'api/results/:id';
+    function Result($resource, DateUtils) {
+        var resourceUrl = 'api/results/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': {method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -23,18 +23,42 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' },
-            'details': { method: 'GET', url: 'api/results/:id/details', isArray: true},
+            'update': {method: 'PUT'},
+            'details': {method: 'GET', url: 'api/results/:id/details', isArray: true},
+
+            'umlExerciseResult': {
+                url: 'api/participation/:id/uml/result?assessmentDetails=false',
+                method: 'GET',
+                transformResponse: function (data, headersGetter, status) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.buildCompletionDate = DateUtils.convertDateTimeFromServer(data.buildCompletionDate);
+                    }
+                    return data;
+                }
+            },
+
+            'umlExerciseResultWithAssessmentDetails': {
+                url: 'api/participation/:id/uml/result?assessmentDetails=true',
+                method: 'GET',
+                transformResponse: function (data, headersGetter, status) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.buildCompletionDate = DateUtils.convertDateTimeFromServer(data.buildCompletionDate);
+                    }
+                    return data;
+                }
+            }
         });
     }
 
     ParticipationResult.$inject = ['$resource'];
 
-    function ParticipationResult ($resource) {
+    function ParticipationResult($resource) {
         var resourceUrl = 'api/courses/:courseId/exercises/:exerciseId/participations/:participationId/results/:resultId';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true },
+            'query': {method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -49,6 +73,7 @@
 
 
     CourseResult.$inject = ['$resource'];
+
     function CourseResult($resource) {
         var resourceUrl = 'api/courses/:courseId/results';
 
@@ -56,8 +81,6 @@
             'query': {method: 'GET', isArray: true}
         });
     }
-
-
 
 
 })();

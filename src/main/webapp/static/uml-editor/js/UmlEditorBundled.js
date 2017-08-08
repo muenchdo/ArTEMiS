@@ -7254,12 +7254,18 @@ function startUmlEditor(loadUml, saveUmlDocument, autoStartLoadingUmlDocument, i
     }
     function assesmentResultsFunc(assementResult) {
         var errorMap = ErrorMessage_1.newErrorsMap();
-        assementResult.errors.forEach(function (error) {
-            var errors = errorMap.withMutations(function (map) {
-                if (error.warning === false) map.set(error.id, error.errorMessage);
+        var errors = errorMap.withMutations(function (map) {
+            assementResult.warnings.forEach(function (error) {
+                map.set(error.id, error.errorMessage);
             });
-            assessmentResultTrigger.next(errors);
+            assementResult.penalties.forEach(function (error) {
+                map.set(error.id, error.errorMessage);
+            });
+            assementResult.errors.forEach(function (error) {
+                map.set(error.id, error.errorMessage);
+            });
         });
+        assessmentResultTrigger.next(errors);
     }
     ReactDOM.render(getEditor(loadUml, saveUmlDocument, saveTrigger, assessmentResultTrigger, autoStartLoadingUmlDocument, imagesPath, logging), document.getElementById("main-container"));
     return [saveTriggerFunc, assesmentResultsFunc];

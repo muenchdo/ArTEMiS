@@ -48,6 +48,15 @@ public class Result implements Serializable {
         this.id = id;
     }
 
+    /**
+     * This is the string is :
+     * <ul>
+     *     <li>Coding Exercise: stripped out from junit tests like "3 of 4 tests failed"</li>
+     *     <li>UML Exercise: the parity match (in percentage) with the provided sample solution like "84%"</li>
+     * </ul>
+     *
+     * @return
+     */
     public String getResultString() {
         return resultString;
     }

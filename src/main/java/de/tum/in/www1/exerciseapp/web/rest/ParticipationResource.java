@@ -3,12 +3,13 @@ package de.tum.in.www1.exerciseapp.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import de.tum.in.www1.exerciseapp.domain.Exercise;
 import de.tum.in.www1.exerciseapp.domain.Participation;
+import de.tum.in.www1.exerciseapp.domain.Result;
+import de.tum.in.www1.exerciseapp.domain.umlresult.UmlAssessmentResult;
+import de.tum.in.www1.exerciseapp.domain.umlresult.UmlBuildResult;
 import de.tum.in.www1.exerciseapp.repository.ParticipationRepository;
+import de.tum.in.www1.exerciseapp.repository.ResultRepository;
 import de.tum.in.www1.exerciseapp.security.AuthoritiesConstants;
-import de.tum.in.www1.exerciseapp.service.ContinuousIntegrationService;
-import de.tum.in.www1.exerciseapp.service.ExerciseService;
-import de.tum.in.www1.exerciseapp.service.ParticipationService;
-import de.tum.in.www1.exerciseapp.service.VersionControlService;
+import de.tum.in.www1.exerciseapp.service.*;
 import de.tum.in.www1.exerciseapp.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,7 +181,6 @@ public class ParticipationResource {
     }
 
 
-
     /**
      * GET  /participations/:id : get the "id" participation.
      *
@@ -250,7 +250,6 @@ public class ParticipationResource {
     }
 
 
-
     @RequestMapping(value = "/participations/{id}/buildArtifact",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -286,11 +285,11 @@ public class ParticipationResource {
             .orElse(new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
+
     /**
-     * GET  /courses/:courseId/exercises/:exerciseId/participation/status: get build status of the user's participation for the "id" exercise.
+     * GET  /participations/{id}/status
      *
-     * @param courseId   only included for API consistency, not actually used
-     * @param exerciseId the id of the exercise for which to retrieve the participation status
+     * @param id The participation id
      * @return the ResponseEntity with status 200 (OK) and with body the participation, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/participations/{id}/status",
@@ -329,4 +328,45 @@ public class ParticipationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("participation", id.toString())).build();
     }
 
+
+    // TODO do
+
+    /**
+     * GET  /participation/:id/uml/result: get the uml build result details from Bamboo for the "id" result.
+     *
+     * @param id the id of the result to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the result, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/participation/{id}/uml/result",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('USER', 'TA', 'ADMIN')")
+    @Timed
+    public ResponseEntity<UmlBuildResult> getUmlExerciseResult(@PathVariable Long id, @RequestParam(value = "assessmentDetails", required = false) Boolean loadAssessmentDetails, Authentication authentication) {
+        loadAssessmentDetails = loadAssessmentDetails != null; // If null, not specified in url, therefor treat it as null
+
+        log.debug("REST request to get UML Result: participationId = " + id + " loadAssessmentDetails="+loadAssessmentDetails);
+        AbstractAuthenticationToken user = (AbstractAuthenticationToken) authentication;
+        GrantedAuthority adminAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN);
+        GrantedAuthority taAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.TEACHING_ASSISTANT);
+
+        Participation participation = participationRepository.findOne(id);
+        if (participation == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (participation.getStudent().getLogin().equals(user.getName()) || (user.getAuthorities().contains(adminAuthority) || user.getAuthorities().contains(taAuthority))) {
+            try {
+                return continuousIntegrationService.getLastUmlExerciseResultDetails(participation, loadAssessmentDetails)
+                    .map(resultDetails -> new ResponseEntity<>(resultDetails,
+                        HttpStatus.OK))
+                    .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            } catch (Exception e) {
+                log.error("Error while loading UML Exercise Assessment Results for participation " + participation.getId());
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
