@@ -42,7 +42,9 @@
 
         vm.updateLatestResult = function ($event) {
             vm.isBuilding = false;
-            vm.latestResult = $event.newResult;
+            console.log("Updated last result");
+            console.log($event);
+           // vm.latestResult = $event.newResult;
         };
 
         vm.commit = function ($event) {

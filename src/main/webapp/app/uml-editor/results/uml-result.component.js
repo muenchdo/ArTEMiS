@@ -42,9 +42,10 @@
 
                 // Notify observer
                 if (vm.onNewResult) {
+                    console.log("Starting notifing new result");
                     vm.onNewResult({
                         $event: {
-                            newResult: result
+                            newResult: data
                         }
                     });
                 }
