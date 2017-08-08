@@ -24,10 +24,7 @@
             <div class="navbar-collapse" uib-collapse="vm.isNavbarCollapsed">
 
                 <div class="navbar-nav navbar-right">
-
-                    <span>Parity with Sample Solution: &nbsp;</span>
-                    <umlresult participation="$ctrl.participation" ng-hide="$ctrl.isBuilding"
-                            on-new-result="$ctrl.updateLatestResult($event)" show-build-date="false" load-details="true"></umlresult>
+                    <umlresult participation="$ctrl.participation" on-new-result="$ctrl.updateLatestResult($event)" show-build-date="false" load-details="true"></umlresult>
 
                     <button id="umlSaveButton" type="button" class="btn btn-primary navbar-btn">
                         <span id="umlSaveButtonText"><i class="fa fa-play-circle-o"></i> Save & Run Tests</span>
@@ -169,20 +166,20 @@
             var errorImportTrigger = triggerFuncs[1];
 
             var websocketChannelUml = '/topic/participation/' + participationId + '/umlexercise/assessmentResults';
+            console.log("Editor: subscribed to "+websocketChannelUml);
             JhiWebsocketService.subscribe(websocketChannelUml);
             JhiWebsocketService.receive(websocketChannelUml).then(null, null, function (umlBuildResult) {
+                console.log("Editor: Received in editor update");
                 console.log(umlBuildResult);
+                saveButton.prop("disabled", false);
+                saveButtonText.html("<i class=\"fa fa-play-circle-o\"></i> Save & Run Tests");
+
                 if (errorImportTrigger !== null && umlBuildResult.result !== null) {
                     errorImportTrigger(umlBuildResult.result);
                 }
             });
 
-            var websocketChannelResult = '/topic/participation/' + participationId + '/newResults';
-            JhiWebsocketService.subscribe(websocketChannelResult);
-            JhiWebsocketService.receive(websocketChannelResult).then(null, null, function (notification) {
-                saveButton.prop("disabled", false);
-                saveButtonText.html("<i class=\"fa fa-play-circle-o\"></i> Save & Run Tests");
-            });
+
 
             //
             // Setup UI

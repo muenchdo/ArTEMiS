@@ -32,6 +32,7 @@
 
 
             var websocketChannel = 'topic/participation/' + vm.participation.id + '/umlexercise/assessmentResults';
+            console.log("uml-result: subscribing to "+websocketChannel+" for participation "+vm.participation.id );
 
             JhiWebsocketService.subscribe(websocketChannel);
 
@@ -39,10 +40,10 @@
                 // we get the uml result same data from websocket (pushed by server),
                 // so we don't have to ask the server for result by making a http request
                 vm.result = data;
-
+                console.log("uml-result: Received notification in");
                 // Notify observer
                 if (vm.onNewResult) {
-                    console.log("Starting notifing new result");
+                    console.log("Starting notification new result");
                     vm.onNewResult({
                         $event: {
                             newResult: data
