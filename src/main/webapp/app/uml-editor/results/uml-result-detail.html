@@ -17,69 +17,65 @@
             is why:</p>
 
         <!-- Assessment Errors -->
-        <div ng-if="$ctrl.buildResult.result.errors.length > 0"
-             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
-            <h5><span class="text-danger"><strong><i
+        <div ng-if="$ctrl.buildResult.result.errors.length > 0" class="umlResultSectionContainer">
+            <h5 class="umlResultSectionTitle"><span class="text-danger"><strong><i
                 class="fa fa-lg fa-times-circle-o"></i>&nbsp; Errors:</strong></span></h5>
-            <pre>
-                <ul style="margin: 0; padding: 0;">
-                    <li ng-repeat="error in $ctrl.buildResult.result.errors">{{error.errorMessage}}</li>
-                </ul>
-            </pre>
+
+            <ul class="umlResultListing">
+                <li ng-repeat="error in $ctrl.buildResult.result.errors">{{error.errorMessage}}</li>
+            </ul>
         </div>
 
         <!-- Penalties -->
-        <div ng-if="$ctrl.buildResult.result.penalties.length > 0"
-             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
-            <h5><span class="text-danger"><strong><i class="fa fa-lg fa-ban"></i>&nbsp; Penalties ({{$ctrl.buildResult.result.penaltyScore}} points lost):</strong></span>
+        <div ng-if="$ctrl.buildResult.result.penalties.length > 0" class="umlResultSectionContainer">
+            <h5 class="umlResultSectionTitle"><span class="text-danger"><strong><i class="fa fa-lg fa-ban"></i>&nbsp; Penalties ({{$ctrl.buildResult.result.penaltyScore}} points lost):</strong></span>
             </h5>
-            <pre>
-                <ul style="margin: 0; padding: 0;">
-                    <li ng-repeat="error in $ctrl.buildResult.result.penalties">{{error.errorMessage}}</li>
-                </ul>
-            </pre>
+            <ul class="umlResultListing">
+                <li ng-repeat="error in $ctrl.buildResult.result.penalties">{{error.errorMessage}}</li>
+            </ul>
+
+            <div class="umlSectionHint">
+                Hint: Penalties are given if we think that you try to trick us. If that is not the case then you might have added some elements that are not required. Please read the description again.
+            </div>
         </div>
 
         <!-- Assessment Warnings -->
-        <div ng-if="$ctrl.buildResult.result.warnings.length > 0"
-             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
-            <h5><span class="text-warning"><strong><i
+        <div ng-if="$ctrl.buildResult.result.warnings.length > 0" class="umlResultSectionContainer">
+            <h5 class="umlResultSectionTitle"><span class="text-warning"><strong><i
                 class="fa fa-lg fa-exclamation-triangle"></i>&nbsp; Warnings (no impact on final score):</strong></span>
             </h5>
-            <pre>
-                <ul style="margin: 0; padding: 0;">
-                    <li ng-repeat="error in $ctrl.buildResult.result.warnings">{{error.errorMessage}}</li>
-                </ul>
-            </pre>
+            <ul class="umlResultListing">
+                <li ng-repeat="error in $ctrl.buildResult.result.warnings">{{error.errorMessage}}</li>
+            </ul>
+            <div class="umlSectionHint">
+                Hint: Warnings have no impact on the final score but may refer to optimizations you could apply.
+            </div>
         </div>
 
         <!-- Partly Correct -->
-        <div ng-if="$ctrl.buildResult.result.partlyCorrect.length > 0"
-             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
-            <h5><span class="text-info"><strong><i
+        <div ng-if="$ctrl.buildResult.result.partlyCorrect.length > 0" class="umlResultSectionContainer">
+            <h5 class="umlResultSectionTitle"><span class="text-info"><strong><i
                 class="fa fa-lg fa-check-circle-o"></i>&nbsp; Partly Correct:</strong></span></h5>
-            <pre>
-                <ul style="margin: 0; padding: 0;">
-                    <li ng-repeat="item in $ctrl.buildResult.result.partlyCorrect">{{item}}</li>
-                </ul>
-            </pre>
+            <ul class="umlResultListing">
+                <li ng-repeat="item in $ctrl.buildResult.result.partlyCorrect">{{item}}</li>
+            </ul>
+            <div class="umlSectionHint">
+                Hint: You haven't got the whole points because some elements are not as expected by the sample solution. Read the problem description again.
+            </div>
         </div>
 
 
         <!-- Correct -->
-        <div ng-if="$ctrl.buildResult.result.correct.length > 0"
-             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
-            <h5><span class="text-success"><strong><i
+        <div ng-if="$ctrl.buildResult.result.correct.length > 0" class="umlResultSectionContainer">
+            <h5 class="umlResultSectionTitle"><span class="text-success"><strong><i
                 class="fa fa-lg fa-check-circle-o"></i>&nbsp; Correct:</strong></span></h5>
-            <pre>
-                <ul style="margin: 0; padding: 0;">
-                    <li ng-repeat="item in $ctrl.buildResult.result.correct">{{item}}</li>
-                </ul>
-            </pre>
+            <ul class="umlResultListing">
+                <li ng-repeat="item in $ctrl.buildResult.result.correct">{{item}}</li>
+            </ul>
         </div>
     </div>
 
-    <div ng-switch-when="false" ng-if="$ctrl.buildLogs !== null" style="padding-left: 10px; padding-right: 10px;">
+    <div ng-switch-when="false" ng-if="$ctrl.buildLogs !== null" class="umlResultSectionContainer">
         An unexpected error has occurred. Please retry to run tests and contact an instructor if the error still occurs.
         Logs:
         <dl class="buildoutput dl-horizontal" ng-hide="$ctrl.buildLogs.length == 0">
@@ -89,7 +85,7 @@
     </div>
 
     <div ng-switch-when="false" ng-if="$ctrl.buildResult.internalErrorMessage !== null"
-         style="padding-left: 10px; padding-right: 10px;">
+         class="umlResultSectionContainer">
         An unexpected error has occurred. Please retry to run tests and contact an instructor if the error still occurs.
         Logs:
         <pre>

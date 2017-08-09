@@ -1,0 +1,38 @@
+ul.umlResultListing {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 10px;
+    padding-left: 20px;
+    margin: 5px;
+    list-style-position: inside;
+}
+
+
+.umlResultListing li {
+    margin-top:3px;
+    margin-bottom:3px;
+    font-family: Courier, serif;
+    font-size: 14px;
+    line-height: 1.42857;
+    word-break: break-all;
+}
+
+
+.umlResultSectionContainer {
+    padding:10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.umlResultSectionTitle {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+
+.umlSectionHint {
+    font-size: 10px;
+    margin-top:5px;
+}
