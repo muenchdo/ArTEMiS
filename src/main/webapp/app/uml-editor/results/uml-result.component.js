@@ -33,7 +33,7 @@
 
 
             var websocketChannel = '/topic/participation/' + vm.participation.id + '/newResults';
-            
+
             JhiWebsocketService.subscribe(websocketChannel);
 
             JhiWebsocketService.receive(websocketChannel).then(null, null, function (data) {
@@ -129,9 +129,24 @@
                     var vm = this;
 
                     vm.$onInit = init;
+                    vm.buildResult = result;
+                    console.log("details");
+                    console.log(vm.buildResult);
 
                     function init() {
-                        vm.loading = true;
+
+                        if (result.buildSuccessful === true) {
+                            if (result.result !== null) {
+                                vm.loading = false;
+                            } else {
+                                // We have to load the assessment details
+                            }
+                        } else {
+                            // Build not successful, which means there were some internal errors
+                            // (i.e. gradle crashed, or couldn't load report from continious integration, etc.)
+                            vm.loading = true;
+                        }
+                        /*
                         Result.details({
                             id: result.id
                         }, function (details) {
@@ -153,6 +168,7 @@
                             console.log("An error has occurred ");
                             console.log(error);
                         });
+                        */
                     }
                 }],
                 resolve: {

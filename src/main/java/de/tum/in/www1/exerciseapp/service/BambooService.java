@@ -398,6 +398,7 @@ public class BambooService implements ContinuousIntegrationService {
                     score = Math.min(100L, Math.round(preciseScore));
                     result.setScore(score);
                     result.setResultString(score + " %");
+                    result.setBuildSuccessful(true);
                     websocketPayload = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), assessmentResult);
 
                 } catch (Exception e) {
