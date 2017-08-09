@@ -137,84 +137,85 @@
                     console.log(vm.buildResult);
 
                     function init() {
-                        result.then(function (buildResult) {
 
-                            console.log("Result details");
-                            console.log(buildResult);
-                            console.log(buildResult.result);
+                        console.log("Result details");
+                        console.log(result);
+                        console.log(result.result);
 
-                            if (buildResult.buildSuccessful === true) {
-                                if (buildResult.result !== null) {
-                                    // All details are already there, so nothing to load
-                                    vm.loading = false;
-                                    vm.buildResult = buildResult;
-                                    console.log("Everything is loaded");
-                                } else {
-                                    // We have to load the assessment details
+                        console.log("build successful");
+                        console.log(result.buildSuccessful);
 
-                                    console.log("Have to load the details");
-                                    Result.umlExerciseResultWithAssessmentDetails({
-                                        id: participationId
-                                    }, function (buildResult) {
-                                        vm.buildResult = buildResult;
-                                        vm.loading = false;
-
-                                        console.log("Details loaded");
-                                    }, function (error) {
-                                        vm.loading = false;
-                                        console.log("An error has occured");
-                                        console.log(error);
-                                    });
-                                }
-
-                                vm.buildLogs = null;
+                        if (result.buildSuccessful === true) {
+                            if (result.result !== null) {
+                                // All details are already there, so nothing to load
+                                vm.loading = false;
+                                vm.buildResult = result;
+                                console.log("Everything is loaded");
                             } else {
-                                // Build not successful, which means there was an error on continious integration
+                                // We have to load the assessment details
 
-                                console.log("Build not successfull. Loading logs");
-                                vm.loading = true;
+                                console.log("Have to load the details");
+                                Result.umlExerciseResultWithAssessmentDetails({
+                                    id: participationId
+                                }, function (buildResult) {
+                                    vm.buildResult = buildResult;
+                                    vm.loading = false;
 
+                                    console.log("Details loaded");
+                                }, function (error) {
+                                    vm.loading = false;
+                                    console.log("An error has occured");
+                                    console.log(error);
+                                });
+                            }
+
+                            vm.buildLogs = null;
+                        } else {
+                            // Build not successful, which means there was an error on continious integration
+
+                            console.log("Build not successfull. Loading logs");
+                            vm.loading = true;
+
+                            Repository.buildlogs({
+                                participationId: participationId
+                            }, function (buildLogs) {
+                                _.forEach(buildLogs, function (buildLog) {
+                                    buildLog.log = $sce.trustAsHtml(buildLog.log);
+                                });
+                                vm.buildLogs = buildLogs;
+                                vm.loading = false;
+                                console.log("Logs loaded");
+                            }, function (error) {
+                                vm.loading = false;
+                                vm.buildLogs = null;
+                                console.log("An error has occured");
+                                console.log(error);
+                            });
+
+                        }
+                        /*
+                        Result.details({
+                            id: result.id
+                        }, function (details) {
+                            vm.details = details;
+                            if (details.length == 0) {
                                 Repository.buildlogs({
-                                    participationId: participationId
+                                    participationId: result.participation.id
                                 }, function (buildLogs) {
                                     _.forEach(buildLogs, function (buildLog) {
                                         buildLog.log = $sce.trustAsHtml(buildLog.log);
                                     });
                                     vm.buildLogs = buildLogs;
                                     vm.loading = false;
-                                    console.log("Logs loaded");
-                                }, function (error) {
-                                    vm.loading = false;
-                                    vm.buildLogs = null;
-                                    console.log("An error has occured");
-                                    console.log(error);
                                 });
-
+                            } else {
+                                vm.loading = false;
                             }
-                            /*
-                            Result.details({
-                                id: result.id
-                            }, function (details) {
-                                vm.details = details;
-                                if (details.length == 0) {
-                                    Repository.buildlogs({
-                                        participationId: result.participation.id
-                                    }, function (buildLogs) {
-                                        _.forEach(buildLogs, function (buildLog) {
-                                            buildLog.log = $sce.trustAsHtml(buildLog.log);
-                                        });
-                                        vm.buildLogs = buildLogs;
-                                        vm.loading = false;
-                                    });
-                                } else {
-                                    vm.loading = false;
-                                }
-                            }, function (error) {
-                                console.log("An error has occurred ");
-                                console.log(error);
-                            });
-                            */
+                        }, function (error) {
+                            console.log("An error has occurred ");
+                            console.log(error);
                         });
+                        */
                     }
                 }],
                 resolve: {
