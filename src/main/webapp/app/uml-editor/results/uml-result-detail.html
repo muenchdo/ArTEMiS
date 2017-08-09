@@ -12,12 +12,12 @@
     <div ng-switch-when="false" ng-if="$ctrl.buildResult.result != null">
 
         <p>We have compared your submission with the provided sample solution. You got <strong>{{$ctrl.buildResult.result.score}}
-            of {{$ctrl.buildResult.result.maxScore}} ({{$ctrl.buildResult.parityWithSampleSolution}})</strong> and here
+            of {{$ctrl.buildResult.result.maxScore}} points ({{$ctrl.buildResult.parityWithSampleSolution}})</strong> and here
             is why:</p>
 
         <!-- Assessment Errors -->
         <div ng-if="$ctrl.buildResult.result.errors.length > 0" style="padding-left: 10px; padding-right: 10px;">
-            <span class="text-danger"><strong><i class="fa fa-lg fa-times-circle-o"></i>&nbsp; Errors:</strong></span>
+            <h5><span class="text-danger"><strong><i class="fa fa-lg fa-times-circle-o"></i>&nbsp; Errors:</strong></span></h5>
             <pre>
                 <ul>
                     <li ng-repeat="error in $ctrl.buildResult.result.errors">{{error.errorMessage}}</li>
