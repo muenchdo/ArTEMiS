@@ -113,7 +113,7 @@
                 return "text-danger";
             }
 
-            if (vm.result.parityWithSampleSolution === "100 %")
+            if (vm.result.parityWithSampleSolution === "100%")
                 return "text-success";
             else
                 return "text-danger";

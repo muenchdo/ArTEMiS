@@ -412,7 +412,7 @@ public class BambooService implements ContinuousIntegrationService {
                     double preciseScore = (assessmentResult.getScore() / assessmentResult.getMaxScore()) * 100;
                     score = Math.min(100L, Math.round(preciseScore));
                     result.setScore(score);
-                    result.setResultString(score + " %");
+                    result.setResultString(score + "%");
                     result.setBuildSuccessful(result.isBuildSuccessful());
                     websocketPayload = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), assessmentResult, null);
 
@@ -420,7 +420,7 @@ public class BambooService implements ContinuousIntegrationService {
                     log.error("HttpError while retrieving results", e);
                     score = 0;
                     result.setScore(score);
-                    result.setResultString(score + " %");
+                    result.setResultString(score + "%");
                     result.setBuildSuccessful(result.isBuildSuccessful());
 
                     String internalErrorMsg = "Error occurred while loading Assessment Report from Bamboo.\n\n" + ExceptionUtils.getStackTrace(e);
@@ -431,7 +431,7 @@ public class BambooService implements ContinuousIntegrationService {
             } else {
                 log.error("UML Exercise must have a artifact url. See README. participationId = " + participation.getId() + " buildplanId = " + participation.getBuildPlanId() + " exerciseId: " + participation.getExercise().getId() + " exerciseTitle" + participation.getExercise().getTitle());
                 result.setScore(0L);
-                result.setResultString(0 + " %");
+                result.setResultString("0%");
                 result.setBuildSuccessful(result.isBuildSuccessful());
                 String internalErrorMsg = "No artifact url found to load the Assessment Report. This seems to be a configuration issue. Please contact an instructor. Your Bamboo Build Plan ID is "+participation.getBuildPlanId();
                 websocketPayload = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), null, internalErrorMsg);
