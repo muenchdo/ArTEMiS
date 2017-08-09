@@ -107,8 +107,7 @@ You will need to create a unique Bitbucket project per exercise.
             ```
             ./gradlew assessment
             ```
-        8. Add a JUnit Parser Task: put `**/test-reports/*.xml` into the textfield with the label **specify custom results directory**
-        9. Add a script task with the following (inline) content (as final task):
+        8. Add a script task with the following (inline) content (as final task):
 
                 curl -k -X POST https://exercisebruegge.in.tum.de/api/results/${bamboo.planKey}
     3. Configure Artifacts (there is an Artifacts tab in while editing the job). Click on the "Create definition" button. Insert any name. Set "Location" to `artifact` and set "Copy Pattern" to `AssessmentResult.json`

@@ -12,30 +12,86 @@
     <div ng-switch-when="false" ng-if="$ctrl.buildResult.result != null">
 
         <p>We have compared your submission with the provided sample solution. You got <strong>{{$ctrl.buildResult.result.score}}
-            of {{$ctrl.buildResult.result.maxScore}} points ({{$ctrl.buildResult.parityWithSampleSolution}})</strong> and here
+            of {{$ctrl.buildResult.result.maxScore}} points ({{$ctrl.buildResult.parityWithSampleSolution}})</strong>
+            and here
             is why:</p>
 
         <!-- Assessment Errors -->
-        <div ng-if="$ctrl.buildResult.result.errors.length > 0" style="padding-left: 10px; padding-right: 10px;">
-            <h5><span class="text-danger"><strong><i class="fa fa-lg fa-times-circle-o"></i>&nbsp; Errors:</strong></span></h5>
+        <div ng-if="$ctrl.buildResult.result.errors.length > 0"
+             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
+            <h5><span class="text-danger"><strong><i
+                class="fa fa-lg fa-times-circle-o"></i>&nbsp; Errors:</strong></span></h5>
             <pre>
-                <ul>
+                <ul style="margin: 0; padding: 0;">
                     <li ng-repeat="error in $ctrl.buildResult.result.errors">{{error.errorMessage}}</li>
+                </ul>
+            </pre>
+        </div>
+
+        <!-- Penalties -->
+        <div ng-if="$ctrl.buildResult.result.penalties.length > 0"
+             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
+            <h5><span class="text-danger"><strong><i class="fa fa-lg fa-ban"></i>&nbsp; Penalties ({{$ctrl.buildResult.result.penaltyScore}} points lost):</strong></span>
+            </h5>
+            <pre>
+                <ul style="margin: 0; padding: 0;">
+                    <li ng-repeat="error in $ctrl.buildResult.result.penalties">{{error.errorMessage}}</li>
+                </ul>
+            </pre>
+        </div>
+
+        <!-- Assessment Warnings -->
+        <div ng-if="$ctrl.buildResult.result.warnings.length > 0"
+             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
+            <h5><span class="text-warning"><strong><i
+                class="fa fa-lg fa-exclamation-triangle"></i>&nbsp; Warnings (no impact on final score):</strong></span>
+            </h5>
+            <pre>
+                <ul style="margin: 0; padding: 0;">
+                    <li ng-repeat="error in $ctrl.buildResult.result.warnings">{{error.errorMessage}}</li>
+                </ul>
+            </pre>
+        </div>
+
+        <!-- Partly Correct -->
+        <div ng-if="$ctrl.buildResult.result.partlyCorrect.length > 0"
+             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
+            <h5><span class="text-info"><strong><i
+                class="fa fa-lg fa-check-circle-o"></i>&nbsp; Partly Correct:</strong></span></h5>
+            <pre>
+                <ul style="margin: 0; padding: 0;">
+                    <li ng-repeat="item in $ctrl.buildResult.result.partlyCorrect">{{item}}</li>
+                </ul>
+            </pre>
+        </div>
+
+
+        <!-- Correct -->
+        <div ng-if="$ctrl.buildResult.result.correct.length > 0"
+             style="padding-left: 10px; padding-right: 10px; margin-top: 20px; margin-bottom: 20px;">
+            <h5><span class="text-success"><strong><i
+                class="fa fa-lg fa-check-circle-o"></i>&nbsp; Correct:</strong></span></h5>
+            <pre>
+                <ul style="margin: 0; padding: 0;">
+                    <li ng-repeat="item in $ctrl.buildResult.result.correct">{{item}}</li>
                 </ul>
             </pre>
         </div>
     </div>
 
     <div ng-switch-when="false" ng-if="$ctrl.buildLogs !== null" style="padding-left: 10px; padding-right: 10px;">
-        An unexpected error has occurred. Please retry to run tests and contact an instructor if the error still occurs. Logs:
+        An unexpected error has occurred. Please retry to run tests and contact an instructor if the error still occurs.
+        Logs:
         <dl class="buildoutput dl-horizontal" ng-hide="$ctrl.buildLogs.length == 0">
             <dt ng-repeat-start="logEntry in $ctrl.buildLogs">{{logEntry.time | date:'yyyy-MM-dd HH:mm:ss'}}</dt>
             <dd ng-repeat-end ng-bind-html="logEntry.log"></dd>
         </dl>
     </div>
 
-    <div ng-switch-when="false" ng-if="$ctrl.buildResult.internalErrorMessage !== null" style="padding-left: 10px; padding-right: 10px;">
-        An unexpected error has occurred. Please retry to run tests and contact an instructor if the error still occurs. Logs:
+    <div ng-switch-when="false" ng-if="$ctrl.buildResult.internalErrorMessage !== null"
+         style="padding-left: 10px; padding-right: 10px;">
+        An unexpected error has occurred. Please retry to run tests and contact an instructor if the error still occurs.
+        Logs:
         <pre>
             {{$ctrl.buildResult.internalErrorMessage}}
         </pre>
