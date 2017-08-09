@@ -28,14 +28,14 @@
 
         <!-- Penalties -->
         <div ng-if="$ctrl.buildResult.result.penalties.length > 0" class="umlResultSectionContainer">
-            <h5 class="umlResultSectionTitle"><span class="text-danger"><strong><i class="fa fa-lg fa-ban"></i>&nbsp; Penalties ({{$ctrl.buildResult.result.penaltyScore}} points lost):</strong></span>
+            <h5 class="umlResultSectionTitle"><span class="text-danger"><strong><i class="fa fa-lg fa-ban"></i>&nbsp; Penalties ({{$ctrl.buildResult.result.penaltyScore | number : 2}} points lost):</strong></span>
             </h5>
             <ul class="umlResultListing">
                 <li ng-repeat="error in $ctrl.buildResult.result.penalties">{{error.errorMessage}}</li>
             </ul>
 
             <div class="umlSectionHint">
-                Hint: Penalties are given if we think that you try to trick us. If that is not the case then you might have added some elements that are not required. Please read the description again.
+                <strong>Hint:</strong> Penalties are given if we think that you try to trick us. If that is not the case then you might have added some elements that are not required. Please read the description again.
             </div>
         </div>
 
@@ -48,7 +48,7 @@
                 <li ng-repeat="error in $ctrl.buildResult.result.warnings">{{error.errorMessage}}</li>
             </ul>
             <div class="umlSectionHint">
-                Hint: Warnings have no impact on the final score but may refer to optimizations you could apply.
+                <strong>Hint:</strong> Warnings have no impact on the final score but may refer to optimizations you could apply.
             </div>
         </div>
 
@@ -60,7 +60,7 @@
                 <li ng-repeat="item in $ctrl.buildResult.result.partlyCorrect">{{item}}</li>
             </ul>
             <div class="umlSectionHint">
-                Hint: You haven't got the whole points because some elements are not as expected by the sample solution. Read the problem description again.
+                <strong>Hint:</strong> You haven't got the whole points because some elements are not as expected by the sample solution. Read the problem description again.
             </div>
         </div>
 
