@@ -42,7 +42,7 @@
         <!-- Assessment Warnings -->
         <div ng-if="$ctrl.buildResult.result.warnings.length > 0" class="umlResultSectionContainer">
             <h5 class="umlResultSectionTitle"><span class="text-warning"><strong><i
-                class="fa fa-lg fa-exclamation-triangle"></i>&nbsp; Warnings (no impact on final score):</strong></span>
+                class="fa fa-lg fa-exclamation-triangle"></i>&nbsp; Warnings:</strong></span>
             </h5>
             <ul class="umlResultListing">
                 <li ng-repeat="error in $ctrl.buildResult.result.warnings">{{error.errorMessage}}</li>
