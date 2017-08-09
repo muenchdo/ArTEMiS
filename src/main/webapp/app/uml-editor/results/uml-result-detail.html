@@ -11,8 +11,8 @@
 
     <div ng-switch-when="false" ng-if="$ctrl.buildResult.result != null">
 
-        <p>We have compared your submission with the provided sample solution. You got <strong>{{$ctrl.buildResult.result.score}}
-            of {{$ctrl.buildResult.result.maxScore}} points ({{$ctrl.buildResult.parityWithSampleSolution}})</strong>
+        <p>We have compared your submission with the provided sample solution. You got <strong>{{$ctrl.buildResult.result.score | number : 2}}
+            of {{$ctrl.buildResult.result.maxScore | number : 2}} points ({{$ctrl.buildResult.parityWithSampleSolution}})</strong>
             and here
             is why:</p>
 
