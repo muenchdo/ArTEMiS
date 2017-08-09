@@ -28,6 +28,8 @@
         vm.showDetails = showDetails;
         vm.textStyle = textStyle;
 
+        var participationId = vm.participation.id
+
         function init() {
             refresh();
 
@@ -130,6 +132,7 @@
 
                     vm.$onInit = init;
                     vm.buildResult = result;
+                    vm.buildLogs = null;
                     console.log("details");
                     console.log(vm.buildResult);
 
@@ -137,14 +140,38 @@
 
                         if (result.buildSuccessful === true) {
                             if (result.result !== null) {
+                                // All details are already there, so nothing to load
                                 vm.loading = false;
+                                vm.buildResult = result;
                             } else {
                                 // We have to load the assessment details
+                                Result.umlExerciseResultWithAssessmentDetails({
+                                    id: participationId
+                                }, function (buildResult) {
+                                    vm.buildResult = buildResult;
+                                    vm.loading = false;
+                                }, function (error) {
+                                    vm.loading = false;
+                                });
                             }
+
+                            vm.buildLogs = null;
                         } else {
-                            // Build not successful, which means there were some internal errors
-                            // (i.e. gradle crashed, or couldn't load report from continious integration, etc.)
+                            // Build not successful, which means there was an error on continious integration
                             vm.loading = true;
+
+                            Repository.buildlogs({
+                                participationId: participationId
+                            }, function (buildLogs) {
+                                _.forEach(buildLogs, function (buildLog) {
+                                    buildLog.log = $sce.trustAsHtml(buildLog.log);
+                                });
+                                vm.buildLogs = buildLogs;
+                                vm.loading = false;
+                            }, function (error) {
+                                vm.loading = false;
+                            });
+
                         }
                         /*
                         Result.details({

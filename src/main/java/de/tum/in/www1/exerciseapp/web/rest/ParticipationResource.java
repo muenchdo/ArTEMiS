@@ -345,7 +345,7 @@ public class ParticipationResource {
     public ResponseEntity<UmlBuildResult> getUmlExerciseResult(@PathVariable Long id, @RequestParam(value = "assessmentDetails", required = false) Boolean loadAssessmentDetails, Authentication authentication) {
         loadAssessmentDetails = loadAssessmentDetails != null; // If null, not specified in url, therefor treat it as null
 
-        log.debug("REST request to get UML Result: participationId = " + id + " loadAssessmentDetails="+loadAssessmentDetails);
+        log.debug("REST request to get UML Result: participationId = " + id + " loadAssessmentDetails=" + loadAssessmentDetails);
         AbstractAuthenticationToken user = (AbstractAuthenticationToken) authentication;
         GrantedAuthority adminAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN);
         GrantedAuthority taAuthority = new SimpleGrantedAuthority(AuthoritiesConstants.TEACHING_ASSISTANT);
@@ -356,15 +356,10 @@ public class ParticipationResource {
         }
 
         if (participation.getStudent().getLogin().equals(user.getName()) || (user.getAuthorities().contains(adminAuthority) || user.getAuthorities().contains(taAuthority))) {
-            try {
-                return continuousIntegrationService.getLastUmlExerciseResultDetails(participation, loadAssessmentDetails)
-                    .map(resultDetails -> new ResponseEntity<>(resultDetails,
-                        HttpStatus.OK))
-                    .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-            } catch (Exception e) {
-                log.error("Error while loading UML Exercise Assessment Results for participation " + participation.getId());
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            return continuousIntegrationService.getLastUmlExerciseResultDetails(participation, loadAssessmentDetails)
+                .map(resultDetails -> new ResponseEntity<>(resultDetails,
+                    HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

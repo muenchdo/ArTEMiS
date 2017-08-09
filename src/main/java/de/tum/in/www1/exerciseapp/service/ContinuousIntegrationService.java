@@ -105,9 +105,9 @@ public interface ContinuousIntegrationService {
      *                              (which includes errors, scores for each items, penalties etc.) from continuous integration
      *                              server (which might be expensive) we can turn this on or off.
      *
-     * @return The assessment result or {@code null} if no result could be found
+     * @return The assessment result or {@code null} if no result could be found (i.e. because test never run) wrapped into an optional
      */
-    Optional<UmlBuildResult> getLastUmlExerciseResultDetails(Participation participation, boolean loadAssessmentDetails) throws Exception;
+    Optional<UmlBuildResult> getLastUmlExerciseResultDetails(Participation participation, boolean loadAssessmentDetails);
 
     /**
      * Get the build logs of the latest CI build.

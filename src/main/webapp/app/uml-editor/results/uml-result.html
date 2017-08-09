@@ -4,7 +4,7 @@
     <span class="text-primary" ng-if="$ctrl.queued"><i class="fa fa-circle-o-notch fa-lg fa-spin"></i>&nbsp;Test is queued</span>
     <span class="text-primary" ng-if="$ctrl.building"><i class="fa fa-circle-o-notch fa-lg fa-spin"></i>&nbsp;Testing...</span>
 </span>
-<span ng-if="$ctrl.hasResults()" ng-switch on="$ctrl.result.buildSuccessful">
+<span ng-if="$ctrl.hasResults()" ng-switch on="$ctrl.result.parityWithSampleSolution ==='100 %'">
 
     <span ng-switch-when="true">
         <span class="{{$ctrl.textStyle()}}">
@@ -17,7 +17,6 @@
 
     </span>
     <span ng-switch-when="false">
-        <!-- only false on a fatal internal error, i.e. Artemis couldn't read assessment result file because no internet connection -->
         <span class="{{$ctrl.textStyle()}}">
             <i class="fa fa-lg fa-times-circle-o"></i>&nbsp;
             <a class="{{$ctrl.textStyle()}}"

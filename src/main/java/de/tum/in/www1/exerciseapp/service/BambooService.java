@@ -18,6 +18,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -195,7 +196,7 @@ public class BambooService implements ContinuousIntegrationService {
     }
 
     @Override
-    public Optional<UmlBuildResult> getLastUmlExerciseResultDetails(Participation participation, boolean loadAssessmentDetails) throws Exception {
+    public Optional<UmlBuildResult> getLastUmlExerciseResultDetails(Participation participation, boolean loadAssessmentDetails) {
 
         if (participation.getExercise().getExerciseType() != ExerciseType.UML_CLASS_DIAGRAM) {
             throw new IllegalArgumentException("The given participation is not on a Exercise of type " + ExerciseType.UML_CLASS_DIAGRAM + ". Participation: " + participation);
@@ -210,16 +211,30 @@ public class BambooService implements ContinuousIntegrationService {
 
         String artifactUrl = loadArtifactUrlForUmlExercise(participation.getBuildPlanId());
         if (artifactUrl == null) {
-            throw new NullPointerException("The participation with id = " + participation.getId() + " doesn't have an artifact url for latest build. " +
+
+            log.error("The participation with id = " + participation.getId() + " doesn't have an artifact url for latest build. " +
                 "BuildPlan: " + participation.getBuildPlanId() + " Exercise: " + participation.getExercise().getId() + " - " + participation.getExercise().getTitle());
+
+
+            String internalErrorMsg = "No artifact URL found to load Assessment report from Bamboo. This seems to be a configuration issue. Please contact instructor. Build Plan id is " + participation.getBuildPlanId();
+            return Optional.of(new UmlBuildResult(resultFromDatabase.isBuildSuccessful(), resultFromDatabase.getResultString(), resultFromDatabase.getBuildCompletionDate(), null, internalErrorMsg));
+
+
         }
 
 
         UmlAssessmentResult umlAssessmentResult = null;
-        if (loadAssessmentDetails)
-            umlAssessmentResult = getUmlAssessmentResult(artifactUrl);
+        String errorMessage = null;
+        if (loadAssessmentDetails) {
+            try {
+                umlAssessmentResult = getUmlAssessmentResult(artifactUrl);
+            } catch (Exception e) {
+                log.error("Couldn't load Assessment Report from bamboo", e);
+                errorMessage = "Error while loading Assessment report from Bamboo.\n\n" + ExceptionUtils.getStackTrace(e);
+            }
+        }
 
-        UmlBuildResult buildResult = new UmlBuildResult(resultFromDatabase.isBuildSuccessful(), resultFromDatabase.getResultString(), resultFromDatabase.getBuildCompletionDate(), umlAssessmentResult);
+        UmlBuildResult buildResult = new UmlBuildResult(resultFromDatabase.isBuildSuccessful(), resultFromDatabase.getResultString(), resultFromDatabase.getBuildCompletionDate(), umlAssessmentResult, errorMessage);
         return Optional.of(buildResult);
 
     }
@@ -398,25 +413,33 @@ public class BambooService implements ContinuousIntegrationService {
                     score = Math.min(100L, Math.round(preciseScore));
                     result.setScore(score);
                     result.setResultString(score + " %");
-                    result.setBuildSuccessful(true);
-                    websocketPayload = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), assessmentResult);
+                    result.setBuildSuccessful(result.isBuildSuccessful());
+                    websocketPayload = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), assessmentResult, null);
 
                 } catch (Exception e) {
                     log.error("HttpError while retrieving results", e);
                     score = 0;
                     result.setScore(score);
                     result.setResultString(score + " %");
-                    result.setBuildSuccessful(false);
+                    result.setBuildSuccessful(result.isBuildSuccessful());
+
+                    String internalErrorMsg = "Error occurred while loading Assessment Report from Bamboo.\n\n" + ExceptionUtils.getStackTrace(e);
+
+                    websocketPayload = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), null, internalErrorMsg);
+
                 }
             } else {
                 log.error("UML Exercise must have a artifact url. See README. participationId = " + participation.getId() + " buildplanId = " + participation.getBuildPlanId() + " exerciseId: " + participation.getExercise().getId() + " exerciseTitle" + participation.getExercise().getTitle());
                 result.setScore(0L);
                 result.setResultString(0 + " %");
-                result.setBuildSuccessful(false);
+                result.setBuildSuccessful(result.isBuildSuccessful());
+                String internalErrorMsg = "No artifact url found to load the Assessment Report. This seems to be a configuration issue. Please contact an instructor. Your Bamboo Build Plan ID is "+participation.getBuildPlanId();
+                websocketPayload = new UmlBuildResult(result.isBuildSuccessful(), result.getResultString(), result.getBuildCompletionDate(), null, internalErrorMsg);
             }
         } else {
             // Not uml exercise
             result.setScore(calculateScoreForResult(result));
+            websocketPayload = true; // Coding exercises just send "true" as payload to client through websocket
         }
 
         resultRepository.save(result);
