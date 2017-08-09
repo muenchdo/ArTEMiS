@@ -16,26 +16,26 @@
             is why:</p>
 
         <!-- Assessment Errors -->
-        <div ng-if="$ctrl.buildResult.result.errors.length > 0">
-            <span class="text-danger"><i class="fa fa-lg fa-times-circle-o"></i>&nbsp; Errors: </span>
-            <div ng-repeat="error in $ctrl.buildResult.result.errors track by $index" ng-init="lastError = $last">
-                <div ng-repeat="error in detail.errors.error">
-                    <pre>{{error.errorMessage}}</pre>
-                </div>
-                <hr ng-if="!lastError">
-            </div>
+        <div ng-if="$ctrl.buildResult.result.errors.length > 0" style="padding-left: 10px; padding-right: 10px;">
+            <span class="text-danger"><strong><i class="fa fa-lg fa-times-circle-o"></i>&nbsp; Errors:</strong></span>
+            <pre>
+                <ul>
+                    <li ng-repeat="error in $ctrl.buildResult.result.errors">{{error.errorMessage}}</li>
+                </ul>
+            </pre>
         </div>
-
     </div>
 
-    <div ng-switch-when="false" ng-if="$ctrl.buildLogs != null">
+    <div ng-switch-when="false" ng-if="$ctrl.buildLogs !== null" style="padding-left: 10px; padding-right: 10px;">
+        An unexpected error has occurred. Please retry to run tests and contact an instructor if the error still occurs. Logs:
         <dl class="buildoutput dl-horizontal" ng-hide="$ctrl.buildLogs.length == 0">
             <dt ng-repeat-start="logEntry in $ctrl.buildLogs">{{logEntry.time | date:'yyyy-MM-dd HH:mm:ss'}}</dt>
             <dd ng-repeat-end ng-bind-html="logEntry.log"></dd>
         </dl>
     </div>
 
-    <div ng-switch-when="false" ng-if="$ctrl.buildResult.internalErrorMessage != null">
+    <div ng-switch-when="false" ng-if="$ctrl.buildResult.internalErrorMessage !== null" style="padding-left: 10px; padding-right: 10px;">
+        An unexpected error has occurred. Please retry to run tests and contact an instructor if the error still occurs. Logs:
         <pre>
             {{$ctrl.buildResult.internalErrorMessage}}
         </pre>

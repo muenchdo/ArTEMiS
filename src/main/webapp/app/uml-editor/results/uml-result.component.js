@@ -138,26 +138,39 @@
 
                     function init() {
 
+                        console.log("Result details");
+                        console.log(result);
+                        console.log(result.result);
+
                         if (result.buildSuccessful === true) {
                             if (result.result !== null) {
                                 // All details are already there, so nothing to load
                                 vm.loading = false;
                                 vm.buildResult = result;
+                                console.log("Everything is loaded");
                             } else {
                                 // We have to load the assessment details
+
+                                console.log("Have to load the details");
                                 Result.umlExerciseResultWithAssessmentDetails({
                                     id: participationId
                                 }, function (buildResult) {
                                     vm.buildResult = buildResult;
                                     vm.loading = false;
+
+                                    console.log("Details loaded");
                                 }, function (error) {
                                     vm.loading = false;
+                                    console.log("An error has occured");
+                                    console.log(error);
                                 });
                             }
 
                             vm.buildLogs = null;
                         } else {
                             // Build not successful, which means there was an error on continious integration
+
+                            console.log("Build not successfull. Loading logs");
                             vm.loading = true;
 
                             Repository.buildlogs({
@@ -168,8 +181,12 @@
                                 });
                                 vm.buildLogs = buildLogs;
                                 vm.loading = false;
+                                console.log("Logs loaded");
                             }, function (error) {
                                 vm.loading = false;
+                                vm.buildLogs = null;
+                                console.log("An error has occured");
+                                console.log(error);
                             });
 
                         }
