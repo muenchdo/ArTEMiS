@@ -4104,6 +4104,40 @@ function cancelEditinUmlRelationTextFieldReducer(intent$, log) {
         return ViewStateReducer_1.logReducer(log, "cancelEditinUmlRelationTextFieldReducer");
     }).switchMap(function (intent) {
         return Rx.Observable.of(function (oldState) {
+            var relation = oldState.umlDocument.relations.get(intent.umlRelationId);
+            if (relation == null) {
+                throw new Error("Couldn't find a relation with id " + intent.umlRelationId);
+            }
+            // Replace empty string with 0 
+            if (relation.startMultiplicity.trim() === "" || relation.endMultiplicity.trim() === "") {
+                var changed = {
+                    id: relation.id,
+                    points: relation.points,
+                    relationType: relation.relationType,
+                    startTypeId: relation.startTypeId,
+                    startTypeAnchorPoint: relation.startTypeAnchorPoint,
+                    startMultiplicity: relation.startMultiplicity.trim() === "" ? "0" : relation.startMultiplicity,
+                    endTypeId: relation.endTypeId,
+                    endTypeAnchorPoint: relation.endTypeAnchorPoint,
+                    endMultiplicity: relation.endMultiplicity.trim() === "" ? "0" : relation.endMultiplicity
+                };
+                var changedDoc = {
+                    relations: oldState.umlDocument.relations.set(relation.id, changed),
+                    types: oldState.umlDocument.types,
+                    classImplementingInterface: oldState.umlDocument.classImplementingInterface,
+                    globalMeta: oldState.umlDocument.globalMeta,
+                    inheritance: oldState.umlDocument.inheritance
+                };
+                return {
+                    menuItems: oldState.menuItems,
+                    umlDocument: changedDoc,
+                    currentInteractionTransaction: oldState.currentInteractionTransaction,
+                    errors: oldState.errors,
+                    selectedElements: SelectedElement_1.setSelected(new SelectedElement_1.SelectUmlRelation(intent.umlRelationId, false, false)),
+                    infoMessages: oldState.infoMessages
+                };
+            }
+            // Multiplicity not changed
             return {
                 menuItems: oldState.menuItems,
                 umlDocument: oldState.umlDocument,
@@ -4150,9 +4184,10 @@ function changeUmlRelationTextFieldReducer(intent$, log) {
             } else {
                 editingSecondMultiplicity = !intent.stopEditing;
             }
+            var value = intent.stopEditing === true && intent.updatedValue.trim() === "" ? "0" : intent.updatedValue;
             return {
                 menuItems: oldState.menuItems,
-                umlDocument: EditorUmlDocument_1.changeMultiplicityOfUmlRelation(oldState.umlDocument, intent.umlRelationId, intent.updatedValue, startMultiplicity),
+                umlDocument: EditorUmlDocument_1.changeMultiplicityOfUmlRelation(oldState.umlDocument, intent.umlRelationId, value, startMultiplicity),
                 currentInteractionTransaction: oldState.currentInteractionTransaction,
                 errors: errors,
                 selectedElements: SelectedElement_1.setSelected(new SelectedElement_1.SelectUmlRelation(intent.umlRelationId, editingFirstMultiplicity, editingSecondMultiplicity)),
