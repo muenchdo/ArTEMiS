@@ -24,7 +24,8 @@
             <div class="navbar-collapse" uib-collapse="vm.isNavbarCollapsed">
 
                 <div class="navbar-nav navbar-right">
-                    <umlresult participation="$ctrl.participation" on-new-result="$ctrl.updateLatestResult($event)" show-build-date="false" load-details="true"></umlresult>
+                    <umlresult participation="$ctrl.participation" on-new-result="$ctrl.updateLatestResult($event)"
+                               show-build-date="false" load-details="true"></umlresult>
 
                     <button id="umlSaveButton" type="button" class="btn btn-primary navbar-btn">
                         <span id="umlSaveButtonText"><i class="fa fa-play-circle-o"></i> Save & Run Tests</span>
@@ -47,14 +48,16 @@
 
     </div>
 
-    <button id="panelInstructionMaximizer" class="btn btn-primary navbar-btn" style="position: fixed; right: 0; top: 30%; margin: 0; -ms-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); transform: rotate(-90deg); transform-origin: right bottom; -ms-transform-origin: right bottom; -webkit-transform-origin: right bottom;">
+    <button id="panelInstructionMaximizer" class="btn btn-primary navbar-btn"
+            style="position: fixed; right: 0; top: 30%; margin: 0; -ms-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); transform: rotate(-90deg); transform-origin: right bottom; -ms-transform-origin: right bottom; -webkit-transform-origin: right bottom;">
         <span><i class="glyphicon glyphicon glyphicon-list-alt"></i> &nbsp; Instructions &nbsp;</span>
     </button>
 
     <div id="panelInstructions" style="width: 300px; height: 80%; position:fixed; right: 0; bottom: 10%; top:10%;"
          class="panel panel-primary" resizable r-directions="['left']" r-width="$ctrl.initialInstructionsWidth">
         <div class="panel-heading">
-            <span class="pull-right" id="instructionsCollapseButton"><i class="glyphicon glyphicon-chevron-right"></i></span>
+            <span class="pull-right" id="instructionsCollapseButton"><i
+                class="glyphicon glyphicon-chevron-right"></i></span>
             <h3 class="panel-title">
                 <i class="glyphicon glyphicon glyphicon-list-alt"></i>
                 <span> &nbsp; Instructions &nbsp; </span>
@@ -63,201 +66,218 @@
         </div>
 
 
-            <div class="panel-body instructions" style="height: calc(100% - 40px); overflow: scroll; background: none;" id="instructionsMarkdown"></div>
+        <div class="panel-body instructions" style="height: calc(100% - 40px); overflow: scroll; background: none;"
+             id="instructionsMarkdown"></div>
     </div>
 
 
     <script src="/static/uml-editor/js/UmlEditorBundled.js"></script>
 
     <script>
-        var saveButton = $("#umlSaveButton");
-        var saveButtonText = $("#umlSaveButtonText");
-        var instructionsContainer = $("#panelInstructions");
-        var instructionsMarkDown = $("#instructionsMarkdown");
-        var instructionsCollapseButton = $("#instructionsCollapseButton");
-        var instructionsMaximizerButton = $("#panelInstructionMaximizer");
-        var lastInstructionContainerWidth = "300";
 
 
-        function start() {
+        var isChrome = false;
+        var isSafari = false;
+        if (navigator.userAgent.search("Chrome") >= 0) {
+            isChrome = true;
+        } else if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+            isSafari = true;
+        }
 
-            var Repository = angular.element('*[ng-app]').injector().get("Repository");
-            var RepositoryFile = angular.element('*[ng-app]').injector().get("RepositoryFile");
-            var JhiWebsocketService = angular.element('*[ng-app]').injector().get("JhiWebsocketService");
-            var markdown = new Remarkable();
-
-            var url = window.location.href;
-            var urlIndex = url.lastIndexOf('/');
-            var participationId = Number(url.substring(urlIndex + 1));
-
-            if (isNaN(participationId)) {
-                alert("Oops, something went wrong. Please reload page.");
-            }
+        if (isChrome === false && isSafari === false) {
+            alert("Unfortunately your Browser is not supported yet for UML modeling exercises.\nOnly Chrome and Safari are supported now.\n\nWe highly recommend to use Chrome as it provides the best performance");
+            window.history.back();
+        } else {
 
 
-            // store url on load
-            var currentPage = window.location.href;
+            var saveButton = $("#umlSaveButton");
+            var saveButtonText = $("#umlSaveButtonText");
+            var instructionsContainer = $("#panelInstructions");
+            var instructionsMarkDown = $("#instructionsMarkdown");
+            var instructionsCollapseButton = $("#instructionsCollapseButton");
+            var instructionsMaximizerButton = $("#panelInstructionMaximizer");
+            var lastInstructionContainerWidth = "300";
 
 
-            //
-            // Function to load the file
-            //
-            function loadFile(successCallback, errorCallback) {
-                RepositoryFile.get({
+            function start() {
+
+                var Repository = angular.element('*[ng-app]').injector().get("Repository");
+                var RepositoryFile = angular.element('*[ng-app]').injector().get("RepositoryFile");
+                var JhiWebsocketService = angular.element('*[ng-app]').injector().get("JhiWebsocketService");
+                var markdown = new Remarkable();
+
+                var url = window.location.href;
+                var urlIndex = url.lastIndexOf('/');
+                var participationId = Number(url.substring(urlIndex + 1));
+
+                if (isNaN(participationId)) {
+                    alert("Oops, something went wrong. Please reload page.");
+                }
+
+
+                // store url on load
+                var currentPage = window.location.href;
+
+
+                //
+                // Function to load the file
+                //
+                function loadFile(successCallback, errorCallback) {
+                    RepositoryFile.get({
+                            participationId: participationId,
+                            file: "submission.json"
+                        }, function (fileObj) {
+                            try {
+                                successCallback(JSON.parse(fileObj.fileContent))
+                            } catch (e) {
+                                errorCallback(e)
+                            }
+                        },
+                        function (error) {
+                            errorCallback(error)
+                        }
+                    );
+                }
+
+
+                //
+                //
+                //
+                function saveAndCommitFile(umlDocumentAsJson, successCallback, errorCallback) {
+
+                    saveButton.prop("disabled", true);
+                    saveButtonText.html("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Testing");
+                    var controller = angular.element(document.getElementById("uml-editor-container")).controller('umleditor');
+                    controller.isBuilding = true;
+
+                    RepositoryFile.update({
                         participationId: participationId,
                         file: "submission.json"
+                    }, JSON.stringify(umlDocumentAsJson), function () {
+                        console.log("Saved file");
+
+                        Repository.commit({
+                            participationId: participationId
+                        }, {}, function () {
+                            console.log('comitted');
+                            successCallback()
+                        }, function (err) {
+                            console.log(err);
+                            errorCallback(err);
+                            controller.isBuilding = false;
+                            saveButton.prop("disabled", false);
+                            saveButtonText.html("<i class=\"fa fa-play-circle-o\"></i> Save & Run Tests");
+                        });
+
+                    }, function (err) {
+                        console.log(err);
+                        errorCallback(err)
+                    })
+
+
+                } // End save Function
+
+
+                //
+                // Connect to business logic of UML Editor
+                //
+                var triggerFuncs = UmlClassEditor.startUmlEditor(loadFile, saveAndCommitFile, true, "/static/uml-editor/img/", false);
+                var saveTrigger = triggerFuncs[0];
+                var errorImportTrigger = triggerFuncs[1];
+
+                var websocketChannelUml = '/topic/participation/' + participationId + '/newResults';
+
+                JhiWebsocketService.subscribe(websocketChannelUml);
+                JhiWebsocketService.receive(websocketChannelUml).then(null, null, function (umlBuildResult) {
+                    saveButton.prop("disabled", false);
+                    saveButtonText.html("<i class=\"fa fa-play-circle-o\"></i> Save & Run Tests");
+
+                    if (errorImportTrigger !== null && umlBuildResult.result !== null) {
+                        errorImportTrigger(umlBuildResult.result);
+                    }
+                });
+
+
+                //
+                // Setup UI
+                //
+
+                saveButton.click(function () {
+                    saveTrigger();
+                });
+
+                instructionsCollapseButton.click(function () {
+                    lastInstructionContainerWidth = instructionsContainer.css("width");
+                    instructionsContainer.animate({width: '0px'}, 200, function () {
+                        instructionsContainer.css({visibility: "hidden"})
+                    });
+                });
+                instructionsMaximizerButton.click(function () {
+                    instructionsContainer.css({visibility: "visible"});
+                    instructionsContainer.animate({width: lastInstructionContainerWidth});
+                });
+
+                instructionsMarkDown.html(markdown.render('Loading ...'));
+
+                RepositoryFile.get({
+                        participationId: participationId,
+                        file: "README.md"
                     }, function (fileObj) {
                         try {
-                            successCallback(JSON.parse(fileObj.fileContent))
+                            instructionsMarkDown.html(markdown.render(fileObj.fileContent));
                         } catch (e) {
-                            errorCallback(e)
+                            console.log(e);
+                            instructionsMarkDown.html(markdown.render('Unexpected Error has occurred'));
                         }
                     },
                     function (error) {
-                        errorCallback(error)
+                        instructionsMarkDown.html(markdown.render("Couldn't load Instructions. No Instructions provided."));
                     }
                 );
+
+
+                //
+                // Clean up
+                //
+                (function ($) {
+                    $.event.special.destroyed = {
+                        remove: function (o) {
+                            if (o.handler) {
+                                o.handler()
+                            }
+                        }
+                    }
+                })(jQuery);
+
+
+                var container = $("#uml-editor-container");
+                container.bind('destroyed', function () {
+                    // unsubscribe websocket
+                    JhiWebsocketService.unsubscribe(websocketChannelUml);
+                    errorImportTrigger = null;
+                    var reactCleanupSuccessful = UmlClassEditor.stopUmlEditor();
+                    console.log("Removed UmlEditor. cleanup done. React cleanup successful: " + reactCleanupSuccessful);
+                });
+
+
             }
 
 
-            //
-            //
-            //
-            function saveAndCommitFile(umlDocumentAsJson, successCallback, errorCallback) {
-
-                saveButton.prop("disabled", true);
-                saveButtonText.html("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Testing");
-                var controller = angular.element(document.getElementById("uml-editor-container")).controller('umleditor');
-                controller.isBuilding = true;
-
-                RepositoryFile.update({
-                    participationId: participationId,
-                    file: "submission.json"
-                }, JSON.stringify(umlDocumentAsJson), function () {
-                   console.log("Saved file");
-
-                    Repository.commit({
-                        participationId: participationId
-                    }, {}, function () {
-                        console.log('comitted');
-                        successCallback()
-                    }, function (err) {
-                        console.log(err);
-                        errorCallback(err);
-                        controller.isBuilding = false;
-                        saveButton.prop("disabled", false);
-                        saveButtonText.html("<i class=\"fa fa-play-circle-o\"></i> Save & Run Tests");
-                    });
-
-                }, function (err) {
-                    console.log(err);
-                    errorCallback(err)
-                })
-
-
-            } // End save Function
-
-
-            //
-            // Connect to business logic of UML Editor
-            //
-            var triggerFuncs = UmlClassEditor.startUmlEditor(loadFile, saveAndCommitFile, true, "/static/uml-editor/img/", false);
-            var saveTrigger = triggerFuncs[0];
-            var errorImportTrigger = triggerFuncs[1];
-
-            var websocketChannelUml = '/topic/participation/' + participationId + '/newResults';
-
-            JhiWebsocketService.subscribe(websocketChannelUml);
-            JhiWebsocketService.receive(websocketChannelUml).then(null, null, function (umlBuildResult) {
-                saveButton.prop("disabled", false);
-                saveButtonText.html("<i class=\"fa fa-play-circle-o\"></i> Save & Run Tests");
-
-                if (errorImportTrigger !== null && umlBuildResult.result !== null) {
-                    errorImportTrigger(umlBuildResult.result);
-                }
-            });
-
-
-
-            //
-            // Setup UI
-            //
-
-            saveButton.click(function () {
-                saveTrigger();
-            });
-
-            instructionsCollapseButton.click(function () {
-                lastInstructionContainerWidth = instructionsContainer.css("width");
-               instructionsContainer.animate({width: '0px'}, 200, function () {
-                   instructionsContainer.css({visibility:"hidden"})
-               });
-            });
-            instructionsMaximizerButton.click(function(){
-                instructionsContainer.css({visibility:"visible"});
-                instructionsContainer.animate({width: lastInstructionContainerWidth});
-            });
-
-            instructionsMarkDown.html(markdown.render('Loading ...'));
-
-            RepositoryFile.get({
-                    participationId: participationId,
-                    file: "README.md"
-                }, function (fileObj) {
-                    try {
-                        instructionsMarkDown.html(markdown.render(fileObj.fileContent));
-                    } catch (e) {
-                        console.log(e);
-                        instructionsMarkDown.html(markdown.render('Unexpected Error has occurred'));
+            if (window.location.href.indexOf("umleditor") !== -1) { // means string.contains("umleditor)
+                start();
+            } else {
+                var startOnHashChanged = function () {
+                    if (window.location.href.indexOf("umleditor") !== -1) { // means string.contains("umleditor)
+                        start();
                     }
-                },
-                function (error) {
-                    instructionsMarkDown.html(markdown.render("Couldn't load Instructions. No Instructions provided."));
-                }
-            );
 
+                    window.removeEventListener("hashchange", startOnHashChanged)
+                };
 
-            //
-            // Clean up
-            //
-            (function ($) {
-                $.event.special.destroyed = {
-                    remove: function (o) {
-                        if (o.handler) {
-                            o.handler()
-                        }
-                    }
-                }
-            })(jQuery);
+                window.addEventListener("hashchange", startOnHashChanged);
+            }
 
-
-
-            var container = $("#uml-editor-container");
-            container.bind('destroyed', function () {
-                // unsubscribe websocket
-                JhiWebsocketService.unsubscribe(websocketChannelUml);
-                errorImportTrigger = null;
-                var reactCleanupSuccessful = UmlClassEditor.stopUmlEditor();
-                console.log("Removed UmlEditor. cleanup done. React cleanup successful: "+reactCleanupSuccessful);
-            });
-
-
-        }
-
-
-        if (window.location.href.indexOf("umleditor") !== -1) { // means string.contains("umleditor)
-            start();
-        } else {
-            var startOnHashChanged = function () {
-                if (window.location.href.indexOf("umleditor") !== -1) { // means string.contains("umleditor)
-                    start();
-                }
-
-                window.removeEventListener("hashchange", startOnHashChanged)
-            };
-
-            window.addEventListener("hashchange", startOnHashChanged);
-        }
+        } // End Browser check
 
     </script>
 

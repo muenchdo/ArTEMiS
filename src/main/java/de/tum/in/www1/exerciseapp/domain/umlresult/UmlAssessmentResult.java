@@ -11,7 +11,6 @@ public class UmlAssessmentResult {
     private double score;
     private double maxScore;
     private double penaltyScore;
-    private int percentageCorrectness;
     private List<ErrorMessage> errors;
     private List<ErrorMessage> warnings;
     private List<ErrorMessage> penalties;
@@ -28,10 +27,6 @@ public class UmlAssessmentResult {
 
     public List<ErrorMessage> getErrors() {
         return errors;
-    }
-
-    public int getPercentageCorrectness() {
-        return percentageCorrectness;
     }
 
     public double getPenaltyScore() {
@@ -54,6 +49,7 @@ public class UmlAssessmentResult {
         return partlyCorrect;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,7 +60,6 @@ public class UmlAssessmentResult {
         if (Double.compare(that.score, score) != 0) return false;
         if (Double.compare(that.maxScore, maxScore) != 0) return false;
         if (Double.compare(that.penaltyScore, penaltyScore) != 0) return false;
-        if (percentageCorrectness != that.percentageCorrectness) return false;
         if (errors != null ? !errors.equals(that.errors) : that.errors != null) return false;
         if (warnings != null ? !warnings.equals(that.warnings) : that.warnings != null) return false;
         if (penalties != null ? !penalties.equals(that.penalties) : that.penalties != null) return false;
@@ -82,7 +77,6 @@ public class UmlAssessmentResult {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(penaltyScore);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + percentageCorrectness;
         result = 31 * result + (errors != null ? errors.hashCode() : 0);
         result = 31 * result + (warnings != null ? warnings.hashCode() : 0);
         result = 31 * result + (penalties != null ? penalties.hashCode() : 0);
