@@ -2904,21 +2904,21 @@ function swapUmlConnectionEnds(umlDocument, umlConnectionId) {
     if (relation !== undefined) {
         // TODO there is an error in UI, hence we don't change multiplicity for now
         var changed = {
-            id: angular2_uuid_1.UUID.UUID(),
+            id: relation.id,
             relationType: relation.relationType,
             points: immutable_1.OrderedMap(relation.points.reverse()),
             startTypeId: relation.endTypeId,
-            startTypeAnchorPoint: relation.endTypeAnchorPoint,
-            startMultiplicity: relation.endMultiplicity,
+            startTypeAnchorPoint: relation.startTypeAnchorPoint,
+            startMultiplicity: relation.startMultiplicity,
             endTypeId: relation.startTypeId,
-            endMultiplicity: relation.startMultiplicity,
-            endTypeAnchorPoint: relation.startTypeAnchorPoint
+            endMultiplicity: relation.endMultiplicity,
+            endTypeAnchorPoint: relation.endTypeAnchorPoint
         };
         return {
             types: umlDocument.types,
             inheritance: umlDocument.inheritance,
             classImplementingInterface: umlDocument.classImplementingInterface,
-            relations: umlDocument.relations.remove(relation.id).set(changed.id, changed),
+            relations: umlDocument.relations.set(changed.id, changed),
             globalMeta: umlDocument.globalMeta
         };
     }
@@ -5684,13 +5684,13 @@ var Editor = function (_super) {
                 default:
                     throw new Error("Unknown Uml Relation Type " + interactionTransaction.umlRelation.relationType);
             }
-            /*
             items.push({
                 text: "Swap ends",
                 icon: "glyphicon glyphicon-transfer",
-                clickListener: () => self.intentEmitter.emit(new SwapConnectionsEndsIntent(interactionTransaction.umlRelation.id))
-            })
-            */
+                clickListener: function clickListener() {
+                    return self.intentEmitter.emit(new UmlCanvasIntents_1.SwapConnectionsEndsIntent(interactionTransaction.umlRelation.id));
+                }
+            });
             items.push({
                 text: "Delete " + EditorUmlRelation_1.umlRelationTypeToHumanString(interactionTransaction.umlRelation.relationType),
                 icon: "glyphicon glyphicon-trash",
