@@ -66,10 +66,10 @@
         <td>{{ $index + 1 }}</td>
         <td>{{ result.participation.student.firstName }} {{ result.participation.student.lastName}}</td>
         <td>{{ result.buildCompletionDate | date:'MMM d, y HH:mm:ss' }}</td>
-        <td ng-switch on="result.buildSuccessful">
+        <td ng-switch on="result.buildSuccessful" ng-if="result.participation.exercise.exerciseType === 'CODING'">
         <span ng-switch-when="true">
         <span class="text-success">
-            <i class="fa fa-lg fa-check-circle-o"></i>&nbsp;<a ng-click="$ctrl.showDetails(result)">{{result.resultString}}</a>
+            <i class="fa fa-lg fa-check-circle-o"></i>&nbsp;{{result.resultString}}
         </span> (<span am-time-ago="result.buildCompletionDate"></span>)
     </span>
     <span ng-switch-when="false">
@@ -78,6 +78,10 @@
                                                                ng-click="$ctrl.showDetails(result)">{{result.resultString}}</a>
         </span> (<span am-time-ago="result.buildCompletionDate"></span>)
     </span>
+        </td>
+        <td ng-if="result.participation.exercise.exerciseType === 'UML_CLASS_DIAGRAM'">
+            <umlresult participation="result.participation"
+                       show-build-date="true" load-details="false"></umlresult>
         </td>
         <td>
             <span ng-show="result.score != null">{{result.score}}%</span>
