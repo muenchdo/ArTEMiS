@@ -1,7 +1,6 @@
 package de.tum.in.www1.exerciseapp.aop.logging;
 
 import de.tum.in.www1.exerciseapp.config.Constants;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;

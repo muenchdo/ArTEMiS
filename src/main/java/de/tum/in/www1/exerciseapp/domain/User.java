@@ -1,8 +1,7 @@
 package de.tum.in.www1.exerciseapp.domain;
 
-import de.tum.in.www1.exerciseapp.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.tum.in.www1.exerciseapp.config.Constants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
@@ -12,8 +11,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.*;
 import java.time.ZonedDateTime;
+import java.util.*;
 
 /**
  * A user.

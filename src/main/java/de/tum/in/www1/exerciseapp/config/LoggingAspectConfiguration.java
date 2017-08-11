@@ -1,7 +1,9 @@
 package de.tum.in.www1.exerciseapp.config;
 
 import de.tum.in.www1.exerciseapp.aop.logging.LoggingAspect;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 @EnableAspectJAutoProxy

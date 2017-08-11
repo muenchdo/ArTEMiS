@@ -2,14 +2,10 @@ package de.tum.in.www1.exerciseapp.config;
 
 
 import de.tum.in.www1.exerciseapp.security.*;
-import de.tum.in.www1.exerciseapp.web.filter.CsrfCookieGeneratorFilter;
-import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
-import de.tum.in.www1.exerciseapp.security.PBEPasswordEncoder;
-
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,13 +15,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-
 import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Optional;
 
@@ -58,7 +56,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     private SessionRegistry sessionRegistry;
 
+    @Inject
+    private CorsFilter corsFilter;
 
+    @Inject
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Value("${exerciseapp.encryption-password}")
     private String ENCRYPTION_PASSWORD;
@@ -83,6 +85,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     private Optional<AuthenticationProvider> remoteUserAuthenticationProvider;
 
+
+    @PostConstruct
+    public void init() {
+        try {
+            authenticationManagerBuilder
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+
+            if(remoteUserAuthenticationProvider.isPresent()) {
+                authenticationManagerBuilder.authenticationProvider(remoteUserAuthenticationProvider.get());
+            }
+        } catch (Exception e) {
+            throw new BeanInitializationException("Security configuration failed", e);
+        }
+    }
 
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -113,41 +130,53 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .sessionManagement()
-            .maximumSessions(32) // maximum number of concurrent sessions for one user
-            .sessionRegistry(sessionRegistry)
-            .and().and()
-            .csrf()
-            .ignoringAntMatchers("/websocket/**")
-            .ignoringAntMatchers("/api/lti/launch/*")
-        .and()
-            .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
+            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling()
-            .accessDeniedHandler(new CustomAccessDeniedHandler())
-            .authenticationEntryPoint(authenticationEntryPoint)
+            .authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
         .and()
-            .rememberMe()
-            .rememberMeServices(rememberMeServices)
-            .rememberMeParameter("remember-me")
-            .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
-        .and()
-            .formLogin()
-            .loginProcessingUrl("/api/authentication")
-            .successHandler(ajaxAuthenticationSuccessHandler)
-            .failureHandler(ajaxAuthenticationFailureHandler)
-            .usernameParameter("j_username")
-            .passwordParameter("j_password")
-            .permitAll()
-        .and()
-            .logout()
-            .logoutUrl("/api/logout")
-            .logoutSuccessHandler(ajaxLogoutSuccessHandler)
-            .deleteCookies("JSESSIONID", "CSRF-TOKEN", "hazelcast.sessionId")
-            .permitAll()
-        .and()
+            .csrf()
+            .disable()
             .headers()
             .frameOptions()
             .disable()
+        .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//            .sessionManagement()
+//            .maximumSessions(32) // maximum number of concurrent sessions for one user
+//            .sessionRegistry(sessionRegistry)
+//            .and().and()
+//            .csrf()
+//            .ignoringAntMatchers("/websocket/**")
+//            .ignoringAntMatchers("/api/lti/launch/*")
+//        .and()
+//            .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
+//            .exceptionHandling()
+//            .accessDeniedHandler(new CustomAccessDeniedHandler())
+//            .authenticationEntryPoint(authenticationEntryPoint)
+//        .and()
+//            .rememberMe()
+//            .rememberMeServices(rememberMeServices)
+//            .rememberMeParameter("remember-me")
+//            .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
+//        .and()
+//            .formLogin()
+//            .loginProcessingUrl("/api/authentication")
+//            .successHandler(ajaxAuthenticationSuccessHandler)
+//            .failureHandler(ajaxAuthenticationFailureHandler)
+//            .usernameParameter("j_username")
+//            .passwordParameter("j_password")
+//            .permitAll()
+//        .and()
+//            .logout()
+//            .logoutUrl("/api/logout")
+//            .logoutSuccessHandler(ajaxLogoutSuccessHandler)
+//            .deleteCookies("JSESSIONID", "CSRF-TOKEN", "hazelcast.sessionId")
+//            .permitAll()
+//        .and()
+//            .headers()
+//            .frameOptions()
+//            .disable()
         .and()
             .authorizeRequests()
             .antMatchers("/api/register").permitAll()

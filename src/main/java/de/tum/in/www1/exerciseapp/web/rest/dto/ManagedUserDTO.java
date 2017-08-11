@@ -1,13 +1,12 @@
 package de.tum.in.www1.exerciseapp.web.rest.dto;
 
-import java.time.ZonedDateTime;
-
-import java.util.List;
-import java.util.Set;
-
 import de.tum.in.www1.exerciseapp.domain.User;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A DTO extending the UserDTO, which is meant to be used in the user management UI.

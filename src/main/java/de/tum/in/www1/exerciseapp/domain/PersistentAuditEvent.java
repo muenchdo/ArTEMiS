@@ -1,8 +1,8 @@
 package de.tum.in.www1.exerciseapp.domain;
 
-import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 

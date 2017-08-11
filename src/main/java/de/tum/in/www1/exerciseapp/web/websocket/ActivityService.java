@@ -13,13 +13,12 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import javax.inject.Inject;
+import java.security.Principal;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.inject.Inject;
-import java.security.Principal;
 import java.util.Calendar;
 
 import static de.tum.in.www1.exerciseapp.config.WebsocketConfiguration.IP_ADDRESS;

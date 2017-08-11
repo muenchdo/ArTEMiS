@@ -1,7 +1,6 @@
 package de.tum.in.www1.exerciseapp.config;
 
 import de.tum.in.www1.exerciseapp.config.locale.AngularCookieLocaleResolver;
-
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
