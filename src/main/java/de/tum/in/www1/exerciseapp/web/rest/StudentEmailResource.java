@@ -16,6 +16,7 @@ import javax.inject.Inject;
  */
 
 @RestController
+@RequestMapping({"/api", "/api_basic"})
 public class StudentEmailResource {
 
     private final Logger log = LoggerFactory.getLogger(StudentEmailResource.class);
@@ -27,7 +28,7 @@ public class StudentEmailResource {
 
 
     @RequestMapping(value = "/student/{buildPlanId}",
-        method = RequestMethod.POST,
+        method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
 
     public ResponseEntity<EmailResponse> getEmail(@PathVariable String buildPlanId, @RequestParam(value="secret") String secret){
