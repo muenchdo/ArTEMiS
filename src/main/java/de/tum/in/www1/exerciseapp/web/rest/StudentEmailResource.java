@@ -45,12 +45,12 @@ public class StudentEmailResource {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Participation participantion = participationRepository.findOneByBuildPlanId(buildPlanId);
-        if (participantion == null){
+        Participation participation = participationRepository.findOneByBuildPlanId(buildPlanId.replace("_", "-"));
+        if (participation == null){
             return new ResponseEntity<EmailResponse>(HttpStatus.NOT_FOUND);
         }
 
-        String email = participantion.getStudent().getEmail();
+        String email = participation.getStudent().getEmail();
         if (email == null || email.isEmpty()){
             return new ResponseEntity<EmailResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
