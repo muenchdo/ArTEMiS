@@ -1,6 +1,5 @@
 package de.tum.in.www1.exerciseapp.web.rest;
 
-import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +10,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 
 @RestController
 @RequestMapping("/api")

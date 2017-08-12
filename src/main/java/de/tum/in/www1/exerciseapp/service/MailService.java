@@ -1,6 +1,5 @@
 package de.tum.in.www1.exerciseapp.service;
 
-import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 import de.tum.in.www1.exerciseapp.domain.User;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
@@ -16,6 +15,8 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import java.util.Locale;
+
+import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 
 /**
  * Service for sending e-mails.

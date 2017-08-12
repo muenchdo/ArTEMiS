@@ -129,6 +129,9 @@
             return deferred.promise;
         }
 
+        function loginWithToken(jwt, rememberMe) {
+            return AuthServerProvider.loginWithToken(jwt, rememberMe);
+        }
 
         function logout () {
             AuthServerProvider.logout();

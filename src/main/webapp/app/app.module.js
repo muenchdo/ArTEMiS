@@ -26,7 +26,7 @@
 
     run.$inject = ['stateHandler', 'translationHandler','$rootScope'];
 
-    function run(stateHandler, translationHandler,$rootScope) {
+    function run(stateHandler, translationHandler, $rootScope) {
         stateHandler.initialize();
         translationHandler.initialize();
 
@@ -34,10 +34,5 @@
             $rootScope.contentContainerClass = toState.contentContainerClass ? toState.contentContainerClass : "container-fluid";
             $rootScope.bodyClass = toState.bodyClass ? toState.bodyClass : "";
         });
-
     }
-
-
-
-
 })();

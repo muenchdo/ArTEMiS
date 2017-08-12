@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
+
 @Configuration
 public class LoggingConfiguration {
 

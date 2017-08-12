@@ -1,6 +1,5 @@
 package de.tum.in.www1.exerciseapp.security;
 
-import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 import de.tum.in.www1.exerciseapp.domain.PersistentToken;
 import de.tum.in.www1.exerciseapp.repository.PersistentTokenRepository;
 import de.tum.in.www1.exerciseapp.repository.UserRepository;
@@ -24,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.Arrays;
+
+import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 
 /**
  * Custom implementation of Spring Security's RememberMeServices.

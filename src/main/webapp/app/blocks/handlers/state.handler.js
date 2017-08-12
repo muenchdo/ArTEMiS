@@ -9,7 +9,7 @@
         'Auth', 'Principal', 'VERSION', 'CONTACT_EMAIL'];
 
     function stateHandler($rootScope, $state, $sessionStorage, $translate, JhiLanguageService, translationHandler, $window,
-        Auth, Principal, VERSION,CONTACT_EMAIL) {
+        Auth, Principal, VERSION, CONTACT_EMAIL) {
         return {
             initialize: initialize
         };

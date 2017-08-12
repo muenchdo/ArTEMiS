@@ -1,16 +1,17 @@
+
 package de.tum.in.www1.exerciseapp.config;
+
+import java.util.*;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.cors.CorsConfiguration;
-
-import javax.validation.constraints.NotNull;
-
 
 /**
  * Properties specific to JHipster.
  *
  * <p>
- *     Properties are configured in the application.yml file.
+ * Properties are configured in the application.yml file.
  * </p>
  */
 @ConfigurationProperties(prefix = "jhipster", ignoreUnknownFields = false)
@@ -105,10 +106,25 @@ public class JHipsterProperties {
 
     public static class Http {
 
+        public enum Version {V_1_1, V_2_0}
+
         private final Cache cache = new Cache();
+
+        /**
+         * HTTP version, must be "V_1_1" (for HTTP/1.1) or V_2_0 (for (HTTP/2)
+         */
+        public Version version = Version.V_1_1;
 
         public Cache getCache() {
             return cache;
+        }
+
+        public Version getVersion() {
+            return version;
+        }
+
+        public void setVersion(Version version) {
+            this.version = version;
         }
 
         public static class Cache {
@@ -127,43 +143,31 @@ public class JHipsterProperties {
 
     public static class Cache {
 
-        private int timeToLiveSeconds = 3600;
-
-        private final Ehcache ehcache = new Ehcache();
         private final Hazelcast hazelcast = new Hazelcast();
 
+        private final Ehcache ehcache = new Ehcache();
 
-        public int getTimeToLiveSeconds() {
-            return timeToLiveSeconds;
-        }
-
-        public void setTimeToLiveSeconds(int timeToLiveSeconds) {
-            this.timeToLiveSeconds = timeToLiveSeconds;
+        public Hazelcast getHazelcast() {
+            return hazelcast;
         }
 
         public Ehcache getEhcache() {
             return ehcache;
         }
 
-        public static class Ehcache {
-
-            private String maxBytesLocalHeap = "16M";
-
-            public String getMaxBytesLocalHeap() {
-                return maxBytesLocalHeap;
-            }
-
-            public void setMaxBytesLocalHeap(String maxBytesLocalHeap) {
-                this.maxBytesLocalHeap = maxBytesLocalHeap;
-            }
-        }
-        public Hazelcast getHazelcast() {
-            return hazelcast;
-        }
-
         public static class Hazelcast {
 
+            private int timeToLiveSeconds = 3600;
+
             private int backupCount = 1;
+
+            public int getTimeToLiveSeconds() {
+                return timeToLiveSeconds;
+            }
+
+            public void setTimeToLiveSeconds(int timeToLiveSeconds) {
+                this.timeToLiveSeconds = timeToLiveSeconds;
+            }
 
             public int getBackupCount() {
                 return backupCount;
@@ -173,11 +177,36 @@ public class JHipsterProperties {
                 this.backupCount = backupCount;
             }
         }
+
+        public static class Ehcache {
+
+            private int timeToLiveSeconds = 3600;
+
+            private long maxEntries = 100;
+
+            public int getTimeToLiveSeconds() {
+                return timeToLiveSeconds;
+            }
+
+            public void setTimeToLiveSeconds(int timeToLiveSeconds) {
+                this.timeToLiveSeconds = timeToLiveSeconds;
+            }
+
+            public long getMaxEntries() {
+                return maxEntries;
+            }
+
+            public void setMaxEntries(long maxEntries) {
+                this.maxEntries = maxEntries;
+            }
+        }
     }
 
     public static class Mail {
 
-        private String from = "ExerciseApplication@localhost";
+        private String from = "";
+
+        private String baseUrl = "";
 
         public String getFrom() {
             return from;
@@ -186,14 +215,158 @@ public class JHipsterProperties {
         public void setFrom(String from) {
             this.from = from;
         }
+
+        public String getBaseUrl() {
+            return baseUrl;
+        }
+
+        public void setBaseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
+        }
     }
 
     public static class Security {
 
         private final RememberMe rememberMe = new RememberMe();
 
+        private final ClientAuthorization clientAuthorization = new ClientAuthorization();
+
+        private final Authentication authentication = new Authentication();
+
         public RememberMe getRememberMe() {
             return rememberMe;
+        }
+
+        public ClientAuthorization getClientAuthorization() {
+            return clientAuthorization;
+        }
+
+        public Authentication getAuthentication() {
+            return authentication;
+        }
+
+        public static class ClientAuthorization {
+
+            private String accessTokenUri;
+
+            private String tokenServiceId;
+
+            private String clientId;
+
+            private String clientSecret;
+
+            public String getAccessTokenUri() {
+                return accessTokenUri;
+            }
+
+            public void setAccessTokenUri(String accessTokenUri) {
+                this.accessTokenUri = accessTokenUri;
+            }
+
+            public String getTokenServiceId() {
+                return tokenServiceId;
+            }
+
+            public void setTokenServiceId(String tokenServiceId) {
+                this.tokenServiceId = tokenServiceId;
+            }
+
+            public String getClientId() {
+                return clientId;
+            }
+
+            public void setClientId(String clientId) {
+                this.clientId = clientId;
+            }
+
+            public String getClientSecret() {
+                return clientSecret;
+            }
+
+            public void setClientSecret(String clientSecret) {
+                this.clientSecret = clientSecret;
+            }
+        }
+
+        public static class Authentication {
+
+            private final Oauth oauth = new Oauth();
+
+            private final Jwt jwt = new Jwt();
+
+            public Oauth getOauth() {
+                return oauth;
+            }
+
+            public Jwt getJwt() {
+                return jwt;
+            }
+
+            public static class Oauth {
+
+                private String clientId;
+
+                private String clientSecret;
+
+                private int tokenValidityInSeconds = 1800;
+
+                public String getClientId() {
+                    return clientId;
+                }
+
+                public void setClientId(String clientId) {
+                    this.clientId = clientId;
+                }
+
+                public String getClientSecret() {
+                    return clientSecret;
+                }
+
+                public void setClientSecret(String clientSecret) {
+                    this.clientSecret = clientSecret;
+                }
+
+                public int getTokenValidityInSeconds() {
+                    return tokenValidityInSeconds;
+                }
+
+                public void setTokenValidityInSeconds(int tokenValidityInSeconds) {
+                    this.tokenValidityInSeconds = tokenValidityInSeconds;
+                }
+            }
+
+            public static class Jwt {
+
+                private String secret;
+
+                private long tokenValidityInSeconds = 1800;
+
+                private long tokenValidityInSecondsForRememberMe = 2592000;
+
+                public String getSecret() {
+                    return secret;
+                }
+
+                public void setSecret(String secret) {
+                    this.secret = secret;
+                }
+
+                public long getTokenValidityInSeconds() {
+                    return tokenValidityInSeconds;
+                }
+
+                public void setTokenValidityInSeconds(long tokenValidityInSeconds) {
+                    this.tokenValidityInSeconds = tokenValidityInSeconds;
+                }
+
+                public long getTokenValidityInSecondsForRememberMe() {
+                    return tokenValidityInSecondsForRememberMe;
+                }
+
+                public void setTokenValidityInSecondsForRememberMe(long tokenValidityInSecondsForRememberMe) {
+                    this.tokenValidityInSecondsForRememberMe = tokenValidityInSecondsForRememberMe;
+                }
+            }
         }
 
         public static class RememberMe {
@@ -213,11 +386,11 @@ public class JHipsterProperties {
 
     public static class Swagger {
 
-        private String title = "ExerciseApplication API";
+        private String title = "ArTEMiS API";
 
-        private String description = "ExerciseApplication API documentation";
+        private String description = "API documentation";
 
-        private String version = "0.0.1";
+        private String version = "1.0.0";
 
         private String termsOfServiceUrl;
 
@@ -231,7 +404,7 @@ public class JHipsterProperties {
 
         private String licenseUrl;
 
-        private Boolean enabled;
+        private String defaultIncludePattern = "/api/.*";
 
         public String getTitle() {
             return title;
@@ -305,12 +478,12 @@ public class JHipsterProperties {
             this.licenseUrl = licenseUrl;
         }
 
-        public Boolean isEnabled() {
-            return enabled;
+        public String getDefaultIncludePattern() {
+            return defaultIncludePattern;
         }
 
-        public void setEnabled(Boolean enabled) {
-            this.enabled = enabled;
+        public void setDefaultIncludePattern(String defaultIncludePattern) {
+            this.defaultIncludePattern = defaultIncludePattern;
         }
     }
 
@@ -339,7 +512,6 @@ public class JHipsterProperties {
         public Logs getLogs() {
             return logs;
         }
-
 
         public static class Jmx {
 
@@ -395,7 +567,7 @@ public class JHipsterProperties {
 
             private int port = 2003;
 
-            private String prefix = "ExerciseApplication";
+            private String prefix = "jhipsterApplication";
 
             public boolean isEnabled() {
                 return enabled;
@@ -430,7 +602,7 @@ public class JHipsterProperties {
             }
         }
 
-        public static  class Logs {
+        public static class Logs {
 
             private boolean enabled = false;
 
@@ -456,13 +628,17 @@ public class JHipsterProperties {
 
     private final Logging logging = new Logging();
 
-    public Logging getLogging() { return logging; }
+    public Logging getLogging() {
+        return logging;
+    }
 
     public static class Logging {
 
         private final Logstash logstash = new Logstash();
 
-        public Logstash getLogstash() { return logstash; }
+        public Logstash getLogstash() {
+            return logstash;
+        }
 
         public static class Logstash {
 
@@ -474,23 +650,57 @@ public class JHipsterProperties {
 
             private int queueSize = 512;
 
-            public boolean isEnabled() { return enabled; }
+            public boolean isEnabled() {
+                return enabled;
+            }
 
-            public void setEnabled(boolean enabled) { this.enabled = enabled; }
+            public void setEnabled(boolean enabled) {
+                this.enabled = enabled;
+            }
 
-            public String getHost() { return host; }
+            public String getHost() {
+                return host;
+            }
 
-            public void setHost(String host) { this.host = host; }
+            public void setHost(String host) {
+                this.host = host;
+            }
 
-            public int getPort() { return port; }
+            public int getPort() {
+                return port;
+            }
 
-            public void setPort(int port) { this.port = port; }
+            public void setPort(int port) {
+                this.port = port;
+            }
 
-            public int getQueueSize() { return queueSize; }
+            public int getQueueSize() {
+                return queueSize;
+            }
 
-            public void setQueueSize(int queueSize) { this.queueSize = queueSize; }
+            public void setQueueSize(int queueSize) {
+                this.queueSize = queueSize;
+            }
         }
 
+        private final SpectatorMetrics spectatorMetrics = new SpectatorMetrics();
+
+        public SpectatorMetrics getSpectatorMetrics() {
+            return spectatorMetrics;
+        }
+
+        public static class SpectatorMetrics {
+
+            private boolean enabled = false;
+
+            public boolean isEnabled() {
+                return enabled;
+            }
+
+            public void setEnabled(boolean enabled) {
+                this.enabled = enabled;
+            }
+        }
     }
 
     public static class Ribbon {
@@ -505,5 +715,4 @@ public class JHipsterProperties {
             this.displayOnActiveProfiles = displayOnActiveProfiles;
         }
     }
-
 }

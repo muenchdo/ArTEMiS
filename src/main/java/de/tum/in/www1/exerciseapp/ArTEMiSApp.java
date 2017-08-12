@@ -2,7 +2,8 @@ package de.tum.in.www1.exerciseapp;
 
 import de.tum.in.www1.exerciseapp.config.Constants;
 import de.tum.in.www1.exerciseapp.config.DefaultProfileUtil;
-import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
+import de.tum.in.www1.exerciseapp.security.PBEPasswordEncoder;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -22,6 +23,8 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
+
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class, HazelcastAutoConfiguration.class })
 @EnableConfigurationProperties({ JHipsterProperties.class, LiquibaseProperties.class })
@@ -33,7 +36,7 @@ public class ArTEMiSApp {
     private Environment env;
 
     /**
-     * Initializes ExerciseApplication.
+     * Initializes ArTEMiS.
      * <p>
      * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
      * <p>

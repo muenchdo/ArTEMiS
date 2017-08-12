@@ -23,6 +23,8 @@ import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
+import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
+
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
 public class MetricsConfiguration extends MetricsConfigurerAdapter {
@@ -123,15 +125,14 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
 
         @PostConstruct
         private void init() {
-            if (jHipsterProperties.getMetrics().getSpark().isEnabled()) {
-                log.info("Initializing Metrics Spark reporting");
-                String sparkHost = jHipsterProperties.getMetrics().getSpark().getHost();
-                Integer sparkPort = jHipsterProperties.getMetrics().getSpark().getPort();
-                SparkReporter sparkReporter = SparkReporter.forRegistry(metricRegistry)
+            if (jHipsterProperties.getMetrics().getLogs().isEnabled()) {
+                log.info("Initializing Metrics Log reporting");
+                final Slf4jReporter reporter = Slf4jReporter.forRegistry(metricRegistry)
+                    .outputTo(LoggerFactory.getLogger("metrics"))
                     .convertRatesTo(TimeUnit.SECONDS)
                     .convertDurationsTo(TimeUnit.MILLISECONDS)
-                    .build(sparkHost, sparkPort);
-                sparkReporter.start(1, TimeUnit.MINUTES);
+                    .build();
+                reporter.start(jHipsterProperties.getMetrics().getLogs().getReportFrequency(), TimeUnit.SECONDS);
             }
         }
     }

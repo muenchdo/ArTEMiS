@@ -164,6 +164,8 @@ dependencies {
     compile ("org.hibernate:hibernate-ehcache:${hibernate_version}") {
         exclude(module: 'ehcache-core')
     }
+    compile "javax.cache:cache-api"
+    compile "org.ehcache:ehcache"
     compile "org.hibernate:hibernate-envers:${hibernate_version}"
     compile "org.hibernate:hibernate-entitymanager:${hibernate_version}"
     compile "org.hibernate:hibernate-envers:${hibernate_version}"
@@ -173,6 +175,8 @@ dependencies {
         exclude(module: 'jetty-servlet')
     }
     compile "com.mattbertolini:liquibase-slf4j:${liquibase_slf4j_version}"
+
+
     compile "org.springframework.boot:spring-boot-actuator"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.springframework.boot:spring-boot-loader-tools"
@@ -183,6 +187,8 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-websocket"
     compile "org.springframework.boot:spring-boot-starter-thymeleaf"
+    compile "org.springframework.boot:spring-boot-starter-undertow"
+
     compile "org.springframework.cloud:spring-cloud-cloudfoundry-connector"
     compile "org.springframework.cloud:spring-cloud-spring-service-connector"
     compile "org.springframework.cloud:spring-cloud-localconfig-connector"
@@ -194,7 +200,7 @@ dependencies {
     compile "org.springframework.security:spring-security-data:${spring_security_version}"
     compile "org.springframework.security:spring-security-web:${spring_security_version}"
     compile "org.springframework.security:spring-security-messaging:${spring_security_version}"
-
+    compile "io.jsonwebtoken:jjwt:${jjwt_version}"
     compile("io.springfox:springfox-swagger2:${springfox_version}"){
         exclude module: 'mapstruct'
     }

@@ -1,11 +1,11 @@
 package de.tum.in.www1.exerciseapp.web.filter;
 
-import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import de.tum.in.www1.exerciseapp.config.JHipsterProperties;
 
 /**
  * This filter is used in production, to put HTTP cache headers with a long (1 month) expiration time.

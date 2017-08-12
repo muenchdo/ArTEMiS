@@ -34,13 +34,11 @@ public class UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-
     @Inject
     private PasswordEncoder passwordEncoder;
 
     @Inject
     private UserRepository userRepository;
-
 
     @Inject
     private PersistentTokenRepository persistentTokenRepository;
