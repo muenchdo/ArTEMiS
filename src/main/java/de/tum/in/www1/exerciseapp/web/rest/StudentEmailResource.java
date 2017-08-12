@@ -16,7 +16,6 @@ import javax.inject.Inject;
  */
 
 @RestController
-@RequestMapping({"/api", "/api_basic"})
 public class StudentEmailResource {
 
     private final Logger log = LoggerFactory.getLogger(StudentEmailResource.class);
