@@ -78,13 +78,10 @@ cucumberTest.finalizedBy(testReport)
 
 apply from: 'gradle/yeoman.gradle'
 apply from: 'gradle/sonar.gradle'
-
 apply from: 'gradle/liquibase.gradle'
-
 apply from: 'gradle/gatling.gradle'
 apply from: 'gradle/mapstruct.gradle'
 apply from: 'gradle/docker.gradle'
-//jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
 if (project.hasProperty('prod')) {
     apply from: 'gradle/profile_prod.gradle'
@@ -95,7 +92,7 @@ if (project.hasProperty('prod')) {
 group = 'de.tum.in.www1.exerciseapp'
 version = '1.3.0'
 
-description = ''
+description = 'AuTomated assEssment Management System'
 
 configurations {
     providedRuntime
@@ -115,7 +112,8 @@ repositories {
 
 dependencies {
 
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.8.0.201706111038-r'
 
     // https://mvnrepository.com/artifact/net.sourceforge.plantuml/plantuml
@@ -228,6 +226,9 @@ dependencies {
 
 clean {
     delete "target"
+    delete "build"
+    delete "out"
+    delete "node_modules"
 }
 
 task cleanResources(type: Delete) {
@@ -235,7 +236,7 @@ task cleanResources(type: Delete) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.0.2'
+    gradleVersion = '4.1'
 }
 
 task stage(dependsOn: 'bootRepackage') {
@@ -243,5 +244,4 @@ task stage(dependsOn: 'bootRepackage') {
 
 compileJava.dependsOn processResources
 processResources.dependsOn cleanResources
-
 bower.dependsOn npmInstall

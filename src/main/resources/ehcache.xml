@@ -17,11 +17,47 @@
             overflowToDisk="false"
             />
 
-    <cache name="de.tum.in.www1.exerciseapp.domain.User"
+    <cache name="de.tum.in.www1.exerciseapp.domain.LtiUserId"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.Course"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.Course.exercises"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.Exercise"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.Exercise.participations"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.Participation"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.Participation.results"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.Result"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.Repository"
            timeToLiveSeconds="3600">
     </cache>
 
     <cache name="de.tum.in.www1.exerciseapp.domain.Authority"
+           timeToLiveSeconds="3600">
+    </cache>
+
+    <cache name="de.tum.in.www1.exerciseapp.domain.User"
            timeToLiveSeconds="3600">
     </cache>
 

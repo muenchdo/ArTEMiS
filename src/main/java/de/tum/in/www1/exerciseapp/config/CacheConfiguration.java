@@ -39,7 +39,7 @@ public class CacheConfiguration {
         return cacheManager -> {
             cacheManager.createCache(de.tum.in.www1.exerciseapp.domain.LtiUserId.class.getName(), jcacheConfiguration);
             cacheManager.createCache(de.tum.in.www1.exerciseapp.domain.Course.class.getName(), jcacheConfiguration);
-            cacheManager.createCache(de.tum.in.www1.exerciseapp.domain.Course.class.getName() + "exercises", jcacheConfiguration);
+            cacheManager.createCache(de.tum.in.www1.exerciseapp.domain.Course.class.getName() + ".exercises", jcacheConfiguration);
             cacheManager.createCache(de.tum.in.www1.exerciseapp.domain.Exercise.class.getName(), jcacheConfiguration);
             cacheManager.createCache(de.tum.in.www1.exerciseapp.domain.Exercise.class.getName() + ".participations", jcacheConfiguration);
             cacheManager.createCache(de.tum.in.www1.exerciseapp.domain.Participation.class.getName(), jcacheConfiguration);
