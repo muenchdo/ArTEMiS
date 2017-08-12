@@ -26,12 +26,14 @@ public class StudentEmailResource {
 
 
 
-    @RequestMapping(value = "/student/email",
+    @RequestMapping(value = "/student/{planKey}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
 
-    public ResponseEntity<EmailResponse> getEmail(@RequestParam(value = "buildplan") String buildPlanId, @RequestParam(value="secret") String secret){
+   // public ResponseEntity<EmailResponse> getEmail(@RequestParam(value = "buildplan") String buildPlanId, @RequestParam(value="secret") String secret){
+    public ResponseEntity<EmailResponse> getEmail(@PathVariable("planKey") String buildPlanId){
 
+        /*
         if (secret == null || secret.isEmpty()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -39,13 +41,13 @@ public class StudentEmailResource {
         if (!secret.equals("superSec123578ik")){
             return new ResponseEntity<EmailResponse>(HttpStatus.UNAUTHORIZED);
         }
-
+*/
 
         if (buildPlanId == null || buildPlanId.isEmpty()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Participation participation = participationRepository.findOneByBuildPlanId(buildPlanId.replace("_", "-"));
+        Participation participation = participationRepository.findOneByBuildPlanId(buildPlanId);
         if (participation == null){
             return new ResponseEntity<EmailResponse>(HttpStatus.NOT_FOUND);
         }
