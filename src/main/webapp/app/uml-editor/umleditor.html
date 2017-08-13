@@ -89,10 +89,6 @@
             window.history.back();
         }
         else {
-            if (isChrome === false && isSafari === true) {
-                alert("Unfortunately the UML editor is not fully optimized for Safari yet.\nYou might see some performance issues if you continue to use Safari for this modelling exercise.\n\nWe highly recommend to use Chrome.")
-            }
-
 
             var saveButton = $("#umlSaveButton");
             var saveButtonText = $("#umlSaveButtonText");
@@ -264,6 +260,9 @@
                 });
 
 
+                if (isChrome === false && isSafari === true) {
+                    alert("Unfortunately the UML editor is not fully optimized for Safari yet.\nYou might see some performance issues if you continue to use Safari for this modelling exercise.\n\nWe highly recommend to use Chrome.")
+                }
             }
 
 
