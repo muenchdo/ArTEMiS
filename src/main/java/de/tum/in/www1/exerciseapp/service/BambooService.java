@@ -410,7 +410,7 @@ public class BambooService implements ContinuousIntegrationService {
                         throw new Exception("UML Assessment Max. score is 0 for AssessmentReport " + artifactUrl + ". That is not allowed. Max. Reachable score must be greater than 0. Probably something with the Sample Solution is wrong or misses.");
                     }
                     double preciseScore = (assessmentResult.getScore() / assessmentResult.getMaxScore()) * 100;
-                    score = Math.min(100L, Math.round(preciseScore));
+                    score = (long) preciseScore; // remove decimals
                     result.setScore(score);
                     result.setResultString(score + " %");
                     result.setBuildSuccessful(result.isBuildSuccessful());
