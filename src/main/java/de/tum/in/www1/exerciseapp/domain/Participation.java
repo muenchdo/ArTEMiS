@@ -45,7 +45,7 @@ public class Participation implements Serializable {
     @ManyToOne
     private User student;
 
-    @OneToMany(mappedBy = "participation", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "participation", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Result> results = new HashSet<>();
