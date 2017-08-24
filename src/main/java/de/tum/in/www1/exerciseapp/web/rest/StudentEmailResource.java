@@ -46,6 +46,7 @@ public class StudentEmailResource {
         return last;
     }
 
+    /*
     @RequestMapping(value = "/students.csv", method = RequestMethod.GET)
     public void allUsers(HttpServletResponse response) throws IOException {
 
@@ -78,7 +79,7 @@ public class StudentEmailResource {
         response.setContentType("text/plain; charset=utf-8");
         response.getWriter().print(builder.toString());
     }
-
+*/
 
     @RequestMapping(value = "/student/{planKey}",
         method = RequestMethod.GET,
