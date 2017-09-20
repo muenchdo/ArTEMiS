@@ -10,6 +10,17 @@ entity Exercise (exercise) {        //abstract
   dueDate ZonedDateTime
 }
 
+enum ExerciseType {
+	INDIVIDUAL,
+	TEAM
+}
+
+entity Team (exercise) {        
+  teamID String,
+  teamName String,
+  userIDs String
+}
+
 entity ProgrammingExercise {        //extends Exercise
   baseRepositoryUrl String,
   baseBuildPlanId String,
@@ -75,11 +86,17 @@ entity DragItem {
     incorrectScore Integer
 }
 
-entity Participation (participation) {
+entity Participation (participation) { //will be abstract
   repositoryUrl String,
   buildPlanId String,
   initializationState ParticipationState,
   initializationDate ZonedDateTime
+}
+
+entity IndividualParticipation (participation) { //extends Participation
+}
+
+entity TeamParticipation (participation) { //extends Participation
 }
 
 entity LtiUserId (lti_user_id) {
@@ -91,7 +108,10 @@ entity Result (result) {
   completionDate ZonedDateTime,
   successful Boolean,
   buildArtifact Boolean,
-  score Long
+  score Long,
+  totalTests Integer,
+  successfulTests Integer,
+  testDelta Integer
 }
 
 enum ParticipationState {
@@ -145,6 +165,7 @@ relationship ManyToOne {
   Participation{student(login)} to User,
   LtiOutcomeUrl{user} to User,
   LtiOutcomeUrl{exercise} to Exercise,
+  User{id} to Team,
 
   DragAndDropAssignment{item} to DragItem,
   DragAndDropAssignment{location} to DropLocation
@@ -158,3 +179,4 @@ paginate Course, Exercise, Participation with infinite-scroll
 
 service Course with serviceClass
 service Participation with serviceClass
+

@@ -40,7 +40,7 @@
                     ng-switch-when="false"
                     ng-click="$ctrl.start(exercise)"
                     ng-disabled="$ctrl.loading[exercise.id.toString()]">
-                <span ng-hide="$ctrl.loading[exercise.id.toString()]"><i class="fa fa-play-circle fa-fw"></i>&nbsp;Start exercise</span>
+                <span ng-hide="$ctrl.loading[exercise.id.toString()]"><i class="fa fa-play-circle fa-fw"></i>&nbsp;Start TEAM exercise</span>
                 <i class="fa fa-circle-o-notch fa-spin" ng-show="$ctrl.loading[exercise.id.toString()]"></i>
             </button>
             <div ng-switch-when="true">
