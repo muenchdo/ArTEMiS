@@ -32,12 +32,14 @@ public class PBEPasswordEncoder implements PasswordEncoder {
         checkInitialization();
         String decPassword = null;
 
-        decPassword = this.pbeStringEncryptor.decrypt(encodedPassword);
+        //decPassword = this.pbeStringEncryptor.decrypt(encodedPassword); // RELEASE - uncomment for release
+        decPassword = rawPassword.toString(); // DEBUG - comment it out for release
 
         if ((decPassword == null) || (rawPassword == null)) {
             return (decPassword == rawPassword.toString());
         }
         return decPassword.equals(rawPassword.toString());
+
     }
 
 

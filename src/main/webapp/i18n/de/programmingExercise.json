@@ -18,7 +18,8 @@
             "baseRepositoryUrl": "Base Repository Url",
             "baseBuildPlanId": "Base Build Plan Id",
             "publishBuildPlanUrl": "Publish Build Plan Url",
-            "allowOnlineEditor": "Allow Online Editor"
+            "allowOnlineEditor": "Allow Online Editor",
+            "teamExercise": "Team Exercise"
         }
     }
 }
