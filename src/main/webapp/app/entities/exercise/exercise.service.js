@@ -1,66 +1,28 @@
-(function () {
-        'use strict';
-        angular
-            .module('artemisApp')
-            .factory('Exercise', Exercise)
-            .factory('ExerciseResults', ExerciseResults)
-            .factory('ExerciseLtiConfiguration', ExerciseLtiConfiguration)
-            .factory('ExerciseParticipations', ExerciseParticipations);
+(function() {
+    'use strict';
+    angular
+        .module('arTeMiSApp')
+        .factory('Exercise', Exercise);
 
-        Exercise.$inject = ['$resource', 'DateUtils'];
+    Exercise.$inject = ['$resource', 'DateUtils'];
 
-        function Exercise($resource, DateUtils) {
-            var resourceUrl = 'api/exercises/:id';
+    function Exercise ($resource, DateUtils) {
+        var resourceUrl =  'api/exercises/:id';
 
-            return $resource(resourceUrl, {}, {
-                'query': {method: 'GET', isArray: true},
-                'reset': {method: 'DELETE', url: 'api/exercises/:id/participations'},
-                'get': {
-                    method: 'GET',
-                    transformResponse: function (data) {
-                        if (data) {
-                            data = angular.fromJson(data);
-                            data.releaseDate = DateUtils.convertDateTimeFromServer(data.releaseDate);
-                            data.dueDate = DateUtils.convertDateTimeFromServer(data.dueDate);
-                        }
-                        return data;
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.releaseDate = DateUtils.convertDateTimeFromServer(data.releaseDate);
+                        data.dueDate = DateUtils.convertDateTimeFromServer(data.dueDate);
                     }
-                },
-                'update': {method: 'PUT'}
-            });
-        }
-
-        ExerciseResults.$inject = ['$resource'];
-
-        function ExerciseResults($resource) {
-            var resourceUrl = 'api/courses/:courseId/exercises/:exerciseId/results';
-
-            return $resource(resourceUrl, {}, {
-                'query': {method: 'GET', isArray: true}
-            });
-        }
-
-
-        ExerciseLtiConfiguration.$inject = ['$resource'];
-
-        function ExerciseLtiConfiguration($resource) {
-            var resourceUrl = 'api/lti/configuration/:exerciseId';
-
-            return $resource(resourceUrl, {}, {
-                'query': {method: 'GET', isArray: true}
-            });
-        }
-
-
-        ExerciseParticipations.$inject = ['$resource'];
-
-        function ExerciseParticipations($resource) {
-            var resourceUrl = 'api/exercise/:exerciseId/participations';
-
-            return $resource(resourceUrl, {}, {
-                'query': {method: 'GET', isArray: true}
-            });
-
-
-        }
-    })();
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+})();

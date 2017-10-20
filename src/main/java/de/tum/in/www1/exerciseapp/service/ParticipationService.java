@@ -1,8 +1,10 @@
 package de.tum.in.www1.exerciseapp.service;
 
 import de.tum.in.www1.exerciseapp.domain.*;
+import de.tum.in.www1.exerciseapp.domain.enumeration.ExerciseType;
 import de.tum.in.www1.exerciseapp.domain.enumeration.ParticipationState;
 import de.tum.in.www1.exerciseapp.repository.ParticipationRepository;
+import de.tum.in.www1.exerciseapp.repository.TeamRepository;
 import de.tum.in.www1.exerciseapp.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +30,24 @@ public class ParticipationService {
 
     private final ParticipationRepository participationRepository;
     private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
+
     private Optional<GitService> gitService;
     private Optional<ContinuousIntegrationService> continuousIntegrationService;
     private Optional<VersionControlService> versionControlService;
 
-    public ParticipationService(ParticipationRepository participationRepository, UserRepository userRepository, Optional<GitService> gitService, Optional<ContinuousIntegrationService> continuousIntegrationService, Optional<VersionControlService> versionControlService) {
+   // public ParticipationService(ParticipationRepository participationRepository, UserRepository userRepository, Optional<GitService> gitService, Optional<ContinuousIntegrationService> continuousIntegrationService, Optional<VersionControlService> versionControlService) {
+   //     this.participationRepository = participationRepository;
+   //     this.userRepository = userRepository;
+   //     this.gitService = gitService;
+   //     this.continuousIntegrationService = continuousIntegrationService;
+   //     this.versionControlService = versionControlService;
+   // }
+
+    public ParticipationService(ParticipationRepository participationRepository, UserRepository userRepository, TeamRepository teamRepository, Optional<GitService> gitService, Optional<ContinuousIntegrationService> continuousIntegrationService, Optional<VersionControlService> versionControlService) {
         this.participationRepository = participationRepository;
         this.userRepository = userRepository;
+        this.teamRepository = teamRepository;
         this.gitService = gitService;
         this.continuousIntegrationService = continuousIntegrationService;
         this.versionControlService = versionControlService;
@@ -73,6 +86,20 @@ public class ParticipationService {
             participation = save(participation);
         }
 
+        // specific for team exercises
+        if(exercise.getExerciseType() == ExerciseType.TEAM) {
+            //sql query all teams for a free slot
+            //get one that has a free slot
+            List<Team> freeTeams = teamRepository.findFreeByExerciseId(exercise.getId());
+            Team team;
+            if (!freeTeams.isEmpty()) {
+                 team = freeTeams.get(0);
+            } else {
+                //TODO: if no teams are free load a modal view that the user needs to fill out
+                 team = new Team();
+            }
+
+        }
 
         // specific to programming exericses
         if (exercise instanceof ProgrammingExercise) {

@@ -1,5 +1,5 @@
 {
-    "artemisApp": {
+    "arTeMiSApp": {
         "exercise" : {
             "home": {
                 "title": "Exercises",
@@ -18,7 +18,9 @@
             "title": "Title",
             "releaseDate": "Release Date",
             "dueDate": "Due Date",
+            "exerciseType": "Exercise Type",
             "participations": "Participations",
+            "teamManager": "Team Manager",
             "course": "Course"
         }
     }

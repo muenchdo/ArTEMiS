@@ -1,0 +1,22 @@
+{
+    "arTeMiSApp": {
+        "teamManager" : {
+            "home": {
+                "title": "Team Managers",
+                "createLabel": "Team Manager erstellen",
+                "createOrEditLabel": "Team Manager erstellen oder bearbeiten"
+            },
+            "created": "Team Manager erstellt mit ID {{ param }}",
+            "updated": "Team Manager aktualisiert mit ID {{ param }}",
+            "deleted": "Team Manager gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Team Manager {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Team Manager"
+            },
+            "teamName": "Team Name",
+            "test": "Test"
+        }
+    }
+}

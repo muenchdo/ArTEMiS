@@ -1,0 +1,58 @@
+<div>
+    <h2 data-translate="arTeMiSApp.teamManager.home.title">Team Managers</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="team-manager.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="arTeMiSApp.teamManager.home.createLabel">
+                        Create new Team Manager
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="arTeMiSApp.teamManager.teamName">Team Name</span></th>
+                    <th><span data-translate="arTeMiSApp.teamManager.test">Test</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="teamManager in vm.teamManagers track by teamManager.id">
+                    <td><a ui-sref="team-manager-detail({id:teamManager.id})">{{teamManager.id}}</a></td>
+                    <td>{{teamManager.teamName}}</td>
+                    <td>{{teamManager.test}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="team-manager-detail({id:teamManager.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="team-manager.edit({id:teamManager.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="team-manager.delete({id:teamManager.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

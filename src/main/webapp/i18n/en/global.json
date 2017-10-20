@@ -29,6 +29,8 @@
                 "quizSubmission": "Quiz Submission",
                 "dragAndDropSubmittedAnswer": "Drag And Drop Submitted Answer",
                 "dragAndDropAssignment": "Drag And Drop Assignment",
+                "team": "Team",
+                "teamManager": "Team Manager",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

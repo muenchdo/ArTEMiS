@@ -4,7 +4,7 @@ describe('Controller Tests', function() {
 
     describe('Exercise Management Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockPreviousState, MockExercise, MockParticipation, MockCourse;
+        var MockEntity, MockPreviousState, MockExercise, MockParticipation, MockTeamManager, MockCourse;
         var createController;
 
         beforeEach(inject(function($injector) {
@@ -14,6 +14,7 @@ describe('Controller Tests', function() {
             MockPreviousState = jasmine.createSpy('MockPreviousState');
             MockExercise = jasmine.createSpy('MockExercise');
             MockParticipation = jasmine.createSpy('MockParticipation');
+            MockTeamManager = jasmine.createSpy('MockTeamManager');
             MockCourse = jasmine.createSpy('MockCourse');
             
 
@@ -24,6 +25,7 @@ describe('Controller Tests', function() {
                 'previousState': MockPreviousState,
                 'Exercise': MockExercise,
                 'Participation': MockParticipation,
+                'TeamManager': MockTeamManager,
                 'Course': MockCourse
             };
             createController = function() {
@@ -34,7 +36,7 @@ describe('Controller Tests', function() {
 
         describe('Root Scope Listening', function() {
             it('Unregisters root scope listener upon scope destruction', function() {
-                var eventType = 'artemisApp:exerciseUpdate';
+                var eventType = 'arTeMiSApp:exerciseUpdate';
 
                 createController();
                 expect($rootScope.$$listenerCount[eventType]).toEqual(1);

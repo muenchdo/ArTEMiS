@@ -75,6 +75,8 @@ public class CacheConfiguration {
             cm.createCache(de.tum.in.www1.exerciseapp.domain.DragAndDropSubmittedAnswer.class.getName(), jcacheConfiguration);
             cm.createCache(de.tum.in.www1.exerciseapp.domain.DragAndDropSubmittedAnswer.class.getName() + ".assignments", jcacheConfiguration);
             cm.createCache(de.tum.in.www1.exerciseapp.domain.DragAndDropAssignment.class.getName(), jcacheConfiguration);
+            cm.createCache(de.tum.in.www1.exerciseapp.domain.Team.class.getName(), jcacheConfiguration);
+            cm.createCache(de.tum.in.www1.exerciseapp.domain.TeamManager.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

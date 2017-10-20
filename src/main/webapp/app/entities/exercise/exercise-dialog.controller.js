@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('artemisApp')
+        .module('arTeMiSApp')
         .controller('ExerciseDialogController', ExerciseDialogController);
 
-    ExerciseDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Exercise', 'Course'];
+    ExerciseDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Exercise', 'Participation', 'TeamManager', 'Course'];
 
-    function ExerciseDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Exercise, Course) {
+    function ExerciseDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Exercise, Participation, TeamManager, Course) {
         var vm = this;
 
         vm.exercise = entity;
@@ -15,6 +15,8 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
+        vm.participations = Participation.query();
+        vm.teammanagers = TeamManager.query();
         vm.courses = Course.query();
 
         $timeout(function (){
@@ -35,7 +37,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('artemisApp:exerciseUpdate', result);
+            $scope.$emit('arTeMiSApp:exerciseUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }

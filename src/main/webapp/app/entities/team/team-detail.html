@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="arTeMiSApp.team.detail.title">Team</span> {{vm.team.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="arTeMiSApp.team.teamID">Team ID</span></dt>
+        <dd>
+            <span>{{vm.team.teamID}}</span>
+        </dd>
+        <dt><span data-translate="arTeMiSApp.team.teamName">Team Name</span></dt>
+        <dd>
+            <span>{{vm.team.teamName}}</span>
+        </dd>
+        <dt><span data-translate="arTeMiSApp.team.min">Min</span></dt>
+        <dd>
+            <span>{{vm.team.min}}</span>
+        </dd>
+        <dt><span data-translate="arTeMiSApp.team.max">Max</span></dt>
+        <dd>
+            <span>{{vm.team.max}}</span>
+        </dd>
+        <dt><span data-translate="arTeMiSApp.team.exercise">Exercise</span></dt>
+        <dd>
+            <a ui-sref="exercise-detail({id:vm.team.exercise.id})">{{vm.team.exercise.id}}</a>
+        </dd>
+        <dt><span data-translate="arTeMiSApp.team.teamManager">Team Manager</span></dt>
+        <dd>
+            <a ui-sref="team-manager-detail({id:vm.team.teamManager.id})">{{vm.team.teamManager.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="team-detail.edit({id:vm.team.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

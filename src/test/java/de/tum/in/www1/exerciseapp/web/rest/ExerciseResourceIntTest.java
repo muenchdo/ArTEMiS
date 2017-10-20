@@ -1,9 +1,8 @@
 package de.tum.in.www1.exerciseapp.web.rest;
 
-import de.tum.in.www1.exerciseapp.ArTEMiSApp;
+import de.tum.in.www1.exerciseapp.ArTeMiSApp;
 
 import de.tum.in.www1.exerciseapp.domain.Exercise;
-import de.tum.in.www1.exerciseapp.domain.ProgrammingExercise;
 import de.tum.in.www1.exerciseapp.repository.ExerciseRepository;
 import de.tum.in.www1.exerciseapp.web.rest.errors.ExceptionTranslator;
 
@@ -34,13 +33,14 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.tum.in.www1.exerciseapp.domain.enumeration.ExerciseType;
 /**
  * Test class for the ExerciseResource REST controller.
  *
  * @see ExerciseResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ArTEMiSApp.class)
+@SpringBootTest(classes = ArTeMiSApp.class)
 public class ExerciseResourceIntTest {
 
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
@@ -51,6 +51,9 @@ public class ExerciseResourceIntTest {
 
     private static final ZonedDateTime DEFAULT_DUE_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_DUE_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final ExerciseType DEFAULT_EXERCISE_TYPE = ExerciseType.INDIVIDUAL;
+    private static final ExerciseType UPDATED_EXERCISE_TYPE = ExerciseType.TEAM;
 
     @Autowired
     private ExerciseRepository exerciseRepository;
@@ -71,15 +74,10 @@ public class ExerciseResourceIntTest {
 
     private Exercise exercise;
 
-    private final ExerciseResource exerciseResource;
-
-    public ExerciseResourceIntTest(ExerciseResource exerciseResource) {
-        this.exerciseResource = exerciseResource;
-    }
-
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        final ExerciseResource exerciseResource = new ExerciseResource(exerciseRepository);
         this.restExerciseMockMvc = MockMvcBuilders.standaloneSetup(exerciseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -93,10 +91,11 @@ public class ExerciseResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Exercise createEntity(EntityManager em) {
-        Exercise exercise = new ProgrammingExercise()
+        Exercise exercise = new Exercise()
             .title(DEFAULT_TITLE)
             .releaseDate(DEFAULT_RELEASE_DATE)
-            .dueDate(DEFAULT_DUE_DATE);
+            .dueDate(DEFAULT_DUE_DATE)
+            .exerciseType(DEFAULT_EXERCISE_TYPE);
         return exercise;
     }
 
@@ -123,6 +122,7 @@ public class ExerciseResourceIntTest {
         assertThat(testExercise.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testExercise.getReleaseDate()).isEqualTo(DEFAULT_RELEASE_DATE);
         assertThat(testExercise.getDueDate()).isEqualTo(DEFAULT_DUE_DATE);
+        assertThat(testExercise.getExerciseType()).isEqualTo(DEFAULT_EXERCISE_TYPE);
     }
 
     @Test
@@ -157,7 +157,8 @@ public class ExerciseResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(exercise.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].releaseDate").value(hasItem(sameInstant(DEFAULT_RELEASE_DATE))))
-            .andExpect(jsonPath("$.[*].dueDate").value(hasItem(sameInstant(DEFAULT_DUE_DATE))));
+            .andExpect(jsonPath("$.[*].dueDate").value(hasItem(sameInstant(DEFAULT_DUE_DATE))))
+            .andExpect(jsonPath("$.[*].exerciseType").value(hasItem(DEFAULT_EXERCISE_TYPE.toString())));
     }
 
     @Test
@@ -173,7 +174,8 @@ public class ExerciseResourceIntTest {
             .andExpect(jsonPath("$.id").value(exercise.getId().intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
             .andExpect(jsonPath("$.releaseDate").value(sameInstant(DEFAULT_RELEASE_DATE)))
-            .andExpect(jsonPath("$.dueDate").value(sameInstant(DEFAULT_DUE_DATE)));
+            .andExpect(jsonPath("$.dueDate").value(sameInstant(DEFAULT_DUE_DATE)))
+            .andExpect(jsonPath("$.exerciseType").value(DEFAULT_EXERCISE_TYPE.toString()));
     }
 
     @Test
@@ -196,7 +198,8 @@ public class ExerciseResourceIntTest {
         updatedExercise
             .title(UPDATED_TITLE)
             .releaseDate(UPDATED_RELEASE_DATE)
-            .dueDate(UPDATED_DUE_DATE);
+            .dueDate(UPDATED_DUE_DATE)
+            .exerciseType(UPDATED_EXERCISE_TYPE);
 
         restExerciseMockMvc.perform(put("/api/exercises")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -210,6 +213,7 @@ public class ExerciseResourceIntTest {
         assertThat(testExercise.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testExercise.getReleaseDate()).isEqualTo(UPDATED_RELEASE_DATE);
         assertThat(testExercise.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
+        assertThat(testExercise.getExerciseType()).isEqualTo(UPDATED_EXERCISE_TYPE);
     }
 
     @Test
@@ -251,9 +255,9 @@ public class ExerciseResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Exercise.class);
-        Exercise exercise1 = new ProgrammingExercise();
+        Exercise exercise1 = new Exercise();
         exercise1.setId(1L);
-        Exercise exercise2 = new ProgrammingExercise();
+        Exercise exercise2 = new Exercise();
         exercise2.setId(exercise1.getId());
         assertThat(exercise1).isEqualTo(exercise2);
         exercise2.setId(2L);

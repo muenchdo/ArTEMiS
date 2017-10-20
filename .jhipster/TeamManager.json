@@ -1,0 +1,19 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "teamName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "test",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20171020101232",
+    "entityTableName": "team_manager",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

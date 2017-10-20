@@ -1,0 +1,40 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "exercise",
+            "otherEntityName": "exercise",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "teamManager",
+            "otherEntityName": "teamManager",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "teamID",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "teamName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "min",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "max",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20171020101231",
+    "entityTableName": "exercise",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

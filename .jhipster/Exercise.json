@@ -9,6 +9,12 @@
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipName": "teamManager",
+            "otherEntityName": "teamManager",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipName": "course",
             "otherEntityName": "course",
             "otherEntityField": "title"
@@ -26,6 +32,11 @@
         {
             "fieldName": "dueDate",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "exerciseType",
+            "fieldType": "ExerciseType",
+            "fieldValues": "INDIVIDUAL,TEAM"
         }
     ],
     "changelogDate": "20160609094621",

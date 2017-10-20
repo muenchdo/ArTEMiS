@@ -36,6 +36,18 @@
         {
             "fieldName": "score",
             "fieldType": "Long"
+        },
+        {
+            "fieldName": "totalTests",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "successfulTests",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "testDelta",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20160609110918",

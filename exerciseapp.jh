@@ -7,7 +7,8 @@ entity Course (course) {
 entity Exercise (exercise) {        //abstract
   title String,
   releaseDate ZonedDateTime,
-  dueDate ZonedDateTime
+  dueDate ZonedDateTime,
+  exerciseType ExerciseType
 }
 
 enum ExerciseType {
@@ -18,7 +19,13 @@ enum ExerciseType {
 entity Team (exercise) {        
   teamID String,
   teamName String,
-  userIDs String
+  min Integer,
+  max Integer
+}
+
+entity TeamManager {        
+   teamName String,
+   test String
 }
 
 entity ProgrammingExercise {        //extends Exercise
@@ -47,9 +54,9 @@ entity SubmittedAnswer {            //abstract
 }
 
 entity Question {                   //abstract
-	title String
-    text String
-    maxScore Integer
+	title String,
+    text String,
+    maxScore Integer,
     minScore Integer
 }
 
@@ -58,9 +65,9 @@ entity MultipleChoiceQuestion {             //extends Question
 }
 
 entity AnswerOption {
-	text String
-    isCorrect Boolean
-    correctScore Integer
+	text String,
+    isCorrect Boolean,
+    correctScore Integer,
     incorrectScore Integer
 }
 
@@ -73,16 +80,16 @@ entity DragAndDropQuestion {          //extends Question
 }
 
 entity DropLocation {
-	posX Integer
-    posY Integer
-    width Integer
+	posX Integer,
+    posY Integer,
+    width Integer,
     height Integer
 }
 
 entity DragItem {
-	pictureFilePath String
-    text String
-    correctScore Integer
+	pictureFilePath String,
+    text String,
+    correctScore Integer,
     incorrectScore Integer
 }
 
@@ -165,7 +172,10 @@ relationship ManyToOne {
   Participation{student(login)} to User,
   LtiOutcomeUrl{user} to User,
   LtiOutcomeUrl{exercise} to Exercise,
-  User{id} to Team,
+ 
+  Team{exercise} to Exercise,
+  Exercise{teamManager} to TeamManager,
+  Team{teamManager} to TeamManager,
 
   DragAndDropAssignment{item} to DragItem,
   DragAndDropAssignment{location} to DropLocation

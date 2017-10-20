@@ -1,0 +1,9 @@
+{
+    "arTeMiSApp": {
+        "ExerciseType" : {
+            "null": "",
+            "INDIVIDUAL": "INDIVIDUAL",
+            "TEAM": "TEAM"
+        }
+    }
+}

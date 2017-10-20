@@ -8,22 +8,18 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
+
+import de.tum.in.www1.exerciseapp.domain.enumeration.ExerciseType;
 
 /**
  * A Exercise.
  */
 @Entity
 @Table(name = "exercise")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-    name="discriminator",
-    discriminatorType=DiscriminatorType.STRING
-)
-@DiscriminatorValue(value="E")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public abstract class Exercise implements Serializable {
+public class Exercise implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,10 +36,17 @@ public abstract class Exercise implements Serializable {
     @Column(name = "due_date")
     private ZonedDateTime dueDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "exercise_type")
+    private ExerciseType exerciseType;
+
     @OneToMany(mappedBy = "exercise")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Participation> participations = new HashSet<>();
+
+    @ManyToOne
+    private TeamManager teamManager;
 
     @ManyToOne
     private Course course;
@@ -96,6 +99,19 @@ public abstract class Exercise implements Serializable {
         this.dueDate = dueDate;
     }
 
+    public ExerciseType getExerciseType() {
+        return exerciseType;
+    }
+
+    public Exercise exerciseType(ExerciseType exerciseType) {
+        this.exerciseType = exerciseType;
+        return this;
+    }
+
+    public void setExerciseType(ExerciseType exerciseType) {
+        this.exerciseType = exerciseType;
+    }
+
     public Set<Participation> getParticipations() {
         return participations;
     }
@@ -119,6 +135,19 @@ public abstract class Exercise implements Serializable {
 
     public void setParticipations(Set<Participation> participations) {
         this.participations = participations;
+    }
+
+    public TeamManager getTeamManager() {
+        return teamManager;
+    }
+
+    public Exercise teamManager(TeamManager teamManager) {
+        this.teamManager = teamManager;
+        return this;
+    }
+
+    public void setTeamManager(TeamManager teamManager) {
+        this.teamManager = teamManager;
     }
 
     public Course getCourse() {
@@ -162,6 +191,7 @@ public abstract class Exercise implements Serializable {
             ", title='" + getTitle() + "'" +
             ", releaseDate='" + getReleaseDate() + "'" +
             ", dueDate='" + getDueDate() + "'" +
+            ", exerciseType='" + getExerciseType() + "'" +
             "}";
     }
 }
