@@ -21,6 +21,10 @@ entity ModelingExercise {           //extends Exercise
 	baseFilePath String
 }
 
+entity ModelComparisonExercise {    //extends Exercise
+ 	 baseRepositoryUrl String,
+     baseBuildPlanId String
+}
 
 entity QuizExercise {               //extends Exercise
     description String,

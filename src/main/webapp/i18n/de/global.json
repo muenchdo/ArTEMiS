@@ -30,6 +30,7 @@
                 "dragAndDropSubmittedAnswer": "Drag And Drop Submitted Answer",
                 "dragAndDropAssignment": "Drag And Drop Assignment",
                 "feedback": "Feedback",
+                "modelComparisonExercise": "Model Comparison Exercise",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
