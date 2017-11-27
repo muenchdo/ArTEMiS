@@ -9,6 +9,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots />
       </configuration>
     </facet>
   </component>
@@ -22,6 +23,15 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/commons-logging-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -52,34 +62,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/commons-logging-1.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/commons-io-2.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/httpcore-4.4.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/commons-lang-2.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../libs/cli-7.1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -97,6 +80,33 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/commons-codec-1.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/commons-io-2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/commons-lang-2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../libs/httpmime-4.5.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -106,16 +116,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/cli-7.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/commons-codec-1.9.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../libs/httpcore-4.4.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -126,18 +127,18 @@
     <orderEntry type="library" name="Gradle: net.sourceforge.plantuml:plantuml:8059" level="project" />
     <orderEntry type="library" name="Gradle: org.imsglobal:basiclti-util:1.1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jasypt:jasypt:1.9.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.github.jhipster:jhipster:1.1.13" level="project" />
+    <orderEntry type="library" name="Gradle: com.ryantenney.metrics:metrics-spring:3.1.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-annotation:3.2.2" level="project" />
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-ehcache:3.2.2" level="project" />
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-graphite:3.2.2" level="project" />
-    <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-jcache:3.2.2" level="project" />
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-servlets:3.2.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-healthchecks:3.2.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-jcache:3.2.2" level="project" />
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-jvm:3.2.2" level="project" />
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-servlet:3.2.2" level="project" />
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-json:3.2.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.ryantenney.metrics:metrics-spring:3.1.3" level="project" />
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-core:3.2.2" level="project" />
-    <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-annotation:3.2.2" level="project" />
-    <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-healthchecks:3.2.2" level="project" />
-    <orderEntry type="library" name="Gradle: io.github.jhipster:jhipster:1.1.13" level="project" />
     <orderEntry type="library" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-json-org:2.8.10" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-hppc:2.8.10" level="project" />
