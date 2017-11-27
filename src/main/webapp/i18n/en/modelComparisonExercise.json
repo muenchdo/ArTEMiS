@@ -1,0 +1,22 @@
+{
+    "arTeMiSApp": {
+        "modelComparisonExercise" : {
+            "home": {
+                "title": "Model Comparison Exercises",
+                "createLabel": "Create a new Model Comparison Exercise",
+                "createOrEditLabel": "Create or edit a Model Comparison Exercise"
+            },
+            "created": "A new Model Comparison Exercise is created with identifier {{ param }}",
+            "updated": "A Model Comparison Exercise is updated with identifier {{ param }}",
+            "deleted": "A Model Comparison Exercise is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Model Comparison Exercise {{ id }}?"
+            },
+            "detail": {
+                "title": "Model Comparison Exercise"
+            },
+            "baseRepositoryUrl": "Base Repository Url",
+            "baseBuildPlanId": "Base Build Plan Id"
+        }
+    }
+}
