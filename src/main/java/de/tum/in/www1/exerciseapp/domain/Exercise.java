@@ -31,7 +31,8 @@ import java.util.Set;
 @JsonSubTypes({
     @JsonSubTypes.Type(value = ProgrammingExercise.class, name = "programming-exercise"),
     @JsonSubTypes.Type(value = ModelingExercise.class, name = "modeling-exercise"),
-    @JsonSubTypes.Type(value = QuizExercise.class, name = "quiz-exercise")
+    @JsonSubTypes.Type(value = QuizExercise.class, name = "quiz-exercise"),
+    @JsonSubTypes.Type(value = ModelComparisonExercise.class, name ="model-comparison-exercise")
 })
 public abstract class Exercise implements Serializable {
 

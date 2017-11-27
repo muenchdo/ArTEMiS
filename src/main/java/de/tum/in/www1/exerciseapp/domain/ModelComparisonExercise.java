@@ -11,15 +11,11 @@ import java.util.Objects;
  * A ModelComparisonExercise.
  */
 @Entity
-@Table(name = "model_comparison_exercise")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ModelComparisonExercise implements Serializable {
+@DiscriminatorValue(value = "MCE")
+//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+public class ModelComparisonExercise extends ModelingExercise implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(name = "base_repository_url")
     private String baseRepositoryUrl;
@@ -27,21 +23,13 @@ public class ModelComparisonExercise implements Serializable {
     @Column(name = "base_build_plan_id")
     private String baseBuildPlanId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public ModelComparisonExercise baseRepositoryUrl(String baseRepositoryUrl) {
+        this.baseRepositoryUrl = baseRepositoryUrl;
+        return this;
     }
 
     public String getBaseRepositoryUrl() {
         return baseRepositoryUrl;
-    }
-
-    public ModelComparisonExercise baseRepositoryUrl(String baseRepositoryUrl) {
-        this.baseRepositoryUrl = baseRepositoryUrl;
-        return this;
     }
 
     public void setBaseRepositoryUrl(String baseRepositoryUrl) {
@@ -59,6 +47,18 @@ public class ModelComparisonExercise implements Serializable {
 
     public void setBaseBuildPlanId(String baseBuildPlanId) {
         this.baseBuildPlanId = baseBuildPlanId;
+    }
+
+    @Override
+    final public String getBaseFilePath() {
+        throw new UnsupportedOperationException("This method is not supported in "
+            + getClass().getSimpleName() + " because of inheritance and should never be called.");
+    }
+
+    @Override
+    final public void setBaseFilePath(String baseFilePath) {
+        throw new UnsupportedOperationException("This method is not supported in "
+            + getClass().getSimpleName() + " because of inheritance and should never be called.");
     }
 
     @Override
