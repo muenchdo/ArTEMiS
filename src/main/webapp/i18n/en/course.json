@@ -21,7 +21,8 @@
             "exercises": "Exercises",
             "programmingExercises": "Programming Exercises",
             "quizExercises": "Quiz Exercises (Beta)",
-            "modelingExercises": "Modeling Exercises (Beta)"
+            "modelingExercises": "Modeling Exercises (Beta)",
+            "modelComparisonExercises": "Modeling Comparison Exercises"
         }
     }
 }

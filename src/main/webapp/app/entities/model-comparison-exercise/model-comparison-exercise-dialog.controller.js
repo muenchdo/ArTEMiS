@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('arTeMiSApp')
+        .module('artemisApp')
         .controller('ModelComparisonExerciseDialogController', ModelComparisonExerciseDialogController);
 
     ModelComparisonExerciseDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'ModelComparisonExercise'];
@@ -32,7 +32,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('arTeMiSApp:modelComparisonExerciseUpdate', result);
+            $scope.$emit('artemisApp:modelComparisonExerciseUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('arTeMiSApp')
+        .module('artemisApp')
         .controller('ModelComparisonExerciseDetailController', ModelComparisonExerciseDetailController);
 
     ModelComparisonExerciseDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'ModelComparisonExercise'];
@@ -13,7 +13,7 @@
         vm.modelComparisonExercise = entity;
         vm.previousState = previousState.name;
 
-        var unsubscribe = $rootScope.$on('arTeMiSApp:modelComparisonExerciseUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('artemisApp:modelComparisonExerciseUpdate', function(event, result) {
             vm.modelComparisonExercise = result;
         });
         $scope.$on('$destroy', unsubscribe);

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('arTeMiSApp')
+        .module('artemisApp')
         .controller('ModelComparisonExerciseController', ModelComparisonExerciseController);
 
     ModelComparisonExerciseController.$inject = ['ModelComparisonExercise'];

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('arTeMiSApp')
+        .module('artemisApp')
         .controller('ModelComparisonExerciseDeleteController',ModelComparisonExerciseDeleteController);
 
     ModelComparisonExerciseDeleteController.$inject = ['$uibModalInstance', 'entity', 'ModelComparisonExercise'];

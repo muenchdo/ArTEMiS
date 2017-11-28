@@ -21,7 +21,8 @@
             "exercises": "Aufgaben",
             "programmingExercises": "Programmieraufgaben",
             "quizExercises": "Quizaufgaben (Beta)",
-            "modelingExercises": "Modellierungsaufgaben (Beta)"
+            "modelingExercises": "Modellierungsaufgaben (Beta)",
+            "modelComparisonExercises": "Modell-Vergleich-Aufgaben"
         }
     }
 }

@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular
-        .module('arTeMiSApp')
+        .module('artemisApp')
         .factory('ModelComparisonExercise', ModelComparisonExercise);
 
     ModelComparisonExercise.$inject = ['$resource'];

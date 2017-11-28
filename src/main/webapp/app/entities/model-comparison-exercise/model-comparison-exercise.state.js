@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('arTeMiSApp')
+        .module('artemisApp')
         .config(stateConfig);
 
     stateConfig.$inject = ['$stateProvider'];
@@ -14,7 +14,7 @@
             url: '/model-comparison-exercise',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'arTeMiSApp.modelComparisonExercise.home.title'
+                pageTitle: 'artemisApp.modelComparisonExercise.home.title'
             },
             views: {
                 'content@': {
@@ -36,7 +36,7 @@
             url: '/model-comparison-exercise/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'arTeMiSApp.modelComparisonExercise.detail.title'
+                pageTitle: 'artemisApp.modelComparisonExercise.detail.title'
             },
             views: {
                 'content@': {
@@ -165,6 +165,32 @@
                     $state.go('^');
                 });
             }]
+        })
+        .state('model-comparison-exercise-for-course', {
+            parent: 'entity',
+            url: '/course/{courseid}/model-comparison-exercise',
+            data: {
+                authorities: ['ROLE_ADMIN', 'ROLE_TA'],
+                pageTitle: 'artemisApp.modelComparisonExercise.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/model-comparison-exercise/model-comparison-exercise.html',
+                    controller: 'ModelComparisonExerciseController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('modelComparisonExercise');
+                    $translatePartialLoader.addPart('exercise');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }],
+                courseEntity: ['$stateParams', 'Course', function ($stateParams, Course) {
+                    return Course.get({id: $stateParams.courseid}).$promise;
+                }]
+            }
         });
     }
 
