@@ -5,7 +5,7 @@
         .module('artemisApp')
         .controller('ModelComparisonExerciseDialogController', ModelComparisonExerciseDialogController);
 
-    ModelComparisonExerciseDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'ModelComparisonExercise'];
+    ModelComparisonExerciseDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'ModelComparisonExercise', 'Course'];
 
     function ModelComparisonExerciseDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, ModelComparisonExercise) {
         var vm = this;

@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/model-comparison-exercise',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN', 'ROLE_TA'],
                 pageTitle: 'artemisApp.modelComparisonExercise.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'model-comparison-exercise',
             url: '/model-comparison-exercise/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN', 'ROLE_TA'],
                 pageTitle: 'artemisApp.modelComparisonExercise.detail.title'
             },
             views: {
@@ -67,7 +67,7 @@
             parent: 'model-comparison-exercise-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN', 'ROLE_TA']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -92,7 +92,7 @@
             parent: 'model-comparison-exercise',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN', 'ROLE_TA']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -121,7 +121,7 @@
             parent: 'model-comparison-exercise',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN', 'ROLE_TA']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -146,7 +146,7 @@
             parent: 'model-comparison-exercise',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN', 'ROLE_TA']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -175,7 +175,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/model-comparison-exercise/model-comparison-exercise.html',
+                    templateUrl: 'app/entities/model-comparison-exercise/model-comparison-exercises.html',
                     controller: 'ModelComparisonExerciseController',
                     controllerAs: 'vm'
                 }
