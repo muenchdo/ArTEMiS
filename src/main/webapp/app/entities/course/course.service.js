@@ -5,6 +5,7 @@
         .factory('Course', Course)
         .factory('CourseExercises', CourseExercises)
         .factory('CourseProgrammingExercises', CourseProgrammingExercises)
+        .factory('CourseModelComparisonExercises', CourseModelComparisonExercises)
         .factory('CourseQuizExercises', CourseQuizExercises)
         .factory('CourseScores', CourseScores);
 
@@ -113,6 +114,43 @@
             }
         });
     }
+
+    CourseModelComparisonExercises.$inject = ['$resource'];
+
+    function CourseModelComparisonExercises ($resource) {
+        var resourceUrl = 'api/courses/:courseId/model-comparison-exercises/:exerciseId';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true },
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'start': {
+                url: resourceUrl + '/participations',
+                method: 'POST',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        if(data.exercise) {
+                            var exercise = data.exercise;
+                            exercise['participation'] = data;
+                            console.log(exercise);
+                            return exercise;
+                        }
+                    }
+                    return data;
+                },
+                ignoreLoadingBar: true
+            }
+        });
+    }
+
 
     CourseQuizExercises.$inject = ['$resource'];
 

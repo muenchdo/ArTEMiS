@@ -1,10 +1,11 @@
 package de.tum.in.www1.exerciseapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import de.tum.in.www1.exerciseapp.domain.ModelComparisonExercise;
+import de.tum.in.www1.exerciseapp.domain.*;
 
-import de.tum.in.www1.exerciseapp.domain.ProgrammingExercise;
 import de.tum.in.www1.exerciseapp.repository.ModelComparisonExerciseRepository;
+import de.tum.in.www1.exerciseapp.service.CourseService;
+import de.tum.in.www1.exerciseapp.service.UserService;
 import de.tum.in.www1.exerciseapp.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +35,14 @@ public class ModelComparisonExerciseResource {
     private static final String ENTITY_NAME = "modelComparisonExercise";
 
     private final ModelComparisonExerciseRepository modelComparisonExerciseRepository;
+    private final UserService userService;
+    private final CourseService courseService;
 
-    public ModelComparisonExerciseResource(ModelComparisonExerciseRepository modelComparisonExerciseRepository) {
+
+    public ModelComparisonExerciseResource(ModelComparisonExerciseRepository modelComparisonExerciseRepository, UserService userService, CourseService courseService) {
         this.modelComparisonExerciseRepository = modelComparisonExerciseRepository;
+        this.userService = userService;
+        this.courseService = courseService;
     }
 
     /**
@@ -105,8 +113,28 @@ public class ModelComparisonExerciseResource {
     @Timed
     @Transactional(readOnly = true)
     public List<ModelComparisonExercise> getProgrammingExercisesForCourse(@PathVariable Long courseId) {
-        // TODO getModelComparisonExerciseForCourse()
-        throw new RuntimeException("Not implemented yet");
+        log.debug("REST request to get all ModelComparisonExercises for the course with id : {}", courseId);
+
+        //this call is only used in the admin interface and there, tutors should not see exercise of courses in which they are only students
+        User user = userService.getUserWithGroupsAndAuthorities();
+        Authority adminAuthority = new Authority();
+        adminAuthority.setName("ROLE_ADMIN");
+        Authority taAuthority = new Authority();
+        taAuthority.setName("ROLE_TA");
+
+        // get the course
+        Course course = courseService.findOne(courseId);
+
+        // determine user's access level for this course
+        if (user.getAuthorities().contains(adminAuthority)) {
+            // user is admin
+            return modelComparisonExerciseRepository.findByCourseId(courseId);
+        } else if (user.getAuthorities().contains(taAuthority) && user.getGroups().contains(course.getTeachingAssistantGroupName())) {
+            // user is TA for this course
+            return modelComparisonExerciseRepository.findByCourseId(courseId);
+        }
+        //in this case the user does not have access, return an empty list
+        return Collections.emptyList();
     }
 
     /**

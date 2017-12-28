@@ -1,5 +1,5 @@
 <div>
-    <h2 data-translate="artemisApp.modelComparisonExercise.home.title">Model Comparison Exercises</h2>
+    <h2><span ng-show="vm.course">{{vm.course.title}} - </span> {{vm.modelComparisonExercise.length}} Model Comparison Exercises</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
@@ -17,16 +17,26 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr>
-                    <th><span data-translate="global.field.id">ID</span></th>
-                    <th><span data-translate="artemisApp.modelComparisonExercise.baseRepositoryUrl">Base Repository Url</span></th>
-                    <th><span data-translate="artemisApp.modelComparisonExercise.baseBuildPlanId">Base Build Plan Id</span></th>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.sort()">
+                    <th><span data-translate="global.field.id">ID</span><span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="title"><span data-translate="artemisApp.exercise.title">Title</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="releaseDate"><span data-translate="artemisApp.exercise.releaseDate">Release Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="dueDate"><span data-translate="artemisApp.exercise.dueDate">Due Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="course.title" ng-hide="vm.course"><span data-translate="artemisApp.exercise.course">Course</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="baseRepositoryUrl"><span data-translate="artemisApp.modelComparisonExercise.baseRepositoryUrl">Base Repository Url</span><span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="baseBuildPlanId"><span data-translate="artemisApp.modelComparisonExercise.baseBuildPlanId">Base Build Plan Id</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="modelComparisonExercise in vm.modelComparisonExercises track by modelComparisonExercise.id">
                     <td><a ui-sref="model-comparison-exercise-detail({id:modelComparisonExercise.id})">{{modelComparisonExercise.id}}</a></td>
+                    <td>{{modelComparisonExercise.title}}</td>
+                    <td>{{modelComparisonExercise.releaseDate | date:'medium'}}</td>
+                    <td>{{modelComparisonExercise.dueDate | date:'medium'}}</td>
+                    <td ng-hide="vm.course">
+                        <a ui-sref="course-detail({id:modelComparisonExercise.course.id})">{{modelComparisonExercise.course.title}}</a>
+                    </td>
                     <td>{{modelComparisonExercise.baseRepositoryUrl}}</td>
                     <td>{{modelComparisonExercise.baseBuildPlanId}}</td>
                     <td class="text-right">
