@@ -3,12 +3,15 @@ package de.tum.in.www1.exerciseapp.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import de.tum.in.www1.exerciseapp.domain.ModelComparisonExercise;
 
+import de.tum.in.www1.exerciseapp.domain.ProgrammingExercise;
 import de.tum.in.www1.exerciseapp.repository.ModelComparisonExerciseRepository;
 import de.tum.in.www1.exerciseapp.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -42,6 +45,7 @@ public class ModelComparisonExerciseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/model-comparison-exercises")
+    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
     @Timed
     public ResponseEntity<ModelComparisonExercise> createModelComparisonExercise(@RequestBody ModelComparisonExercise modelComparisonExercise) throws URISyntaxException {
         log.debug("REST request to save ModelComparisonExercise : {}", modelComparisonExercise);
@@ -64,6 +68,7 @@ public class ModelComparisonExerciseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/model-comparison-exercises")
+    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
     @Timed
     public ResponseEntity<ModelComparisonExercise> updateModelComparisonExercise(@RequestBody ModelComparisonExercise modelComparisonExercise) throws URISyntaxException {
         log.debug("REST request to update ModelComparisonExercise : {}", modelComparisonExercise);
@@ -82,10 +87,26 @@ public class ModelComparisonExerciseResource {
      * @return the ResponseEntity with status 200 (OK) and the list of modelComparisonExercises in body
      */
     @GetMapping("/model-comparison-exercises")
+    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
     @Timed
     public List<ModelComparisonExercise> getAllModelComparisonExercises() {
         log.debug("REST request to get all ModelComparisonExercises");
         return modelComparisonExerciseRepository.findAll();
+    }
+
+    /**
+     * GET /courses/:courseId/model-comparison-exercise
+     *
+     * @param courseId the id of the course
+     * @return the ResponseEntity with status 200 (OK) and the list of modelComparisonExercises for the given course in  the body
+     */
+    @GetMapping(value = "/courses/{courseId}/model-comparison-exercises")
+    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
+    @Timed
+    @Transactional(readOnly = true)
+    public List<ModelComparisonExercise> getProgrammingExercisesForCourse(@PathVariable Long courseId) {
+        // TODO getModelComparisonExerciseForCourse()
+        throw new RuntimeException("Not implemented yet");
     }
 
     /**
@@ -95,12 +116,14 @@ public class ModelComparisonExerciseResource {
      * @return the ResponseEntity with status 200 (OK) and with body the modelComparisonExercise, or with status 404 (Not Found)
      */
     @GetMapping("/model-comparison-exercises/{id}")
+    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
     @Timed
     public ResponseEntity<ModelComparisonExercise> getModelComparisonExercise(@PathVariable Long id) {
         log.debug("REST request to get ModelComparisonExercise : {}", id);
         ModelComparisonExercise modelComparisonExercise = modelComparisonExerciseRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(modelComparisonExercise));
     }
+
 
     /**
      * DELETE  /model-comparison-exercises/:id : delete the "id" modelComparisonExercise.
@@ -109,6 +132,7 @@ public class ModelComparisonExerciseResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/model-comparison-exercises/{id}")
+    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
     @Timed
     public ResponseEntity<Void> deleteModelComparisonExercise(@PathVariable Long id) {
         log.debug("REST request to delete ModelComparisonExercise : {}", id);
