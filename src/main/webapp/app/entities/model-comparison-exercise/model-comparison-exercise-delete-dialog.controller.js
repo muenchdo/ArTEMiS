@@ -1,4 +1,4 @@
-(function() {
+gcam(function() {
     'use strict';
 
     angular
