@@ -4,8 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import de.tum.in.www1.exerciseapp.domain.*;
 
 import de.tum.in.www1.exerciseapp.repository.ModelComparisonExerciseRepository;
+import de.tum.in.www1.exerciseapp.service.ContinuousIntegrationService;
 import de.tum.in.www1.exerciseapp.service.CourseService;
 import de.tum.in.www1.exerciseapp.service.UserService;
+import de.tum.in.www1.exerciseapp.service.VersionControlService;
 import de.tum.in.www1.exerciseapp.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -37,12 +39,17 @@ public class ModelComparisonExerciseResource {
     private final ModelComparisonExerciseRepository modelComparisonExerciseRepository;
     private final UserService userService;
     private final CourseService courseService;
+    private final Optional<ContinuousIntegrationService> continuousIntegrationService;
+    private final Optional<VersionControlService> versionControlService;
 
 
-    public ModelComparisonExerciseResource(ModelComparisonExerciseRepository modelComparisonExerciseRepository, UserService userService, CourseService courseService) {
+
+    public ModelComparisonExerciseResource(ModelComparisonExerciseRepository modelComparisonExerciseRepository, UserService userService, CourseService courseService, Optional<ContinuousIntegrationService> continuousIntegrationService, Optional<VersionControlService> versionControlService) {
         this.modelComparisonExerciseRepository = modelComparisonExerciseRepository;
         this.userService = userService;
         this.courseService = courseService;
+        this.continuousIntegrationService = continuousIntegrationService;
+        this.versionControlService = versionControlService;
     }
 
     /**
@@ -60,10 +67,31 @@ public class ModelComparisonExerciseResource {
         if (modelComparisonExercise.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new modelComparisonExercise cannot already have an ID")).body(null);
         }
+
+        ResponseEntity<ModelComparisonExercise> errorResponse = checkProgrammingExerciseForError(programmingExercise);
+        if(errorResponse != null) {
+            return errorResponse;
+        }
+
         ModelComparisonExercise result = modelComparisonExerciseRepository.save(modelComparisonExercise);
         return ResponseEntity.created(new URI("/api/model-comparison-exercises/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    /**
+     *
+     * @param exercise the exercise object we want to check for errors
+     * @return the error message as response or null if everything is fine
+     */
+    private ResponseEntity<ModelComparisonExercise> checkProgrammingExerciseForError(ModelComparisonExercise exercise) {
+        if(continuousIntegrationService.isPresent() && !continuousIntegrationService.get().buildPlanIdIsValid(exercise.getBaseBuildPlanId())) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("exercise", "invalid.build.plan.id", "The Base Build Plan ID seems to be invalid.")).body(null);
+        }
+        if(versionControlService.isPresent() && !versionControlService.get().repositoryUrlIsValid(exercise.getBaseRepositoryUrlAsUrl())) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("exercise", "invalid.repository.url", "The Repository URL seems to be invalid.")).body(null);
+        }
+        return null;
     }
 
     /**
@@ -83,6 +111,12 @@ public class ModelComparisonExerciseResource {
         if (modelComparisonExercise.getId() == null) {
             return createModelComparisonExercise(modelComparisonExercise);
         }
+
+        ResponseEntity<ModelComparisonExercise> errorResponse = checkProgrammingExerciseForError(modelComparisonExercise);
+        if(errorResponse != null) {
+            return errorResponse;
+        }
+
         ModelComparisonExercise result = modelComparisonExerciseRepository.save(modelComparisonExercise);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, modelComparisonExercise.getId().toString()))

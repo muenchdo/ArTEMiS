@@ -5,6 +5,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -59,6 +61,15 @@ public class ModelComparisonExercise extends ModelingExercise implements Seriali
     final public void setBaseFilePath(String baseFilePath) {
         throw new UnsupportedOperationException("This method is not supported in "
             + getClass().getSimpleName() + " because of inheritance and should never be called.");
+    }
+
+    public URL getBaseRepositoryUrlAsUrl() {
+        try {
+            return new URL(baseRepositoryUrl);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
