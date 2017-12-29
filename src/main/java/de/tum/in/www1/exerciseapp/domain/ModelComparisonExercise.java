@@ -69,30 +69,26 @@ public class ModelComparisonExercise extends ModelingExercise implements Seriali
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ModelComparisonExercise modelComparisonExercise = (ModelComparisonExercise) o;
-        if (modelComparisonExercise.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), modelComparisonExercise.getId());
+        if (this == o) return true;
+        if (!(o instanceof ModelComparisonExercise)) return false;
+        if (!super.equals(o)) return false;
+        ModelComparisonExercise that = (ModelComparisonExercise) o;
+        return Objects.equals(baseRepositoryUrl, that.baseRepositoryUrl) &&
+            Objects.equals(baseBuildPlanId, that.baseBuildPlanId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(super.hashCode(), baseRepositoryUrl, baseBuildPlanId);
     }
 
     @Override
     public String toString() {
         return "ModelComparisonExercise{" +
-            "id=" + getId() +
-            ", baseRepositoryUrl='" + getBaseRepositoryUrl() + "'" +
-            ", baseBuildPlanId='" + getBaseBuildPlanId() + "'" +
-            "}";
+            "id=" + getId()  +
+            ", title='" + getTitle() + '\'' +
+            ", baseRepositoryUrl='" + baseRepositoryUrl + '\'' +
+            ", baseBuildPlanId='" + baseBuildPlanId + '\'' +
+            '}';
     }
 }
