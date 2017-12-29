@@ -68,7 +68,7 @@ public class ModelComparisonExerciseResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new modelComparisonExercise cannot already have an ID")).body(null);
         }
 
-        ResponseEntity<ModelComparisonExercise> errorResponse = checkProgrammingExerciseForError(programmingExercise);
+        ResponseEntity<ModelComparisonExercise> errorResponse = checkProgrammingExerciseForError(modelComparisonExercise);
         if(errorResponse != null) {
             return errorResponse;
         }

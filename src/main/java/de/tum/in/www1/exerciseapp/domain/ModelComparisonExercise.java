@@ -51,11 +51,6 @@ public class ModelComparisonExercise extends ModelingExercise implements Seriali
         this.baseBuildPlanId = baseBuildPlanId;
     }
 
-    @Override
-    final public String getBaseFilePath() {
-        throw new UnsupportedOperationException("This method is not supported in "
-            + getClass().getSimpleName() + " because of inheritance and should never be called.");
-    }
 
     @Override
     final public void setBaseFilePath(String baseFilePath) {
