@@ -4,7 +4,6 @@ import de.tum.in.www1.exerciseapp.domain.*;
 import de.tum.in.www1.exerciseapp.domain.enumeration.ParticipationState;
 import de.tum.in.www1.exerciseapp.exception.BambooException;
 import de.tum.in.www1.exerciseapp.repository.ExerciseRepository;
-import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,7 +146,7 @@ public class ExerciseService {
     }
 
     /**
-     * Delete build plans (except BASE) and optionally repositores of all exercise participations.
+     * Delete build plans (except BASE) and optionally repositories of all exercise participations.
      *
      * @param id id of the exercise for which build plans in respective participations are deleted
      */
@@ -158,7 +157,7 @@ public class ExerciseService {
         List<Repository> studentRepositories = new ArrayList<>();
         Path finalZipFilePath = null;
 
-        if (Optional.ofNullable(exercise).isPresent() && exercise instanceof ProgrammingExercise) {
+        if (Optional.ofNullable(exercise).isPresent() && exercise instanceof RepositoryAndContinuousIntegrationBasedExercise) {
             exercise.getParticipations().forEach(participation -> {
                 if (participation.getBuildPlanId() != null) {     //ignore participations without build plan id
                     try {
@@ -221,7 +220,7 @@ public class ExerciseService {
             scheduleForDeletion(finalZipFilePath, 300);
 
         } else {
-            log.info("Exercise with id {} is not an instance of ProgrammingExercise. Ignoring the request to cleanup repositories and build plan", id);
+            log.info("Exercise with id {} is not an instance of "+RepositoryAndContinuousIntegrationBasedExercise.class.getSimpleName()+". Ignoring the request to cleanup repositories and build plan", id);
             return null;
         }
 
@@ -266,7 +265,7 @@ public class ExerciseService {
         log.info("Request to archive all participations repositories for Exercise : {}", exercise.getTitle());
         List<Path> zippedRepoFiles = new ArrayList<>();
         Path finalZipFilePath = null;
-        if (Optional.ofNullable(exercise).isPresent() && exercise instanceof ProgrammingExercise) {
+        if (Optional.ofNullable(exercise).isPresent() && exercise instanceof RepositoryAndContinuousIntegrationBasedExercise) {
             exercise.getParticipations().forEach(participation -> {
                 try {
                     if (participation.getRepositoryUrl() != null) {     //ignore participations without repository URL
@@ -308,7 +307,7 @@ public class ExerciseService {
             }
         }
         else {
-            log.info("Exercise with id {} is not an instance of ProgrammingExercise. Ignoring the request to archive repositories", id);
+            log.info("Exercise with id {} is not an instance of "+RepositoryAndContinuousIntegrationBasedExercise.class.getSimpleName()+". Ignoring the request to archive repositories", id);
             return null;
         }
         return new java.io.File(finalZipFilePath.toString());

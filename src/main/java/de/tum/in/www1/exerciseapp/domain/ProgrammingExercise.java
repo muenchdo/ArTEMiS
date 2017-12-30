@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @DiscriminatorValue(value="P")
 //@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ProgrammingExercise extends Exercise implements Serializable {
+public class ProgrammingExercise extends Exercise implements RepositoryAndContinuousIntegrationBasedExercise, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,6 +44,7 @@ public class ProgrammingExercise extends Exercise implements Serializable {
         this.baseRepositoryUrl = baseRepositoryUrl;
     }
 
+    @Override
     public String getBaseBuildPlanId() {
         return baseBuildPlanId;
     }
@@ -84,6 +85,7 @@ public class ProgrammingExercise extends Exercise implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
+    @Override
     public URL getBaseRepositoryUrlAsUrl() {
         try {
             return new URL(baseRepositoryUrl);

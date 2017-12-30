@@ -1,7 +1,10 @@
 package de.tum.in.www1.exerciseapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import de.tum.in.www1.exerciseapp.domain.*;
+import de.tum.in.www1.exerciseapp.domain.Exercise;
+import de.tum.in.www1.exerciseapp.domain.Participation;
+import de.tum.in.www1.exerciseapp.domain.ProgrammingExercise;
+import de.tum.in.www1.exerciseapp.domain.QuizExercise;
 import de.tum.in.www1.exerciseapp.repository.ParticipationRepository;
 import de.tum.in.www1.exerciseapp.repository.ResultRepository;
 import de.tum.in.www1.exerciseapp.security.AuthoritiesConstants;
@@ -26,7 +29,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.Principal;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,7 +128,7 @@ public class ParticipationResource {
         Exercise exercise = exerciseService.findOne(exerciseId);
         Participation participation = participationService.findOneByExerciseIdAndStudentLogin(exerciseId, principal.getName());
         if (exercise instanceof ProgrammingExercise) {
-            participation = participationService.resume(exercise, participation);
+            participation = participationService.resume((ProgrammingExercise) exercise, participation);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, participation.getId().toString()))
                 .body(participation);
         }

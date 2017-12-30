@@ -1,9 +1,8 @@
 package de.tum.in.www1.exerciseapp.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,7 +14,7 @@ import java.util.Objects;
 @Entity
 @DiscriminatorValue(value = "MCE")
 //@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ModelComparisonExercise extends ModelingExercise implements Serializable {
+public class ModelComparisonExercise extends ModelingExercise implements RepositoryAndContinuousIntegrationBasedExercise, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,6 +37,7 @@ public class ModelComparisonExercise extends ModelingExercise implements Seriali
         this.baseRepositoryUrl = baseRepositoryUrl;
     }
 
+    @Override
     public String getBaseBuildPlanId() {
         return baseBuildPlanId;
     }
@@ -51,6 +51,7 @@ public class ModelComparisonExercise extends ModelingExercise implements Seriali
         this.baseBuildPlanId = baseBuildPlanId;
     }
 
+    @Override
     public URL getBaseRepositoryUrlAsUrl() {
         try {
             return new URL(baseRepositoryUrl);
@@ -78,7 +79,7 @@ public class ModelComparisonExercise extends ModelingExercise implements Seriali
     @Override
     public String toString() {
         return "ModelComparisonExercise{" +
-            "id=" + getId()  +
+            "id=" + getId() +
             ", title='" + getTitle() + '\'' +
             ", baseRepositoryUrl='" + baseRepositoryUrl + '\'' +
             ", baseBuildPlanId='" + baseBuildPlanId + '\'' +

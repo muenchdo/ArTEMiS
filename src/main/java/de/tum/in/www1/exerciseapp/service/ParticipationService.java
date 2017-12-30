@@ -77,14 +77,14 @@ public class ParticipationService {
         }
 
 
-        // specific to programming exercises
-        if (exercise instanceof ProgrammingExercise) {
-            ProgrammingExercise programmingExercise = (ProgrammingExercise) exercise;
+        // specific to programming exercises and Model comparison exercises
+        if (exercise instanceof RepositoryAndContinuousIntegrationBasedExercise) {
+            RepositoryAndContinuousIntegrationBasedExercise programmingExercise = (RepositoryAndContinuousIntegrationBasedExercise) exercise;
             participation.setInitializationState(ParticipationState.UNINITIALIZED);
             participation = copyRepository(participation, programmingExercise);
-            participation = configureRepository(participation, programmingExercise);
+            participation = configureRepository(participation);
             participation = copyBuildPlan(participation, programmingExercise);
-            participation = configureBuildPlan(participation, programmingExercise);
+            participation = configureBuildPlan(participation);
             participation.setInitializationState(ParticipationState.INITIALIZED);
             participation.setInitializationDate(ZonedDateTime.now());
         } else if (exercise instanceof QuizExercise) {
@@ -106,10 +106,10 @@ public class ParticipationService {
      * @param exercise exercise to which the inactive participation belongs
      * @return resumed participation
      */
-    public Participation resume(Exercise exercise, Participation participation) {
-        ProgrammingExercise programmingExercise = (ProgrammingExercise) exercise;
-        participation = copyBuildPlan(participation, programmingExercise);
-        participation = configureBuildPlan(participation, programmingExercise);
+    public Participation resume(ProgrammingExercise exercise, Participation participation) {
+        // TODO is is possible to resume a ModelComparisonExercise?
+        participation = copyBuildPlan(participation, exercise);
+        participation = configureBuildPlan(participation);
         participation.setInitializationState(ParticipationState.INITIALIZED);
         if (participation.getInitializationDate() == null) {
             //only set the date if it was not set before (which should NOT be the case)
@@ -119,7 +119,7 @@ public class ParticipationService {
         return participation;
     }
 
-    private Participation copyRepository(Participation participation, ProgrammingExercise exercise) {
+    private Participation copyRepository(Participation participation, RepositoryAndContinuousIntegrationBasedExercise exercise) {
         if (!participation.getInitializationState().hasCompletedState(ParticipationState.REPO_COPIED)) {
             URL repositoryUrl = versionControlService.get().copyRepository(exercise.getBaseRepositoryUrlAsUrl(), participation.getStudent().getLogin());
             if (Optional.ofNullable(repositoryUrl).isPresent()) {
@@ -132,7 +132,7 @@ public class ParticipationService {
         }
     }
 
-    private Participation configureRepository(Participation participation, ProgrammingExercise exercise) {
+    private Participation configureRepository(Participation participation) {
         if (!participation.getInitializationState().hasCompletedState(ParticipationState.REPO_CONFIGURED)) {
             versionControlService.get().configureRepository(participation.getRepositoryUrlAsUrl(), participation.getStudent().getLogin());
             participation.setInitializationState(ParticipationState.REPO_CONFIGURED);
@@ -142,7 +142,7 @@ public class ParticipationService {
         }
     }
 
-    private Participation copyBuildPlan(Participation participation, ProgrammingExercise exercise) {
+    private Participation copyBuildPlan(Participation participation, RepositoryAndContinuousIntegrationBasedExercise exercise) {
         if (!participation.getInitializationState().hasCompletedState(ParticipationState.BUILD_PLAN_COPIED)) {
             String buildPlanId = continuousIntegrationService.get().copyBuildPlan(exercise.getBaseBuildPlanId(), participation.getStudent().getLogin());
             participation.setBuildPlanId(buildPlanId);
@@ -153,7 +153,7 @@ public class ParticipationService {
         }
     }
 
-    private Participation configureBuildPlan(Participation participation, ProgrammingExercise exercise) {
+    private Participation configureBuildPlan(Participation participation) {
         if (!participation.getInitializationState().hasCompletedState(ParticipationState.BUILD_PLAN_CONFIGURED)) {
             continuousIntegrationService.get().configureBuildPlan(
                 participation.getBuildPlanId(),
@@ -249,7 +249,7 @@ public class ParticipationService {
     public void delete(Long id, boolean deleteBuildPlan, boolean deleteRepository) {
         log.debug("Request to delete Participation : {}", id);
         Participation participation = participationRepository.findOne(id);
-        if (participation != null && participation.getExercise() instanceof ProgrammingExercise) {
+        if (participation != null && participation.getExercise() instanceof RepositoryAndContinuousIntegrationBasedExercise) {
             if (deleteBuildPlan && participation.getBuildPlanId() != null) {
                 continuousIntegrationService.get().deleteBuildPlan(participation.getBuildPlanId());
             }
