@@ -9,9 +9,10 @@
         .factory('CourseQuizExercises', CourseQuizExercises)
         .factory('CourseScores', CourseScores);
 
-    Course.$inject = ['$resource'];
 
-    function Course ($resource) {
+    Course.$inject = ['$resource', 'DateUtils'];
+
+    function Course ($resource, DateUtils) {
         var resourceUrl =  'api/courses/:id';
 
         return $resource(resourceUrl, {}, {
@@ -21,6 +22,8 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
+                        data.startDate = DateUtils.convertDateTimeFromServer(data.startDate);
+                        data.endDate = DateUtils.convertDateTimeFromServer(data.endDate);
                     }
                     return data;
                 }

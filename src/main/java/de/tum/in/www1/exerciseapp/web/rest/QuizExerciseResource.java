@@ -1,11 +1,10 @@
 package de.tum.in.www1.exerciseapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import de.tum.in.www1.exerciseapp.domain.AnswerOption;
-import de.tum.in.www1.exerciseapp.domain.MultipleChoiceQuestion;
-import de.tum.in.www1.exerciseapp.domain.Question;
-import de.tum.in.www1.exerciseapp.domain.QuizExercise;
+import de.tum.in.www1.exerciseapp.domain.*;
+import de.tum.in.www1.exerciseapp.repository.ParticipationRepository;
 import de.tum.in.www1.exerciseapp.repository.QuizExerciseRepository;
+import de.tum.in.www1.exerciseapp.service.StatisticService;
 import de.tum.in.www1.exerciseapp.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -32,9 +31,13 @@ public class QuizExerciseResource {
     private static final String ENTITY_NAME = "quizExercise";
 
     private final QuizExerciseRepository quizExerciseRepository;
+    private final ParticipationRepository participationRepository;
+    private final StatisticService statisticService;
 
-    public QuizExerciseResource(QuizExerciseRepository quizExerciseRepository) {
+    public QuizExerciseResource(QuizExerciseRepository quizExerciseRepository, ParticipationRepository participationRepository, StatisticService statisticService) {
         this.quizExerciseRepository = quizExerciseRepository;
+        this.participationRepository = participationRepository;
+        this.statisticService = statisticService;
     }
 
     /**
@@ -45,7 +48,7 @@ public class QuizExerciseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/quiz-exercises")
-    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TA', 'INSTRUCTOR', 'ADMIN')")
     @Timed
     public ResponseEntity<QuizExercise> createQuizExercise(@RequestBody QuizExercise quizExercise) throws URISyntaxException {
         log.debug("REST request to save QuizExercise : {}", quizExercise);
@@ -68,7 +71,7 @@ public class QuizExerciseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/quiz-exercises")
-    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TA', 'INSTRUCTOR', 'ADMIN')")
     @Timed
     public ResponseEntity<QuizExercise> updateQuizExercise(@RequestBody QuizExercise quizExercise) throws URISyntaxException {
         log.debug("REST request to update QuizExercise : {}", quizExercise);
@@ -85,15 +88,39 @@ public class QuizExerciseResource {
                 // do the same for answerOptions (if question is multiple choice)
                 if (question instanceof MultipleChoiceQuestion) {
                     MultipleChoiceQuestion mcQuestion = (MultipleChoiceQuestion) question;
+                    MultipleChoiceQuestionStatistic mcStatistic = (MultipleChoiceQuestionStatistic) mcQuestion.getQuestionStatistic();
+                    //reconnect answerCounters
+                    for (AnswerCounter answerCounter : mcStatistic.getAnswerCounters()) {
+                        if (answerCounter.getId() != null) {
+                            answerCounter.setMultipleChoiceQuestionStatistic(mcStatistic);
+                        }
+                    }
+                    // reconnect answerOptions
                     for (AnswerOption answerOption : mcQuestion.getAnswerOptions()) {
                         if (answerOption.getId() != null) {
                             answerOption.setQuestion(mcQuestion);
                         }
                     }
                 }
-                // TODO: Valentin: do the same for dragItems and dropLocations (if question is drag and drop)
+            }
+            // TODO: Valentin: do the same for dragItems and dropLocations (if question is drag and drop)
+        }
+        //reconnect pointCounters
+        for (PointCounter pointCounter: quizExercise.getQuizPointStatistic().getPointCounters()) {
+            if (pointCounter.getId() != null) {
+                pointCounter.setQuizPointStatistic(quizExercise.getQuizPointStatistic());
             }
         }
+
+        // reset Released-Flag in all statistics if they are released but the quiz hasn't ended yet
+        if (quizExercise != null && (!quizExercise.isIsPlannedToStart() || quizExercise.getRemainingTime() > 0)) {
+            quizExercise.getQuizPointStatistic().setReleased(false);
+            for (Question question : quizExercise.getQuestions()) {
+                question.getQuestionStatistic().setReleased(false);
+            }
+        }
+        //notify clients via websocket about the release state of the statistics.
+        statisticService.releaseStatistic(quizExercise, quizExercise.getQuizPointStatistic().isReleased());
 
         // save result
         // Note: save will automatically remove deleted questions from the exercise and deleted answer options from the questions
@@ -110,7 +137,7 @@ public class QuizExerciseResource {
      * @return the ResponseEntity with status 200 (OK) and the list of quizExercises in body
      */
     @GetMapping("/quiz-exercises")
-    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TA', 'INSTRUCTOR', 'ADMIN')")
     @Timed
     public List<QuizExercise> getAllQuizExercises() {
         log.debug("REST request to get all QuizExercises");
@@ -123,7 +150,7 @@ public class QuizExerciseResource {
      * @return the ResponseEntity with status 200 (OK) and the list of programmingExercises in body
      */
     @GetMapping(value = "/courses/{courseId}/quiz-exercises")
-    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TA', 'INSTRUCTOR', 'ADMIN')")
     @Timed
     @Transactional(readOnly = true)
     public List<QuizExercise> getQuizExercisesForCourse(@PathVariable Long courseId) {
@@ -140,7 +167,7 @@ public class QuizExerciseResource {
      * @return the ResponseEntity with status 200 (OK) and with body the quizExercise, or with status 404 (Not Found)
      */
     @GetMapping("/quiz-exercises/{id}")
-    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TA', 'INSTRUCTOR', 'ADMIN')")
     @Timed
     public ResponseEntity<QuizExercise> getQuizExercise(@PathVariable Long id) {
         log.debug("REST request to get QuizExercise : {}", id);
@@ -155,24 +182,37 @@ public class QuizExerciseResource {
      * @return the ResponseEntity with status 200 (OK) and with body the quizExercise, or with status 404 (Not Found)
      */
     @GetMapping("/quiz-exercises/{id}/for-student")
-    @PreAuthorize("hasAnyRole('USER', 'TA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'TA', 'INSTRUCTOR', 'ADMIN')")
     @Timed
     public ResponseEntity<QuizExercise> getQuizExerciseForStudent(@PathVariable Long id) {
         log.debug("REST request to get QuizExercise : {}", id);
         QuizExercise quizExercise = quizExerciseRepository.findOne(id);
 
-        // filter out "explanation" field from all questions (so students can't see explanation while answering quiz)
-        for (Question question : quizExercise.getQuestions()) {
-            question.setExplanation(null);
+        // only filter out information if quiz hasn't ended yet
+        if (quizExercise != null && quizExercise.shouldFilterForStudents()) {
+            // filter out "explanation" and "questionStatistic" field from all questions (so students can't see explanation and questionStatistic while answering quiz)
+            for (Question question : quizExercise.getQuestions()) {
+                question.setExplanation(null);
+                if(!question.getQuestionStatistic().isReleased()) {
+                    question.setQuestionStatistic(null);
+                }
 
-            // filter out "isCorrect" and "explanation" fields from answerOptions in all MC questions (so students can't see correct options in JSON)
-            if (question instanceof MultipleChoiceQuestion) {
-                MultipleChoiceQuestion mcQuestion = (MultipleChoiceQuestion) question;
-                for (AnswerOption answerOption : mcQuestion.getAnswerOptions()) {
-                    answerOption.setIsCorrect(null);
-                    answerOption.setExplanation(null);
+                // filter out "isCorrect" and "explanation" fields from answerOptions in all MC questions (so students can't see correct options in JSON)
+                if (question instanceof MultipleChoiceQuestion) {
+                    MultipleChoiceQuestion mcQuestion = (MultipleChoiceQuestion) question;
+                    for (AnswerOption answerOption : mcQuestion.getAnswerOptions()) {
+                        answerOption.setIsCorrect(null);
+                        answerOption.setExplanation(null);
+                    }
                 }
             }
+        }
+        // filter out the statistic information if the statistic is not released
+        if(!quizExercise.getQuizPointStatistic().isReleased()) {
+            // filter out all statistical-Data of "quizPointStatistic" if the statistic is not released(so students can't see quizPointStatistic while answering quiz)
+            quizExercise.getQuizPointStatistic().setPointCounters(null);
+            quizExercise.getQuizPointStatistic().setParticipantsRated(null);
+            quizExercise.getQuizPointStatistic().setParticipantsUnrated(null);
         }
 
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(quizExercise));
@@ -185,10 +225,17 @@ public class QuizExerciseResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/quiz-exercises/{id}")
-    @PreAuthorize("hasAnyRole('TA', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TA', 'INSTRUCTOR', 'ADMIN')")
     @Timed
     public ResponseEntity<Void> deleteQuizExercise(@PathVariable Long id) {
         log.debug("REST request to delete QuizExercise : {}", id);
+
+        List<Participation> participationsToDelete= participationRepository.findByExerciseId(id);
+
+        for(Participation participation: participationsToDelete){
+            participationRepository.delete(participation.getId());
+        }
+
         quizExerciseRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }

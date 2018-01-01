@@ -31,6 +31,14 @@
                 "dragAndDropAssignment": "Drag And Drop Assignment",
                 "feedback": "Feedback",
                 "modelComparisonExercise": "Model Comparison Exercise",
+                "ltiOutcomeUrl": "Lti Outcome Url",
+                "statistic": "Statistic",
+                "quizPointStatistic": "Quiz Point Statistic",
+                "questionStatistic": "Question Statistic",
+                "multipleChoiceStatistic": "Multiple Choice Statistic",
+                "dragAndDropStatistic": "Drag And Drop Statistic",
+                "answerCounter": "Answer Counter",
+                "dropLocationCounter": "Drop Location Counter",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
