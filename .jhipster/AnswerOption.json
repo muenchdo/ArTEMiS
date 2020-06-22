@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "question",
-            "otherEntityName": "multipleChoiceQuestion",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "AnswerOption",
     "fields": [
         {
             "fieldName": "text",
@@ -24,11 +16,28 @@
         {
             "fieldName": "isCorrect",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "invalid",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170831094151",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "multipleChoiceQuestion",
+            "otherEntityRelationshipName": "answerOptions",
+            "relationshipName": "quizQuestion",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190315161921",
     "entityTableName": "answer_option",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

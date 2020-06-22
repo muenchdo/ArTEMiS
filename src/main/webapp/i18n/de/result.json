@@ -1,6 +1,6 @@
 {
     "artemisApp": {
-        "result" : {
+        "result": {
             "home": {
                 "title": "Results",
                 "createLabel": "Result erstellen",
@@ -15,14 +15,38 @@
             "detail": {
                 "title": "Result"
             },
-            "resultString": "Result String",
-            "completionDate": "Completion Date",
-            "successful": "Successful",
-            "buildArtifact": "Build Artifact",
-            "score": "Score",
-            "submission": "Submission",
-            "feedbacks": "Feedbacks",
-            "participation": "Participation"
+            "noResult": "Kein gewertetes Ergebnis",
+            "resultString": "Ergebnis Text",
+            "completionDate": "Abgabedatum",
+            "successful": "Erfolgreich",
+            "buildArtifact": "Build Artefakt",
+            "score": "Bewertung",
+            "scorePercentage": "Bewertung (in %)",
+            "rated": "Bewertet",
+            "hasFeedback": "Enthält Feedback",
+            "assessmentType": "Bewertungstyp",
+            "assessor": "Reviewer",
+            "feedbacks": "Feedback",
+            "submission": "Einreichung",
+            "participation": "Teilnahme",
+            "createManual": "Erstelle manuelles Ergebnis",
+            "updateManual": "Manuelles Ergebnis aktualisieren",
+            "viewManual": "Manuelles Ergebnis anzeigen",
+            "invalidScore": "Eine Bewertung ist erforderlich und muss eine Zahl zwischen 0 und 100 sein.",
+            "resultStringRequired": "Ein Ergebnis Text ist erforderlich.",
+            "studentLogin": "Studenten Login",
+            "studentLoginRequired": "Studenten Login ist erforderlich.",
+            "exerciseStillOpen": "Die Aufgabe ist noch für Einreichungen geöffnet!",
+            "studentOverride": "Die Einreichungsfrist dieser Aufgabe ist noch nicht erreicht. Der Student könnte das manuelle Ergebnise noch mit einer neuen Lösung überschreiben.",
+            "addFeedback": "Neues Feedback hinzufügen",
+            "deleteFeedback": "Letztes Feedback löschen",
+            "feedbackTextRequired": "Feedback Text ist erforderlich.",
+            "positive": "Positiv",
+            "graded": "Bewertet",
+            "notGraded": "Nicht bewertet",
+            "preliminary": "(vorläufig)",
+            "preliminaryTooltip": "Dein Ergebnis ist nicht endgültig. Nach der Einreichungsfrist werden weitere Tests durchgeführt.",
+            "noResultDetails": "Keine weiteren Informationen verfügbar für dieses Ergebnis."
         }
     }
 }

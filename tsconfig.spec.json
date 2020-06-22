@@ -1,0 +1,17 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "types": ["jest", "node"],
+        "allowJs": true,
+        "inlineSourceMap": true,
+        "outDir": "build/www/app",
+        "baseUrl": ".",
+        "paths": {
+            "@angular/*": ["node_modules/@angular/*"],
+            "app/*": ["src/main/webapp/app/*"]
+        }
+    },
+    "files": ["src/test/javascript/spec/entry.ts"],
+    "include": ["src/test/javascript", "src/main/webapp/app"],
+    "exclude": ["node_modules"]
+}

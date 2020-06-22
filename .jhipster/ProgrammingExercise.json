@@ -1,13 +1,8 @@
 {
-    "fluentMethods": true,
-    "relationships": [],
+    "name": "ProgrammingExercise",
     "fields": [
         {
-            "fieldName": "baseRepositoryUrl",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "baseBuildPlanId",
+            "fieldName": "testRepositoryUrl",
             "fieldType": "String"
         },
         {
@@ -17,11 +12,46 @@
         {
             "fieldName": "allowOnlineEditor",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "programmingLanguage",
+            "fieldType": "ProgrammingLanguage",
+            "fieldValues": "JAVA,PYTHON"
+        },
+        {
+            "fieldName": "packageName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "sequentialTestRuns",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170831094144",
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "participation",
+            "otherEntityRelationshipName": "programmingExercise",
+            "relationshipName": "templateParticipation",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "participation",
+            "otherEntityRelationshipName": "programmingExercise",
+            "relationshipName": "solutionParticipation",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20190315161914",
     "entityTableName": "programming_exercise",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

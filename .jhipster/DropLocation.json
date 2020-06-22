@@ -1,34 +1,43 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "question",
-            "otherEntityName": "dragAndDropQuestion",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "DropLocation",
     "fields": [
         {
             "fieldName": "posX",
-            "fieldType": "Integer"
+            "fieldType": "Double"
         },
         {
             "fieldName": "posY",
-            "fieldType": "Integer"
+            "fieldType": "Double"
         },
         {
             "fieldName": "width",
-            "fieldType": "Integer"
+            "fieldType": "Double"
         },
         {
             "fieldName": "height",
-            "fieldType": "Integer"
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "invalid",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170831094154",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dragAndDropQuestion",
+            "otherEntityRelationshipName": "dropLocations",
+            "relationshipName": "quizQuestion",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190315161924",
     "entityTableName": "drop_location",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

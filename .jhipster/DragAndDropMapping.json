@@ -1,31 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "dragItem",
-            "otherEntityName": "dragItem",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "dropLocation",
-            "otherEntityName": "dropLocation",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "submittedAnswer",
-            "otherEntityName": "dragAndDropSubmittedAnswer",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "question",
-            "otherEntityName": "dragAndDropQuestion",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "DragAndDropMapping",
     "fields": [
         {
             "fieldName": "dragItemIndex",
@@ -34,11 +8,49 @@
         {
             "fieldName": "dropLocationIndex",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "invalid",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20180116141221",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dragItem",
+            "otherEntityRelationshipName": "dragAndDropMapping",
+            "relationshipName": "dragItem",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dropLocation",
+            "otherEntityRelationshipName": "dragAndDropMapping",
+            "relationshipName": "dropLocation",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dragAndDropSubmittedAnswer",
+            "otherEntityRelationshipName": "mappings",
+            "relationshipName": "submittedAnswer",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dragAndDropQuestion",
+            "otherEntityRelationshipName": "correctMappings",
+            "relationshipName": "quizQuestion",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190315161941",
     "entityTableName": "drag_and_drop_mapping",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

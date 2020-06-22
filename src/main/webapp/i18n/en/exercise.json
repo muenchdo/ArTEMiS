@@ -1,30 +1,149 @@
 {
     "artemisApp": {
-        "exercise" : {
+        "exercise": {
             "home": {
                 "title": "Exercises",
-                "createLabel": "Create a new exercise",
-                "createOrEditLabel": "Create or edit a exercise"
+                "createLabel": "Create a new Exercise",
+                "createOrEditLabel": "Create or edit an Exercise"
             },
-            "created": "A new exercise is created with identifier {{ param }}",
-            "updated": "An exercise is updated with identifier {{ param }}",
-            "deleted": "An exercise is deleted with identifier {{ param }}",
+            "addCriterion": "Add a Grading Criterion",
+            "resultCount": "{{resultsLength}} results",
+            "resultsPerPage": "{{number}} results per page",
+            "showAllResults": "Show all results",
+            "searchForStudents": "Search for students by login or name (comma separated)",
+            "searchForTeams": "Search for teams by (short) name or for students by login/name (comma separated)",
+            "created": "A new Exercise is created with identifier {{ param }}",
+            "updated": "An Exercise is updated with identifier {{ param }}",
+            "deleted": "An Exercise is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete exercise {{ id }}?"
+                "question": "Are you sure you want to permanently delete the exercise <strong>{{ title }}</strong>? This action can NOT be undone!",
+                "typeNameToConfirm": "Please type in the name of the Exercise to confirm."
             },
             "reset": {
-                "question": "Are you sure you want to reset exercise {{ id }}?"
+                "question": "Are you sure you want to reset the exercise <strong>{{ title }}</strong>? This action can NOT be undone!"
             },
             "detail": {
                 "title": "Exercise"
             },
+            "import": {
+                "attention": "Attention! ",
+                "markdownWarning": "You can edit the problem statement after importing the exercise.",
+                "loading": "Loading...",
+                "table": {
+                    "title": "Title",
+                    "language": "Programming Language",
+                    "course": "Course",
+                    "examQuestion": "Exam Question",
+                    "doImport": "Import"
+                }
+            },
+            "exercise": "Exercise",
+            "results": "Results",
+            "actions": "Actions",
+            "notStarted": "You have not started this exercise yet.",
+            "problemStatement": "Problem Statement",
+            "sampleSolution": "Example Solution",
+            "gradingInstructions": "Grading Instructions",
+            "structuredGradingInstructions": "Structured Grading Instructions",
+            "usageCount": "Max Count in Score",
+            "usageCountHint": "This number specifies how often points for this instruction will be added to the final score",
+            "DragDropInstruction": "Drag & Drop instruction to feedback element",
+            "gradingScale": "Grading Scale",
+            "instrDescription": "Instruction Description",
             "title": "Title",
-            "releaseDate": "Release date",
-            "dueDate": "Due date",
+            "shortName": "Short Name",
+            "releaseDate": "Release Date",
+            "dueDate": "Due Date",
+            "dueDateError": "Due Date must be after Release Date. Please check your selection again",
+            "assessmentDueDate": "Assessment Due Date",
+            "assessmentDueDateError": "Assessment Due Date must be after Release and Due Date. Please check your selection again",
+            "dateNotSet": "No date set",
+            "maxScore": "Max Score",
+            "difficulty": "Difficulty",
+            "noLevel": "No Level",
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard",
+            "mode": "Mode",
+            "modeTooltip": "The solving mode of an exercise determines whether students work alone or in teams. NOTE: This cannot be changed later on!",
+            "teamModeBetaLabel": "Beta",
+            "modes": {
+                "individual": "Individual",
+                "team": "Team"
+            },
+            "teamAssignmentConfig": {
+                "teamSize": "Team Size",
+                "teamSizeTooltip": "Recommendation for tutors regarding the minimum and maximum number of students per team.",
+                "participants": "Participants"
+            },
+            "categories": "Categories",
+            "noCategory": "No Category",
             "participations": "Participations",
-            "course": "Course"
+            "teams": "Teams",
+            "exportNames": "Export Names",
+            "exportResults": "Export Results",
+            "refresh": "Refresh",
+            "course": "Course",
+            "type": "Type",
+            "mcqType": "Multiple Choice Question",
+            "dndType": "Drag and Drop Question",
+            "welcome": "<strong>Welcome to Artemis!</strong> We have automatically created an account for you. Click the button <i>Start Exercise</i>!",
+            "personalRepositoryClone": "Your personal repository has been set up. Click the button <i>Clone repository</i>!",
+            "personalRepositoryOnline": "Your personal repository has been set up. Click the button <i>Open code editor</i>!",
+            "startError": "<strong>Uh oh! Something went wrong... Please try again to start the exercise in a few minutes.</strong>",
+            "studentName": "Name",
+            "studentId": "Login",
+            "teamName": "Team Name",
+            "teamShortName": "Short Name",
+            "completionDate": "Completion Date",
+            "result": "Result",
+            "submissionCount": "Submissions",
+            "score": "Score",
+            "duration": "Duration",
+            "showBuildFailed": "Show Build Failed",
+            "showFailed": "Show Failed Submissions (without Result)",
+            "showNoSubmissions": "Show No Submissions",
+            "showUnsuccessful": "Show Unsuccessful",
+            "showSuccessful": "Show Successful",
+            "showManual": "Show Manual",
+            "showAutomatic": "Show Automatic",
+            "showAll": "Show All",
+            "tagPlaceholder": "+Category",
+            "tagSecondaryPlaceholder": "Enter a new category",
+            "isProgramming": "This is a programming exercise",
+            "isModeling": "This is a modeling exercise",
+            "isQuiz": "This is a quiz exercise",
+            "isText": "This is a text exercise",
+            "isFileUpload": "This is a file upload exercise",
+            "notificationText": "Optional: Notification about changes",
+            "submissionSuccessful": "The submission was successful",
+            "submissionUnsuccessful": "The submission was unsuccessful",
+            "resultCreationSuccessful": "The result was created successfully",
+            "resultCreationUnsuccessful": "The result was created unsuccessfully",
+            "presentationScoreEnabled": {
+                "title": "Presentation",
+                "description": "If the presentation score is enabled, tutors can enter points for students on the \"Participations\" page of the exercise."
+            },
+            "errors": {
+                "exerciseNotFound": "This exercise was not found"
+            },
+            "form": {
+                "title": {
+                    "pattern": "The title must only consist of alphanumeric characters and '_', '-' or whitespaces!"
+                },
+                "shortName": {
+                    "pattern": "The short name must begin with a letter and must not contain any special characters!",
+                    "minlength": "The short name must be at least 3 characters long!"
+                },
+                "packageName": {
+                    "pattern": "The package name must consist of one or more valid Java identifiers separated by '.', e.g. \"net.java\"!"
+                },
+                "maxScore": {
+                    "pattern": "The maximum score must be between 1 and 9999!"
+                }
+            }
         },
-        "exerciseLtiConfiguration" : {
+        "exerciseLtiConfiguration": {
             "lti": "LTI",
             "configurationForExercise": "LTI configuration for exercise {{ title }}"
         }

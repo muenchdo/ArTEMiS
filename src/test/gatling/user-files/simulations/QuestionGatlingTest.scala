@@ -1,5 +1,5 @@
 import _root_.io.gatling.core.scenario.Simulation
-import ch.qos.logback.classic.LoggerContext
+import ch.qos.logback.classic.{Level, LoggerContext}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import org.slf4j.LoggerFactory
@@ -17,24 +17,30 @@ class QuestionGatlingTest extends Simulation {
     // Log failed HTTP requests
     //context.getLogger("io.gatling.http").setLevel(Level.valueOf("DEBUG"))
 
-    val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://127.0.0.1:8080"""
+    val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://localhost:8080"""
 
     val httpConf = http
-        .baseURL(baseURL)
+        .baseUrl(baseURL)
         .inferHtmlResources()
         .acceptHeader("*/*")
         .acceptEncodingHeader("gzip, deflate")
         .acceptLanguageHeader("fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3")
         .connectionHeader("keep-alive")
         .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0")
+        .silentResources // Silence all resources like css or css so they don't clutter the results
 
     val headers_http = Map(
         "Accept" -> """application/json"""
     )
 
+    val headers_http_authentication = Map(
+        "Content-Type" -> """application/json""",
+        "Accept" -> """application/json"""
+    )
+
     val headers_http_authenticated = Map(
         "Accept" -> """application/json""",
-        "X-XSRF-TOKEN" -> "${xsrf_token}"
+        "Authorization" -> "${access_token}"
     )
 
     val scn = scenario("Test the Question entity")
@@ -42,17 +48,14 @@ class QuestionGatlingTest extends Simulation {
         .get("/api/account")
         .headers(headers_http)
         .check(status.is(401))
-        .check(headerRegex("Set-Cookie", "XSRF-TOKEN=(.*);[\\s]").saveAs("xsrf_token"))).exitHereIfFailed
+        ).exitHereIfFailed
         .pause(10)
         .exec(http("Authentication")
-        .post("/api/authentication")
-        .headers(headers_http_authenticated)
-        .formParam("j_username", "admin")
-        .formParam("j_password", "admin")
-        .formParam("remember-me", "true")
-        .formParam("submit", "Login")
-        .check(headerRegex("Set-Cookie", "XSRF-TOKEN=(.*);[\\s]").saveAs("xsrf_token"))).exitHereIfFailed
-        .pause(1)
+        .post("/api/authenticate")
+        .headers(headers_http_authentication)
+        .body(StringBody("""{"username":"admin", "password":"admin"}""")).asJson
+        .check(header("Authorization").saveAs("access_token"))).exitHereIfFailed
+        .pause(2)
         .exec(http("Authenticated request")
         .get("/api/account")
         .headers(headers_http_authenticated)
@@ -67,7 +70,17 @@ class QuestionGatlingTest extends Simulation {
             .exec(http("Create new question")
             .post("/api/questions")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "title":"SAMPLE_TEXT", "text":"SAMPLE_TEXT", "hint":"SAMPLE_TEXT", "explanation":"SAMPLE_TEXT", "score":"0", "scoringType":null, "randomizeOrder":null}""")).asJSON
+            .body(StringBody("""{
+                "id":null
+                , "title":"SAMPLE_TEXT"
+                , "text":"SAMPLE_TEXT"
+                , "hint":"SAMPLE_TEXT"
+                , "explanation":"SAMPLE_TEXT"
+                , "score":"0"
+                , "scoringType":"ALL_OR_NOTHING"
+                , "randomizeOrder":null
+                , "invalid":null
+                }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_question_url"))).exitHereIfFailed
             .pause(10)
@@ -86,6 +99,6 @@ class QuestionGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) during(Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }

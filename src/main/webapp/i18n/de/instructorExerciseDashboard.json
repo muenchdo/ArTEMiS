@@ -1,0 +1,17 @@
+{
+    "artemisApp": {
+        "instructorExerciseDashboard": {
+            "title": "Instructor Übungs-Dashboard",
+            "pageHeader": "Instructor Übungs-Dashboard für",
+            "back": "Zurück",
+            "noProblemStatement": "No problem statement available",
+            "informationAboutExercise": "Keine Problembeschreibung verfügbar",
+            "exerciseDueDate": "Einreichungsfrist der Aufgabe",
+            "submissions": "Einreichungen",
+            "assessmentDueDate": "Einreichungsfrist der Bewertung",
+            "assessments": "Assessments",
+            "open": "offen",
+            "leaderboardTitle": "Tutor Bestenliste für diese Aufgabe"
+        }
+    }
+}

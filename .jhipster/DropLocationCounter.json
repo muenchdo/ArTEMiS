@@ -1,25 +1,30 @@
 {
-    "fluentMethods": true,
+    "name": "DropLocationCounter",
+    "fields": [],
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "relationshipName": "dropLocation",
             "otherEntityName": "dropLocation",
+            "otherEntityRelationshipName": "dropLocationCounter",
+            "relationshipName": "dropLocation",
             "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "dropLocationCounter"
+            "ownerSide": true
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "dragAndDropQuestionStatistic",
             "otherEntityName": "dragAndDropQuestionStatistic",
+            "otherEntityRelationshipName": "dropLocationCounters",
+            "relationshipName": "dragAndDropQuestionStatistic",
             "otherEntityField": "id"
         }
     ],
-    "fields": [],
-    "changelogDate": "20171026164305",
+    "changelogDate": "20190315161908",
     "entityTableName": "drop_location_counter",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

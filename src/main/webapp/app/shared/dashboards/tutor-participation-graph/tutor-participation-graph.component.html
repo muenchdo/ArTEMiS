@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <ul>
+        <li class="not_participated" [ngClass]="calculateClasses(NOT_PARTICIPATED)">0</li>
+        <li [ngClass]="calculateClasses(REVIEWED_INSTRUCTIONS)" (click)="navigate()" [ngbTooltip]="'artemisApp.tutorCourseDashboard.readGradingInstructions' | translate">
+            <fa-icon [icon]="'book'"></fa-icon>
+        </li>
+        <li
+            *ngIf="exercise.type !== ExerciseType.PROGRAMMING"
+            [ngClass]="calculateClasses(TRAINED)"
+            (click)="navigate()"
+            [ngbTooltip]="'artemisApp.tutorCourseDashboard.trainOnExampleSubmissions' | translate"
+        >
+            <fa-icon [icon]="'chalkboard-teacher'"></fa-icon>
+        </li>
+        <li class="progress-bar-li stacked-li" [ngClass]="calculateClassProgressBar()">
+            <div class="stacked-item">
+                <jhi-progress-bar
+                    [tooltip]="'artemisApp.tutorCourseDashboard.assessStudentsSubmissions' | translate"
+                    [percentage]="percentageInTimeAssessmentProgress"
+                    [numerator]="numberOfAssessments.inTime"
+                    [denominator]="numberOfSubmissions.inTime"
+                >
+                </jhi-progress-bar>
+            </div>
+            <div class="stacked-item" *ngIf="numberOfSubmissions.late > 0">
+                <jhi-progress-bar
+                    [tooltip]="'artemisApp.tutorCourseDashboard.assessStudentsLateSubmissions' | translate"
+                    [percentage]="percentageLateAssessmentProgress"
+                    [numerator]="numberOfAssessments.late"
+                    [denominator]="numberOfSubmissions.late"
+                >
+                </jhi-progress-bar>
+            </div>
+        </li>
+        <li class="progress-bar-li" [ngClass]="calculateClassProgressBar()">
+            <jhi-progress-bar
+                [tooltip]="'artemisApp.tutorCourseDashboard.evaluateStudentsComplaints' | translate"
+                [percentage]="percentageComplaintsProgress"
+                [numerator]="calculateComplaintsNumerator()"
+                [denominator]="calculateComplaintsDenominator()"
+            >
+            </jhi-progress-bar>
+        </li>
+    </ul>
+</div>

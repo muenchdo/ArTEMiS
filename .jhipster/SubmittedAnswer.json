@@ -1,28 +1,34 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "question",
-            "otherEntityName": "question",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "submission",
-            "otherEntityName": "quizSubmission",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "SubmittedAnswer",
     "fields": [
         {
             "fieldName": "scoreInPoints",
             "fieldType": "Double"
         }
     ],
-    "changelogDate": "20170831094148",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "quizQuestion",
+            "otherEntityRelationshipName": "submittedAnswer",
+            "relationshipName": "quizQuestion",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "quizSubmission",
+            "otherEntityRelationshipName": "submittedAnswers",
+            "relationshipName": "submission",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190315161918",
     "entityTableName": "submitted_answer",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

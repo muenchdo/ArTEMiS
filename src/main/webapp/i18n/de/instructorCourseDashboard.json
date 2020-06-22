@@ -1,0 +1,38 @@
+{
+    "artemisApp": {
+        "instructorCourseDashboard": {
+            "title": "Instructor Kurs Dashboard",
+            "pageHeader": "Instructor Kurs Dashboard für",
+            "informationAboutCourse": "Informationen zum Kurs",
+            "noDescription": "Keine Beschreibung vorhanden",
+            "students": "Studenten",
+            "submissions": "Einreichungen",
+            "yourAssessmentLocks": "Gesperrte Bewertungen",
+            "tutors": "Tutoren",
+            "assessments": "Assessments",
+            "open": "nicht bewertete Einreichungen",
+            "openComplaint": "nicht geprüfte Beschwerden",
+            "openRequest": "nicht beantwortete Anfragen",
+            "noExercise": "Für diesen Kurs gibt es keine Übung.",
+            "exercise": "Übung",
+            "dueDate": "Einreichungsfrist",
+            "assessmentDueDate": "Einreichungsfrist der Bewertung",
+            "complaints": "Beschwerden",
+            "moreFeedbackRequests": "Feedbackanfragen",
+            "completedAssessments": "Komplette Assessments",
+            "action": "Aktion",
+            "exerciseDashboard": "Übungs-Dashboard",
+            "tutorLeaderboard": {
+                "courseTitle": "Tutor Kurs Bestenliste",
+                "id": "ID",
+                "name": "Name",
+                "numberOfAssessments": "Assessments",
+                "numberOfAcceptedComplaints": "Angenommene Beschwerden",
+                "numberOfNotAnsweredMoreFeedbackRequests": "Offene Feedbackanfragen",
+                "numberOfComplaintResponses": "Beschwerde Antworten",
+                "numberOfAnsweredMoreFeedbackRequests": "Beantwortete Feedbackanfragen",
+                "points": "Punkte"
+            }
+        }
+    }
+}

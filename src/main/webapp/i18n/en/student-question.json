@@ -1,0 +1,14 @@
+{
+    "artemisApp": {
+        "studentQuestion": {
+            "created": "New question successfully created",
+            "updated": "Question successfully updated",
+            "deleted": "Question successfully deleted"
+        },
+        "questionAnswer": {
+            "created": "New answer successfully created",
+            "updated": "Answer successfully updated",
+            "deleted": "Answer successfully deleted"
+        }
+    }
+}

@@ -2,12 +2,31 @@
     "error": {
         "title": "Fehlerseite!",
         "http": {
-            "400": "Bad request.",
-            "403": "Sie haben nicht die nötigen Berechtigungen diese Seite anzuzeigen.",
-            "405": "The HTTP verb you used is not supported for this URL.",
-            "500": "Internal server error."
+            "400": "Ungültige Anfrage.",
+            "403": "Du hast nicht die nötigen Berechtigungen um diese Seite anzuzeigen.",
+            "404": "Die Seite existiert nicht.",
+            "405": "Die verwendete Anfrage Methode ist für diese URL nicht erlaubt.",
+            "500": "Interner Serverfehler."
         },
-        "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
-        "validation": "Validation error on the server."
+        "concurrencyFailure": "Ein anderer Benutzer hat diese Daten zeitgleich mit dir geändert. Deine Änderungen wurden abgelehnt.",
+        "validation": "Validierungsfehler auf dem Server.",
+        "resultStringNull": "Fehler! Ein Ergebnis Text ist erforderlich.",
+        "resultStringTooLong": "Fehler! Der Ergebnis Text ist zu lange (max. 255 Zeichen)",
+        "scoreNull": "Fehler! Eine Bewertung is erforderlich.",
+        "submissionMissing": "Fehler! Die Abgabe ist nicht mehr mit dem Ergebnis verknüpft. Deine Änderungen wurden abgelehnt.",
+        "resultAlreadyExists": "Es existiert bereits ein Ergebnis für diesen Studenten für diese Übung.",
+        "scoreAndSuccessfulNotMatching": "Fehler! Nur ein Ergebnise mit 100% kann erfolgreich sein.",
+        "feedbackTextOrDetailTextNull": "Fehler! Wenn Feedback vorhanden ist, müssen der Feedback Text und die Feedback Details ausgefüllt werden.",
+        "quizAlreadyVisible": "Das Quiz ist bereits sichtbar.",
+        "quizAlreadyStarted": "Das Quiz wurde bereits gestartet.",
+        "quizNotEndedYet": "Das Quiz hat noch nicht geendet.",
+        "quizAlreadyOpenForPractice": "Das Quiz ist bereits zur Übung geöffnet.",
+        "unknownAction": "Diese Aktion kann nicht durchgeführt werden.",
+        "groupNotFound": "Die von dir eingegebene Gruppe wurde nicht gefunden.",
+        "studentNotFound": "Der Student konnte in diesem Kurs nicht gefunden werden.",
+        "cantSaveFile": "Die hochgeladene Datei {{ fileName }} konnte nicht gespeichert werden.",
+        "emptyFile": "Die hochgeladene Datei {{ fileName }} ist leer. Bitte überprüfe die Datei und versuche es erneut.",
+        "externalSubmissionBeforeDueDate": "Externe Einreichungen können nur nach der Abgabefrist erstellt werden.",
+        "externalSubmissionForQuizExercise": "Externe Einreichungen können nicht für Quiz Übungen erstellt werden."
     }
 }

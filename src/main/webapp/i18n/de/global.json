@@ -1,47 +1,75 @@
 {
     "global": {
-        "title": "ArTEMiS",
-        "browsehappy": "Sie benutzen einen <strong>veralteten</strong> Browser. Bitte <a href=\"http://browsehappy.com/?locale=de/\">aktualisieren Sie Ihren Browser</a>, um die Benutzerfreundlichkeit zu erhöhen.",
+        "title": "Artemis",
+        "browsehappy": "Du benutzt einen <strong>veralteten</strong> Browser. Bitte <a href=\"http://browsehappy.com/?locale=de/\">aktualisiere deinen Browser</a>, um die Benutzerfreundlichkeit zu erhöhen.",
+        "generic": {
+            "yes": "Ja",
+            "no": "Nein",
+            "emptyList": "Keine Elemente verfügbar"
+        },
         "menu": {
             "home": "Startseite",
+            "overview": "Kurs Übersicht",
             "courses": "Kurse",
+            "course": "Kurs Verwaltung",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entitäten",
-                "course": "Course",
+                "course": "Kurse",
                 "exercise": "Exercise",
-                "participation": "Participation",
-                "result": "Result",
-                "ltiUserId": "Lti User Id",
+                "textExercise": "Text Exercise",
+                "fileUploadExercise": "File Upload Exercise",
                 "programmingExercise": "Programming Exercise",
                 "modelingExercise": "Modeling Exercise",
                 "quizExercise": "Quiz Exercise",
+                "lecture": "Vorlesungen",
+                "ltiOutcomeUrl": "Lti Outcome Url",
                 "submittedAnswer": "Submitted Answer",
-                "question": "Question",
+                "quizQuestion": "Question",
                 "multipleChoiceQuestion": "Multiple Choice Question",
                 "answerOption": "Answer Option",
                 "multipleChoiceSubmittedAnswer": "Multiple Choice Submitted Answer",
                 "dragAndDropQuestion": "Drag And Drop Question",
                 "dropLocation": "Drop Location",
                 "dragItem": "Drag Item",
+                "participation": "Participation",
+                "ltiUserId": "Lti User Id",
+                "exerciseResult": "Ergebnis",
+                "feedback": "Feedback",
                 "submission": "Submission",
                 "modelingSubmission": "Modeling Submission",
                 "quizSubmission": "Quiz Submission",
                 "dragAndDropSubmittedAnswer": "Drag And Drop Submitted Answer",
                 "dragAndDropAssignment": "Drag And Drop Assignment",
-                "feedback": "Feedback",
-                "statistic": "Statistik",
+                "quizStatistic": "Statistic",
                 "quizPointStatistic": "Quiz Point Statistic",
-                "questionStatistic": "Question Statistic",
-                "multipleChoiceStatistic": "Multiple Choice Statistic",
-                "dragAndDropStatistic": "Drag And Drop Statistic",
+                "quizQuestionStatistic": "Question Statistic",
+                "multipleChoiceQuestionStatistic": "Multiple Choice Question Statistic",
+                "dragAndDropQuestionStatistic": "Drag And Drop Question Statistic",
+                "quizStatisticCounter": "Statistic Counter",
+                "pointCounter": "Point Counter",
                 "answerCounter": "Answer Counter",
                 "dropLocationCounter": "Drop Location Counter",
+                "apollonDiagram": "Apollon-Diagramm",
+                "programmingSubmission": "Programming Submission",
                 "dragAndDropMapping": "Drag And Drop Mapping",
+                "textSubmission": "Text Submission",
+                "fileUploadSubmission": "File Upload Submission",
+                "shortAnswerQuestionStatistic": "Short Answer Question Statistic",
+                "shortAnswerSpotCounter": "Short Answer Spot Counter",
+                "shortAnswerQuestion": "Short Answer Question",
+                "shortAnswerSpot": "Short Answer Spot",
+                "shortAnswerSolution": "Short Answer Solution",
+                "shortAnswerSubmittedAnswer": "Short Answer Submitted Answer",
+                "shortAnswerSubmittedText": "Short Answer Submitted Text",
+                "shortAnswerMapping": "Short Answer Mapping",
+                "programmingExerciseTestCase": "Programming Exercise Test Case",
+                "exerciseHint": "Aufgabenhinweis",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
                 "main": "Zugang",
+                "profile": "Profil",
                 "settings": "Einstellungen",
                 "password": "Passwort",
                 "sessions": "Sitzungen",
@@ -50,8 +78,10 @@
                 "register": "Registrierung"
             },
             "admin": {
-                "main": "Administration",
+                "main": "Server-Administration",
                 "userManagement": "Benutzerverwaltung",
+                "systemNotifications": "Systemmitteilungen",
+                "featureToggles": "Feature Toggles",
                 "tracker": "Benutzer Aktivitäten",
                 "metrics": "Metriken",
                 "health": "Status",
@@ -62,22 +92,37 @@
                 "database": "Datenbank",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-            "language": "Sprache"
+            "language": "Sprache",
+            "guidedTutorial": "Guided Tutorial",
+            "startTutorial": "Tutorial starten",
+            "restartTutorial": "Tutorial wiederholen",
+            "continueTutorial": "Tutorial fortsetzen"
         },
         "form": {
             "username": "Benutzername",
-            "username.placeholder": "Ihr Benutzername",
+            "username.placeholder": "Benutzername",
+            "currentpassword": "Aktuelles Passwort",
+            "currentpassword.placeholder": "Aktuelles Passwort",
             "newpassword": "Neues Passwort",
             "newpassword.placeholder": "Neues Passwort",
             "confirmpassword": "Neues Passwort bestätigen",
-            "confirmpassword.placeholder": "Bestätigen Sie Ihr neues Passwort",
+            "confirmpassword.placeholder": "Bestätige dein neues Passwort",
             "email": "Email Adresse",
-            "email.placeholder": "Ihre Email Adresse"
+            "email.placeholder": "Email Adresse",
+            "cancel": "Abbruch",
+            "confirm": "Bestätigen"
         },
         "messages": {
             "info": {
-                "authenticated": "Wenn Sie sich <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">anmelden</a> möchten, versuchen Sie es mit <br/>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br/>- Benutzer (Name=\"user\" und Passwort=\"user\").",
-                "register": "Sie haben noch keinen Zugang? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Registrieren Sie sich</a>"
+                "authenticated": {
+                    "prefix": "Wenn du dich ",
+                    "link": "melde",
+                    "suffix": " möchtest, versuche es mit <br>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br>- Benutzer (Name=\"user\" und Passwort=\"user\")."
+                },
+                "register": {
+                    "noaccount": "Du hast noch keinen Zugang?",
+                    "link": "Registriere dich"
+                }
             },
             "error": {
                 "dontmatch": "Das bestätigte Passwort entspricht nicht dem neuen Passwort!"
@@ -90,42 +135,83 @@
                     "strength": "Passwortstärke:"
                 },
                 "confirmpassword": {
-                    "required": "Sie müssen das Passwort bestätigen.",
+                    "required": "Du musst das Passwort bestätigen.",
                     "minlength": "Das bestätigte Passwort muss mindestens 5 Zeichen lang sein",
                     "maxlength": "Das bestätigte Passwort darf nicht länger als 50 Zeichen sein"
                 },
                 "email": {
-                    "required": "Ihre Email Adresse wird benötigt.",
-                    "invalid": "Ihre Email Adresse ist ungültig.",
-                    "minlength": "Ihre Email Adresse muss mindestens 5 Zeichen lang sein",
-                    "maxlength": "Ihre Email Adresse darf nicht länger als 50 Zeichen sein"
+                    "required": "Deine Email Adresse wird benötigt.",
+                    "invalid": "Deine Email Adresse ist ungültig.",
+                    "minlength": "Deine Email Adresse muss mindestens 5 Zeichen lang sein",
+                    "maxlength": "Deine Email Adresse darf nicht länger als 50 Zeichen sein"
                 }
             }
         },
         "field": {
-            "id" : "ID"
+            "id": "ID"
         },
         "ribbon": {
-            "dev":"Development"
+            "dev": "Development",
+            "test": "Test Server"
         },
         "item-count": "Ergebnis {{first}} - {{second}} von {{total}} Elemente."
     },
     "entity": {
         "action": {
+            "add": "Hinzufügen",
             "addblob": "Blob hinzufügen",
             "addimage": "Bild hinzufügen",
             "back": "Zurück",
             "cancel": "Abbrechen",
             "delete": "Löschen",
-            "reset": "Zurücksetzen",
+            "confirm": "Bestätigen",
+            "download": "Herunterladen",
+            "dashboard": "Dashboard",
             "edit": "Bearbeiten",
-            "open": "Open",
+            "editInEditor": "In Editor bearbeiten",
+            "editInIntelliJ": "In IntelliJ bearbeiten",
+            "editEntity": "{{entity}} bearbeiten",
+            "generate": "Generieren",
+            "open": "Öffnen",
             "save": "Speichern",
+            "saving": "Speichern...",
             "view": "Details",
+            "reset": "Zurücksetzen",
             "preview": "Vorschau",
             "cleanup": "Aufräumen",
+            "remove": "Entfernen",
+            "purge": "Löschen",
             "archive": "Archivieren",
-            "submit": "Absenden"
+            "submit": "Absenden",
+            "submitTooltip": "Du kannst mehrmals bis zur Deadline abgeben. Deine Bewertung ergibt sich immer aus der letzten Abgabe.",
+            "submitNoDeadlineTooltip": "Du kannst mehrmals abgeben. Deine Bewertung ergibt sich immer aus der letzten Abgabe.",
+            "submitDeadlineMissedTooltip": "Die Deadline ist abgelaufen. Weitere Abgaben werden nicht gewertet!",
+            "deadlineMissedTooltip": "Die Deadline ist abgelaufen. Du kannst keine neuen Lösungen einreichen!",
+            "submitDeadlineMissed": "Absenden (Deadline verpasst)",
+            "submitSuccessfulAlert": "Deine Abgabe war erfolgreich! Du kannst deine Abgabe nun ändern oder auf Feedback warten.",
+            "submitDeadlineMissedAlert": "Deine Abgabe war erfolgreich! Du kannst deine Abgabe nun ändern oder auf Feedback warten. Da du die Deadline verpasst hast, wird deine Abgabe nicht gewertet.",
+            "retry": "Erneut versuchen",
+            "re-evaluate": "Überarbeiten",
+            "close": "Schließen",
+            "finish": "Abschließen",
+            "import": "Import",
+            "to-import": "Importieren",
+            "export": "Export",
+            "lecture": "Vorlesung",
+            "attachments": "Anhänge",
+            "saveAttachment": "Anhang speichern",
+            "addAttachment": "Anhang hinzufügen",
+            "tutorCourseDashboard": "Tutor Kurs Dashboard",
+            "exerciseDashboard": "Aufgaben Dashboard",
+            "newResult": "Neues Ergebnis",
+            "updateResult": "Ergebnis bearbeiten",
+            "viewResult": "Ergebnis anzeigen",
+            "cleanupBuildPlan": "Build Plan aufräumen",
+            "registerForCourse": "Für Kurs anmelden",
+            "exercise": "Aufgaben",
+            "scores": "Bewertungen",
+            "manageHints": "Verwalte Hinweise",
+            "addExternalSubmission": "Externe Einreichung anlegen"
         },
         "detail": {
             "field": "Feld",
@@ -134,11 +220,20 @@
         "delete": {
             "title": "Löschen bestätigen"
         },
+        "reset": {
+            "title": "Zurücksetzen bestätigen"
+        },
         "cleanup": {
             "title": "Aufräumen bestätigen"
         },
+        "remove": {
+            "title": "Entfernen bestätigen"
+        },
         "archive": {
             "title": "Archivieren bestätigen"
+        },
+        "exportRepos": {
+            "title": "Herunterladen bestätigen"
         },
         "validation": {
             "required": "Dieses Feld wird benötigt.",
@@ -154,15 +249,37 @@
         }
     },
     "error": {
-        "internalServerError": "Internal server error",
+        "internalServerError": "Interner Serverfehler",
         "server.not.reachable": "Server ist nicht erreichbar",
         "url.not.found": "Nicht gefunden",
         "NotNull": "Feld {{fieldName}} kann nicht leer sein!",
         "Size": "Feld {{fieldName}} erfüllt nicht die minimalen/maximalen Voraussetzungen!",
         "userexists": "Benutzername bereits vergeben!",
         "emailexists": "Email wird bereits verwendet!",
-        "idexists": "Ein neuer {{entityName}} kann noch keine ID haben"
+        "idexists": "Ein neuer {{entityName}} kann noch keine ID haben",
+        "invalid.template.build.plan.id": "Die Vorlage Build Plan ID scheint ungültig zu sein. Stelle bitte sicher, dass sie existiert und für Artemis zugänglich ist.",
+        "invalid.solution.build.plan.id": "Die Lösung Build Plan ID scheint ungültig zu sein. Stelle bitte sicher, dass sie existiert und für Artemis zugänglich ist.",
+        "invalid.template.repository.url": "Die Vorlage Repository URL scheint ungültig zu sein. Stelle bitte sicher, dass sie existiert und für Artemis zugänglich ist.",
+        "invalid.solution.repository.url": "Die Lösung Repository URL scheint ungültig zu sein. Stelle bitte sicher, dass sie existiert und für Artemis zugänglich ist.",
+        "idnull": "Ungültige ID",
+        "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten: {{error}}"
     },
-    "footer": "Dies ist Ihre Fußzeile",
-    "justNow": "gerade eben"
+    "contact": "Kontaktiere uns",
+    "bug": "Melde einen Fehler",
+    "feature": "Beantrage ein Feature",
+    "releaseNotes": "Versionshinweise",
+    "justNow": "gerade eben",
+    "pendingChanges": "WARNUNG: Du hast nicht gespeicherte Änderungen. Klicke Abbrechen, um zurück zu gehen und deine Änderungen zu speichern oder klicke OK, um die Änderungen zu verwerfen.",
+    "overview": {
+        "title": "Kursübersicht",
+        "course": "Kursdetails",
+        "exercise": "Aufgabendetails",
+        "lectures": "Vorlesungen",
+        "statistics": "Kursstatistiken",
+        "exams": "Klausuren"
+    },
+    "connectionStatus": {
+        "connected": "Verbunden",
+        "disconnected": "Verbindung getrennt"
+    }
 }

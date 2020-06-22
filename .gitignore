@@ -1,14 +1,11 @@
 ######################
 # Project Specific
 ######################
-/src/main/webapp/content/css/main.css
-/src/main/webapp/content/css/quiz.css
 /build/www/**
-!/libs/*.jar
-/repos
-/classes
-/application.yml
 /src/test/javascript/coverage/
+/src/test/javascript/PhantomJS*/
+/uploads
+/test-results.xml
 
 ######################
 # Node
@@ -17,16 +14,14 @@
 node_tmp/
 node_modules/
 npm-debug.log.*
+/.awcache/*
+.node-gyp/
+/.cache-loader/*
 
 ######################
 # SASS
 ######################
 .sass-cache/
-
-######################
-# Bower
-######################
-/src/main/webapp/bower_components/
 
 ######################
 # Eclipse
@@ -62,11 +57,17 @@ local.properties
 ######################
 # Intellij
 ######################
+.idea/
+*.iml
 *.iws
 *.ipr
 *.ids
 *.orig
 classes/
+.IntelliJIdea*/
+.local/share/JetBrains/
+.java/
+out/
 
 ######################
 # Visual Studio Code
@@ -84,6 +85,15 @@ classes/
 ######################
 .gradle/
 /build/
+
+######################
+# NPM
+######################
+package-lock.json
+.npm/
+.cache/
+.config/
+.yarnrc
 
 ######################
 # Package Files
@@ -133,6 +143,9 @@ Desktop.ini
 *.*~
 *~
 .merge_file*
+.dbus/
+repos/
+repos-download/
 
 ######################
 # Gradle Wrapper
@@ -148,10 +161,13 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+/out
 
-vpproject
-out
-/.idea/artifacts
-/.idea/libraries
-/.idea/workspace.xml
-uploads
+######################
+# Docker
+######################
+.bash_history
+.v8flags.*.json
+/.cache-loader
+/src/main/generated
+/coverage

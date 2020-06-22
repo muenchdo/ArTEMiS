@@ -1,6 +1,6 @@
 {
     "artemisApp": {
-        "answerOption" : {
+        "answerOption": {
             "home": {
                 "title": "Answer Options",
                 "createLabel": "Answer Option erstellen",
@@ -19,6 +19,7 @@
             "hint": "Hint",
             "explanation": "Explanation",
             "isCorrect": "Is Correct",
+            "invalid": "Invalid",
             "question": "Question"
         }
     }

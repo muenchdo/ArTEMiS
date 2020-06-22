@@ -1,83 +1,54 @@
-const os = require('os');
-
-const HtmlScreenshotReporter = require("protractor-jasmine2-screenshot-reporter");
-const JasmineReporters = require('jasmine-reporters');
-
-const prefix = 'src/test/javascript/'.replace(/[^/]+/g,'..');
-
-var webbrowserDriver= '';
-if (os.platform() === 'win32') {
-    webbrowserDriver = prefix + 'node_modules/webdriver-manager/selenium/chromedriver_2.33.exe';
-} else {
-    webbrowserDriver = prefix + 'node_modules/webdriver-manager/selenium/chromedriver_2.33';
-}
-
 exports.config = {
-    seleniumServerJar: prefix + 'node_modules/webdriver-manager/selenium/selenium-server-standalone-3.6.0.jar',
-    chromeDriver: webbrowserDriver,
     allScriptsTimeout: 20000,
 
-    suites: {
-        account: './e2e/account/*.js',
-        admin: './e2e/admin/*.js',
-        entity: './e2e/entities/*.js'
-    },
+    specs: [
+        './src/test/javascript/e2e/**/*.spec.ts',
+        /* jhipster-needle-add-protractor-tests - JHipster will add protractors tests here */
+    ],
 
     capabilities: {
-        'browserName': 'chrome',
+        browserName: 'chrome',
         chromeOptions: {
-            args: ["--headless", "--disable-gpu"]
-        }
+            args: process.env.JHI_E2E_HEADLESS
+                ? ['--headless', '--disable-gpu', '--window-size=1280,1024', '--disable-extensions', 'incognito']
+                : ['--disable-gpu', '--window-size=1280,1024', '--disable-extensions', 'incognito'],
+        },
     },
 
     directConnect: true,
 
     baseUrl: 'http://localhost:8080/',
 
-    framework: 'jasmine2',
+    framework: 'mocha',
 
-    jasmineNodeOpts: {
-        showColors: true,
-        defaultTimeoutInterval: 30000
+    SELENIUM_PROMISE_MANAGER: false,
+
+    mochaOpts: {
+        reporter: 'spec',
+        slow: 3000,
+        ui: 'bdd',
+        timeout: 720000,
     },
 
-    onPrepare: function() {
-        // Disable animations so e2e tests run more quickly
-        var disableNgAnimate = function() {
-            angular
-                .module('disableNgAnimate', [])
-                .run(['$animate', function($animate) {
-                    $animate.enabled(false);
-                }]);
-        };
+    beforeLaunch: function () {
+        require('ts-node').register({
+            project: 'tsconfig.e2e.json',
+        });
+    },
 
-        var disableCssAnimate = function() {
-            angular
-                .module('disableCssAnimate', [])
-                .run(function() {
-                    var style = document.createElement('style');
-                    style.type = 'text/css';
-                    style.innerHTML = 'body * {' +
-                        '-webkit-transition: none !important;' +
-                        '-moz-transition: none !important;' +
-                        '-o-transition: none !important;' +
-                        '-ms-transition: none !important;' +
-                        'transition: none !important;' +
-                        '}';
-                    document.getElementsByTagName('head')[0].appendChild(style);
-                });
-        };
+    onPrepare: function () {
+        browser.driver.manage().window().setRect({ x: 100, y: 100, width: 1280, height: 1024 });
+        // Disable animations
+        // @ts-ignore
+        browser.executeScript('document.body.className += " notransition";');
+        var chai = require('chai');
+        var chaiAsPromised = require('chai-as-promised');
+        chai.use(chaiAsPromised);
+        var chaiString = require('chai-string');
+        chai.use(chaiString);
+        // @ts-ignore
+        global.chai = chai;
+    },
 
-        browser.addMockModule('disableNgAnimate', disableNgAnimate);
-        browser.addMockModule('disableCssAnimate', disableCssAnimate);
-
-        browser.driver.manage().window().setSize(1280, 1024);
-        jasmine.getEnv().addReporter(new JasmineReporters.JUnitXmlReporter({
-            savePath: 'build/reports/e2e',
-            consolidateAll: false
-        }));
-        jasmine.getEnv().addReporter(new HtmlScreenshotReporter({
-            dest: "build/reports/e2e/screenshots"
-        }));
-    }
+    useAllAngular2AppRoots: true,
 };

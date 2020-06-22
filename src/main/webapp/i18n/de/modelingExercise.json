@@ -1,21 +1,36 @@
 {
     "artemisApp": {
-        "modelingExercise" : {
+        "modelingExercise": {
             "home": {
-                "title": "Modeling Exercises",
-                "createLabel": "Modeling Exercise erstellen",
-                "createOrEditLabel": "Modeling Exercise erstellen oder bearbeiten"
+                "title": "Modellierungsaufgaben",
+                "createLabel": "Neue Modellierungsaufgabe erstellen",
+                "editLabel": "Modellierungsaufgabe bearbeiten"
             },
-            "created": "Modeling Exercise erstellt mit ID {{ param }}",
-            "updated": "Modeling Exercise aktualisiert mit ID {{ param }}",
-            "deleted": "Modeling Exercise gelöscht mit ID {{ param }}",
-            "delete": {
-                "question": "Soll Modeling Exercise {{ id }} wirklich dauerhaft gelöscht werden?"
-            },
+            "created": "Modellierungsaufgabe erstellt mit ID {{ param }}",
+            "updated": "Modellierungsaufgabe aktualisiert mit ID {{ param }}",
+            "deleted": "Modellierungsaufgabe gelöscht mit ID {{ param }}",
             "detail": {
-                "title": "Modeling Exercise"
+                "title": "Modellierungsaufgabe"
             },
-            "baseFilePath": "Base File Path"
+            "diagramType": "Diagrammtyp",
+            "problemStatement": "Aufgabenstellung:",
+            "exampleSolution": "Beispiel Lösung",
+            "exampleSolutionExplanation": "Erklärung Beispiel Lösung",
+            "createExampleSolution": "Beispiel Lösung erstellen",
+            "exampleSolutionRequiresExercise": "Um eine Beispiel Lösung zu erstellen, musst du zunächst die Erstellung der Textaufgabe abschließen.",
+            "exampleSolutionForModelingExercise": "Beispiel Lösung für Modellierungsaufgabe {{ exerciseTitle }}",
+            "saveExampleSolution": "Beispiel Lösung speichern",
+            "exampleSubmission": "Beispiel Abgabe {{ number }}",
+            "exampleSubmissions": "Beispiel Abgaben",
+            "createExampleSubmission": "Beispiel Abgabe erstellen",
+            "createNewExampleSubmission": "Neue Beispiel Abgabe erstellen",
+            "updateExampleSubmission": "Beispiel Abgabe aktualisieren",
+            "saveExampleAssessment": "Beispiel Bewertung speichern",
+            "showExampleSubmission": "Abgabe anzeigen",
+            "showExampleAssessment": "Bewertung anzeigen",
+            "exampleSubmissionsRequireExercise": "Um eine Beispiel Abgabe zu erstellen, musst du zunächst die Erstellung der Textaufgabe abschließen.",
+            "exampleSubmissionForModelingExercise": "Beispiel Abgabe für Modellierungsaufgabe {{ exerciseTitle }}",
+            "usedForTutorial": "Für Tutorial"
         }
     }
 }

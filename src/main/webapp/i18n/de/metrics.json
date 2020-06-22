@@ -31,6 +31,9 @@
                     "hide": "Verstecken"
                 }
             },
+            "processMetricsCustom": {
+                "activeUsers": "Aktive Benutzer"
+            },
             "gc": {
                 "title": "Speicherbereinigung (GC)",
                 "marksweepcount": "Durchlaufmarkierungs (Mark Sweep) Anzahl",
@@ -46,7 +49,8 @@
                     "code": "Codierung",
                     "count": "Anzahl",
                     "mean": "Durchschnittswert",
-                    "average": "Mittelwert"
+                    "average": "Mittelwert",
+                    "max": "Maximum"
                 },
                 "code": {
                     "ok": "Ok",

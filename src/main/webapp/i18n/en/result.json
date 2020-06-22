@@ -1,28 +1,52 @@
 {
     "artemisApp": {
-        "result" : {
+        "result": {
             "home": {
                 "title": "Results",
-                "createLabel": "Create a new Result",
-                "createOrEditLabel": "Create or edit a Result"
+                "createLabel": "Create a new result",
+                "createOrEditLabel": "Create or edit a result"
             },
-            "created": "A new Result is created with identifier {{ param }}",
-            "updated": "A Result is updated with identifier {{ param }}",
-            "deleted": "A Result is deleted with identifier {{ param }}",
+            "created": "A new result is created with identifier {{ param }}",
+            "updated": "A result is updated with identifier {{ param }}",
+            "deleted": "A result is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Result {{ id }}?"
+                "question": "Are you sure you want to delete the result with id {{ id }}?"
             },
             "detail": {
                 "title": "Result"
             },
-            "resultString": "Result String",
+            "noResult": "No graded result",
+            "resultString": "Result Text",
             "completionDate": "Completion Date",
             "successful": "Successful",
             "buildArtifact": "Build Artifact",
             "score": "Score",
-            "submission": "Submission",
+            "scorePercentage": "Score (in %)",
+            "rated": "Rated",
+            "hasFeedback": "Has Feedback",
+            "assessmentType": "Assessment Type",
+            "assessor": "Reviewer",
             "feedbacks": "Feedbacks",
-            "participation": "Participation"
+            "submission": "Submission",
+            "participation": "Participation",
+            "createManual": "Create manual result",
+            "updateManual": "Update manual result",
+            "viewManual": "View manual result",
+            "invalidScore": "Score is required and should be a number between 0 and 100.",
+            "resultStringRequired": "Result text is required.",
+            "studentLogin": "Student Login",
+            "studentLoginRequired": "Student login is required.",
+            "exerciseStillOpen": "Exercise is still open for submissions!",
+            "studentOverride": "The due date of this exercise is not reached yet. The student could override this manual result by committing a new solution.",
+            "addFeedback": "Add new Feedback",
+            "deleteFeedback": "Delete last Feedback",
+            "feedbackTextRequired": "Feedback text is required.",
+            "positive": "Positive",
+            "graded": "Graded",
+            "notGraded": "Not graded",
+            "preliminary": "(preliminary)",
+            "preliminaryTooltip": "Your result is not final. More tests will be executed after the exercise's due date.",
+            "noResultDetails": "No result details available."
         }
     }
 }

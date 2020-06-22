@@ -4,64 +4,216 @@
             "home": {
                 "title": "Quiz",
                 "createLabel": "Quiz erstellen",
-                "createOrEditLabel": "Quiz erstellen oder bearbeiten"
+                "createModelDragAndDrop": "Drag and Drop Model Quiz erstellen",
+                "createOrEditLabel": "Quiz erstellen oder bearbeiten",
+                "exportLabel": "Quizübungen exportieren"
             },
             "created": "Quiz erstellt mit ID {{ param }}",
             "updated": "Quiz aktualisiert mit ID {{ param }}",
             "deleted": "Quiz gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll Quiz {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll das Quiz <strong>{{ title }}</strong> wirklich dauerhaft gelöscht werden? Diese Aktion kann NICHT rückgängig gemacht werden!"
+            },
+            "reset": {
+                "question": "Soll das Quiz <strong>{{ title }}</strong> wirklich zurückgesetzt werden? Diese Aktion kann NICHT rückgängig gemacht werden! <br> Das bedeutet, dass alle Teilnehmer, Ergebnisse und Statistiken gelöscht werden, aber die Fragen des Quizzes bestehen bleiben. Dann kannst du das Quiz erneut starten."
             },
             "edit": {
                 "title": "Quiz für {{ param }} bearbeiten",
                 "addQuestion": "Frage hinzufügen",
-                "invalidInput": "Ungültige Eingabe!",
+                "invalidInput": "Ungültige Eingabe",
+                "warning": "Warnung",
                 "pendingChanges": "Ungespeicherte Änderungen",
-                "saving": "Speichern …",
-                "saved": "Gespeichert!"
+                "saving": "Speichern...",
+                "saved": "Gespeichert!",
+                "quizHasStarted": "Das Quiz hat angefangen. Es sind keine Änderungen mehr möglich.<br><br>Nachträgliche Korrekturen können vorgenommen werden, sobald das Quiz beendet wurde. Gehe zurück zur Übersicht und klicke auf \"Re-evaluate\", sobald das Quiz beendet wurde. (\"Re-evaluate\" ist nicht für TAs verfügbar.)"
             },
+            "saveError": "Beim Speichern ist ein Fehler ist aufgetreten. Bitte überprüfe deine Eingabe und versuche es später noch einmal.",
             "new": {
                 "title": "Quiz für {{ param }} erstellen"
             },
+            "export": {
+                "title": "Alle Quizfragen zum Kurs {{ param }}",
+                "export": "Ausfuhr",
+                "questionTitle": "Kurzer Frage Titel",
+                "quizExerciseTitle": "Quiz Übungstitel"
+            },
+            "filter": {
+                "mcq": "Multiple-Choice Frage",
+                "dnd": "Drag-And-Drop Frage",
+                "sa": "Short-Answer Frage",
+                "applyFilter": "Filter anwenden"
+            },
+            "quizStatus": {
+                "closed": "Geschlossen",
+                "hidden": "Verborgen",
+                "openForPractice": "Zur Übung freigegeben",
+                "active": "Aktiv",
+                "visible": "Sichtbar"
+            },
+            "quizLifecycle": "Quiz Lebenszyklus",
             "description": "Beschreibung",
+            "options": "Optionen",
             "explanation": "Erklärung",
             "randomizeQuestionOrder": "Fragen in zufälliger Reihenfolge anzeigen",
             "allowedNumberOfAttempts": "Erlaubte Anzahl an Versuchen",
             "isVisibleBeforeStart": "Vor dem Start sichtbar",
             "isOpenForPractice": "Zum Üben freigegeben",
             "isPlannedToStart": "Geplante Startzeit",
+            "openForPractice": "Zum Üben Freigeben",
+            "startNow": "Jetzt Starten",
+            "showNow": "Für Studenten Anzeigen",
             "duration": "Dauer",
             "minutes": "Minuten",
             "seconds": "Sekunden",
             "minutesShort": "min",
             "secondsShort": "s",
             "questions": "Fragen",
+            "noQuestionsFound": "Keine Fragen in Kurs gefunden",
+            "noMatchingQuestionsFound": "Keine Fragen des Kurses entsprechen den Suchkriterien",
             "multipleChoiceQuestion": "Multiple-Choice Frage",
             "dragAndDropQuestion": "Drag-And-Drop Frage",
+            "shortAnswerQuestion": "Short-Answer Frage",
+            "addMultipleChoiceQuestion": "Multiple-Choice Frage hinzufügen",
+            "addDragAndDropQuestion": "Drag-And-Drop Frage hinzufügen",
+            "addShortAnswerQuestion": "Short-Answer Frage hinzufügen",
+            "addExistingQuestions": "Vorhandene Fragen hinzufügen",
+            "selectCourse": "Wähle einen Kurs",
+            "selectQuizExercise": "Wähle eine Quiz Übung aus",
+            "addSelectedQuestions": "Ausgewählte Fragen hinzufügen",
             "status": "Status",
             "quizPointStatistic": "Quiz-Punkte-Statistik",
             "startTime": "Startzeit",
             "quiz": "Quiz",
             "totalPoints": "Gesamtpunktzahl",
             "totalScore": "Ergebnis",
-            "remainingTime": "Verbleibende Zeit",
+            "maxScore": "Max. Punkte",
+            "remainingTime": "Restzeit",
+            "waitingForStart": "Warte auf Start",
             "quizInstructions": {
-                "default": "Wählen Sie für jede Frage die richtigen Antworten aus und klicken Sie auf \"Absenden\", um ihre Auswahl abzugeben.",
-                "wait": "Warten Sie bis das Quiz beendet ist um Ihre Ergebnisse zu sehen.",
-                "result": "Sie haben das Quiz mit {{userScore}} von {{maxScore}} Punkten abgeschlossen ({{percentage}} %)."
+                "live": "Beantworte alle Fragen in der verbleibenden Zeit und klick erst dann auf die Schaltfläche \"Absenden\", wenn du fertig bist.",
+                "wait": "Warte bis das Quiz beendet ist um deine Ergebnisse zu sehen.",
+                "result": "Du hast das Quiz mit {{userScore}} von {{maxScore}} Punkten abgeschlossen ({{percentage}} %).",
+                "waitForStart": "Bitte warte.<br><br>Diese Seite lädt automatisch neu, sobald das Quiz beginnt.",
+                "timeUntilPlannedStart": "Zeit bis zum geplanten Start:"
             },
+            "isSaving": "Wird gespeichert...",
             "lastSaved": "Gespeichert",
+            "lastSavedTimeNever": "Nie",
             "submitted": "Abgegeben",
+            "unsavedChanges": "Ungespeicherte Änderungen",
             "statistics": "Statistiken",
+            "practiceMode": "Übung",
+            "previewMode": "Vorschau",
+            "preview": "Quiz Vorschau",
+            "solution": "Musterlösung",
+            "quizIsOverText": "Das Quiz ist beendet. Bitte warte. Wenn die Ergebnisse nach 60s nicht automatisch angezeigt werden, dann lade die Seite bitte neu.",
+            "notParticipatedText": "Das Quiz ist beendet und du hast nicht daran teilgenommen. Es gibt keine Ergebnisse anzuzeigen.",
             "statisticsNotPublished": "Der Übungsleiter hat keine Statistiken freigegeben.",
-            "successfullySubmittedText": "Ihre Antworten wurden erfolgreich abgegeben.<br><br>Die Ergebnisse werden angezeigt, sobald das Quiz beendet ist.",
-            "invalidReasons" : {
-                "quizTitle": "Quiz: Titel fehlt.",
-                "quizDuration": "Quiz: Dauer fehlt oder ungültig.",
-                "questionTitle": "Frage {{index}}: Titel fehlt.",
-                "questionCorrectAnswerOption": "Frage {{index}}: Keine korrekte Antwortmöglichkeit.",
-                "questionCorrectMapping": "Frage {{index}}: Keine korrekte Zuordnung."
-            }
+            "successfullySubmittedText": "Deine Antworten wurden erfolgreich abgegeben.<br><br>Die Ergebnisse werden angezeigt, nachdem das Quiz beendet ist.<br><br>Wenn die Ergebnisse 60s nach Quiz Ende nicht automatisch angezeigt werden, dann lade die Seite bitte neu.",
+            "re-evaluate": {
+                "title": "Quiz für {{ param }} überarbeiten",
+                "resetQuiz": "Setze Quiz zurück",
+                "setQuestionInvalid": "Frage ungültig setzen",
+                "questionIsInvalid": "Frage ist ungültig",
+                "setAnswerInvalid": "Antwort ungültig setzen",
+                "answerIsInvalid": "Antwort ist ungültig",
+                "warning": {
+                    "warning": "Warnung!",
+                    "confirm": "Änderungen bestätigen",
+                    "problems": "Folgende Probleme können auftreten:",
+                    "element_deleted": "Frage-Element gelöscht:",
+                    "element_invalid": "Frage-Element ungültig gesetzt:",
+                    "element_correctness": "Lösungsverbindungen oder Lösung einer Antwort verändert:",
+                    "answer_deleted": "Antwortmöglichkeit gelöscht:",
+                    "answer_invalid": "Antwortmöglichkeit ungültig gesetzt:",
+                    "answer_correctness": "Lösung einer Antwort verändert:",
+                    "question_deleted": "Frage gelöscht:",
+                    "question_invalid": "Frage ungültig gesetzt:",
+                    "scoring_change": "Bewertungsart verändert:",
+                    "no_changes": "Keine Änderungen, welche die bestehenden Ergebnisse beeinflussen",
+                    "quizStatistic": "Die bestehende Statistiken müssen neu berechnet werden!",
+                    "results": "Die bestehenden Ergebnisse müssen neu berechnet werden!",
+                    "resulttext": {
+                        "element_deleted": "Das Frage-Element wird aus allen Ergebnissen entfernt",
+                        "element_invalid": "Alle Teilnehmer erhalten die Punkte für das ungültige Frage-Element",
+                        "answer_deleted": "Die Antwortmöglichkeit wird aus allen Ergebnissen entfernt",
+                        "answer_invalid": "Alle Teilnehmer erhalten die Punkte für die ungültige Antwort",
+                        "question_deleted": "Die Frage wird aus allen Ergebnissen entfernt",
+                        "question_invalid": "Alle Teilnehmer erhalten die Punkte für die ungültige Frage",
+                        "scoring_change": "Die erreichte Punktzahl wird neu berechnet, dabei kann ein Teilnehmer auch Punkte verlieren"
+                    },
+                    "confirmtext": "Möchtest du die Änderungen wirklich übernehmen?",
+                    "succesfully_confirm": "Änderungen erfolgreich übernommen!"
+                }
+            },
+            "hidden": "Verdeckt",
+            "visible": "Sichtbar",
+            "invalidReasons": {
+                "quizTitle": "Quiz: Der Titel fehlt.",
+                "quizDuration": "Quiz: Die Dauer fehlt oder ist ungültig.",
+                "noQuestion": "Quiz: Das Quiz hat keine Fragen.",
+                "invalidStartTime": "Quiz: Die Startzeit ist nicht gültig.",
+                "startTimeInPast": "Quiz: Die Startzeit liegt in der Vergangenheit.",
+                "questionTitle": "Frage {{index}}: Der Titel fehlt.",
+                "questionScore": "Frage {{index}}: Ungültige Punktzahl.",
+                "questionCorrectAnswerOption": "Frage {{index}}: Es existiert keine korrekte Antwortmöglichkeit.",
+                "questionCorrectMapping": "Frage {{index}}: Es existiert keine korrekte Zuordnung.",
+                "questionUnsolvable": "Frage {{index}}: Es gibt Drag Items, die auf mehrere Drop Locations gleichzeitig platziert werden müssten um die Frage richtig zu beantworten.",
+                "misleadingCorrectMapping": "Frage {{index}}: Es gibt mindestens eine korrekte Zuordnung (oder Kombination an korrekten Zuordnungen), die wenn sie verwendet wird, keine korrekte Gesamtlösung mehr zulässt.",
+                "shortAnswerQuestionEverySpotHasASolution": "Frage {{index}}: Es gibt mindestens ein Eingabefeld, dass keine Lösung besitzt.",
+                "shortAnswerQuestionEveryMappedSolutionHasASpot": "Frage {{index}}: Es fehlt mindestes ein Eingabfeld, um eine Kombination an korrekten Zuordnungen zu erhalten.",
+                "shortAnswerQuestionUnsolvable": "Frage {{index}}: Diese Frage kann nicht richtig beantwortet werden. Bitte überprüfe die zugeordneten Lösungen",
+                "shortAnswerQuestionSolutionHasNoValue": "Frage {{index}}: Es gibt mindestens eine Lösung die keinen Wert besitzt.",
+                "shortAnswerQuestionDuplicateMapping": "Frage {{index}}: Es gibt mindestens ein Mapping das doppelt ist.",
+                "questionTitleLength": "Frage {{index}}: Die Frage ist länger als 250 Zeichen. Bitte kürzen!",
+                "quizTitleLength": "Quiz: Der Titel ist länger als 250 Zeichen. Bitte kürzen!",
+                "explanationIsMissing": "Frage {{index}}: Nicht jede Antwortmöglichkeit enthält eine Erklärung."
+            },
+            "scoringType": {
+                "all_or_nothing": "Alles-oder-Nichts",
+                "proportional_with_penalty": "Anteilig mit Abzügen"
+            },
+            "scoringTypeExplanation": {
+                "title": "Bewertungs Typen",
+                "all_or_nothing": "Alle richtigen Auswahlmöglichkeiten müssen ausgewählt werden und alle falschen Auswahlmöglichkeiten müssen leer bleiben, um die volle Punktzahl zu erreichen. Wird eine falsche Antwortmöglichkeit ausgewählt gibt es 0 Punkte. Es gibt keine Punktzahl dazwischen.",
+                "proportional_with_penalty": "Jede richtige Antwort führt zu einem Bruchteil der Gesamtpunktzahl. Um Rätselraten zu vermeiden, wird für jeden Fehler der gleiche Anteil von den erreichten Punkten abgezogen. Beispiel: Wenn die gesamt Punktzahl der Frage 3 ist und es 5 Optionen gibt, ergibt jede richtige Antwortmöglichkeit 0,6 Punkte. Jede falsche Antwortmöglichkeit zieht 0,6 Punkte ab. Ein Student mit 4 richtigen und 1 falschen Auswahlmöglichkeit erhält dann 1,8 Punkte."
+            },
+            "importJSON": "Fragen importieren (JSON)",
+            "explanationText": {
+                "point": "Punkt",
+                "points": "Punkte",
+                "item": "Element",
+                "items": "Elemente",
+                "textgap": "Lücke",
+                "textgaps": "Lücken",
+                "option": "Antwortmöglichkeit",
+                "options": "Antwortmöglichkeiten",
+                "scoringTitle": "Erklärung zur Punkteverteilung in Frage {{paramIndex}} {{paramTitle}}",
+                "scoringTypeProportional": "Verteilung Anteilig mit Abzügen: ",
+                "scoringTypeAllOrNothing": "Verteilung Alles-oder-Nichts: ",
+                "scoringTypeProportionalExplanation": "Jede richtige Antwort gibt positive Punkte, jeder Fehler gibt negative Punkte, um Rätselraten zu vermeiden. ",
+                "scoringTypeAllOrNothingExplanation": "Du erhälst entweder alle oder gar keine Punkte.",
+                "multipleChoiceAllOrNothingCorrect": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht. Da du alle Antwortoptionen richtig ausgewählt hast, hast du in dieser Übung alle Punkte erreicht. Tolle Arbeit!",
+                "multipleChoiceAllOrNothingNotCorrect": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht, da du {{paramInTotalWrongOptions}} {{wrongOption}} falsch und {{paramInTotalRightOptions}} {{rightOption}} richtig ausgewählt hast. Versuchen es weiter! ",
+                "multipleChoiceProp": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht. Jede der {{paramAmountOfAnswerOptions}} Antwortmöglichkeiten gewährt dir {{paramQuestionScore}}/{{paramAmountOfAnswerOptions}} Punkte, wenn du die Antwortmöglichkeiten richtig ausgewählt hast. Du hast {{paramInTotalWrongOptions}} {{wrongOption}} falsch und {{paramInTotalRightOptions}} {{rightOption}} korrekt ausgewählt. Insgesamt hast du",
+                "dragAndDropAllOrNothingCorrect": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht. Da du alle Elemente korrekt zugeordnet hast, hast du in dieser Übung alle Punkte erreicht. Tolle Arbeit!",
+                "dragAndDropAllOrNothingNotCorrect": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht, da du {{paramRightMapping}} {{rightMap}} korrekt zugeordnet hast, aber {{paramWrongMappedItems}} {{wrongMap}} falsch zugeordnet hast. Versuchen es weiter!",
+                "dragAndDropProp": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht. Jeder der {{paramDragAndDropElementsCount}} Elemente gewährt dir {{paramQuestionScore}}/{{paramDragAndDropElementsCount}} Punkte, wenn du ihn an die entsprechende Stelle zuordnest. Du hast {{paramWrongMappedItems}} {{wrongMap}} falsch zugeordnet und {{paramRightMapping}} {{rightMap}} korrekt zugeordnet. Insgesamt hast du",
+                "shortAnswerAllOrNothingCorrect": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht. Da du alle Text Lücken richtig ausgefüllt hast, hast du in dieser Übung alle Punkte erreicht. Tolle Arbeit!",
+                "shortAnswerAllOrNothingNotCorrect": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht, da du {{paramShortAnswerWrongOption}} Text {{wrongGap}} falsch und {{paramShortAnswerCorrectAnswers}} Text {{rightGap}} korrekt ausgefüllt hast. Versuchen es weiter!",
+                "shortAnswerProp": "Du hast {{paramScore}} {{paramPoint}} der {{paramQuestionScore}} möglichen {{paramScorePoint}} erreicht. Jede Text Lücke gewährt dir {{paramQuestionScore}}/{{paramCount}} Punkte, wenn du diese korrekt ausfüllst. Da du {{paramShortAnswerWrongOption}} Text {{wrongGap}} falsch und {{paramShortAnswerCorrectAnswers}} Text {{rightGap}} korrekt ausgefüllt hast. Insgesamt hast du",
+                "KeepTrying": "Versuchen es weiter!",
+                "zeroPointer": "(Natürlich kannst du nicht weniger als 0 Punkte haben.)"
+            },
+            "explanationAnswered": "Du hast die Frage beantwortet",
+            "explanationNotAnswered": "Du hast die Frage noch nicht beantwortet",
+            "submissionWarning": "Bist du sicher, dass du einreichen willst? Du hast nicht alle Fragen beantwortet und hast noch etwas Zeit übrig!"
+        },
+        "quizLiveModal": {
+            "title": "Go-Live einer neuen Quiz-Übung",
+            "body": "Das Quiz {{quizName}} für den Kurs {{courseName}} ist nun aktiv! Klick auf den 'Weiter zum Quiz' Button um zum Quiz zu gelangen.",
+            "cancelButton": "Abbrechen",
+            "goToButton": "Weiter zum Quiz"
         }
     }
 }

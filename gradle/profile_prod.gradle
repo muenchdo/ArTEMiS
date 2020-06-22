@@ -1,13 +1,5 @@
-apply plugin: 'org.springframework.boot'
-apply plugin: 'com.moowork.node'
-apply plugin: 'com.moowork.gulp'
-
-ext {
-    logbackLoglevel = "INFO"
-}
-
 dependencies {
-
+    testCompile "com.h2database:h2"
 }
 
 def profiles = 'prod'
@@ -15,28 +7,26 @@ if (project.hasProperty('no-liquibase')) {
     profiles += ',no-liquibase'
 }
 
-if (project.hasProperty('swagger')) {
-    profiles += ',swagger'
+springBoot {
+    buildInfo()
 }
 
 bootRun {
     args = []
 }
 
-task gulpBuildWithOpts(type: GulpTask) {
-    args = ["build", "--no-notification"]
+task webpack_test(type: YarnTask, dependsOn: 'yarn_install') {
+    args = ["run", "webpack:test"]
 }
 
-war {
-    webAppDirName = 'build/www/'
+task webpack(type: YarnTask, dependsOn: 'yarn_install') {
+    args = ["run", "webpack:prod"]
+    environment = [APP_VERSION: project.version]
 }
 
 processResources {
-    filesMatching('**/logback-spring.xml') {
-        filter {
-            it.replace('#logback.loglevel#', logbackLoglevel)
-        }
-    }
+    inputs.property('version', version)
+    inputs.property('springProfiles', profiles)
     filesMatching('**/application.yml') {
         filter {
             it.replace('#project.version#', version)
@@ -47,9 +37,6 @@ processResources {
     }
 }
 
-gulpBuildWithOpts.dependsOn npmInstall
-gulpBuildWithOpts.dependsOn bower
-bower.dependsOn npmInstall
-processResources.dependsOn gulpBuildWithOpts
-test.dependsOn gulp_test
-bootRun.dependsOn gulp_test
+test.dependsOn webpack_test
+processResources.dependsOn webpack
+bootJar.dependsOn processResources

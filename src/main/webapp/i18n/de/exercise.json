@@ -1,30 +1,149 @@
 {
     "artemisApp": {
-        "exercise" : {
+        "exercise": {
             "home": {
-                "title": "Übung",
+                "title": "Übungen",
                 "createLabel": "Übung erstellen",
                 "createOrEditLabel": "Übung erstellen oder bearbeiten"
             },
+            "addCriterion": "BewertungKriterium hinzufügen",
+            "resultCount": "{{resultsLength}} Ergebnisse",
+            "resultsPerPage": "{{number}} Ergebnisse pro Seite",
+            "showAllResults": "Zeige alle Ergebnisse",
+            "searchForStudents": "Suche nach Studenten Logins oder Namen (Komma getrennt)",
+            "searchForTeams": "Suche nach Team (Kurz-)Namen oder nach Studenten Logins/Namen (Komma getrennt)",
             "created": "Übung erstellt mit ID {{ param }}",
             "updated": "Übung aktualisiert mit ID {{ param }}",
             "deleted": "Übung gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll die Übung {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll die Übung <strong>{{ title }}</strong> wirklich dauerhaft gelöscht werden? Diese Aktion kann NICHT rückgängig gemacht werden!",
+                "typeNameToConfirm": "Bitte gib den Namen der Übung zur Bestätigung ein."
             },
             "reset": {
-                "question": "Soll die Übung {{ id }} wirklich komplett zurückgesetzt werden?"
+                "question": "Soll die Übung <strong>{{ title }}</strong> wirklich zurückgesetzt werden? Diese Aktion kann NICHT rückgängig gemacht werden!"
             },
             "detail": {
                 "title": "Übung"
             },
+            "import": {
+                "attention": "Achtung! ",
+                "markdownWarning": "Die Aufgabenstellung kann nach dem Import geändert werden.",
+                "loading": "Lade...",
+                "table": {
+                    "title": "Titel",
+                    "language": "Programmiersprache",
+                    "course": "Kurs",
+                    "examQuestion": "Klausuraufgabe",
+                    "doImport": "Import"
+                }
+            },
+            "exercise": "Aufgabe",
+            "results": "Ergebnisse",
+            "actions": "Aktionen",
+            "notStarted": "Du hast diese Aufgabe noch nicht gestartet.",
+            "problemStatement": "Aufgabenstellung",
+            "sampleSolution": "Beispiel Lösung",
+            "gradingInstructions": "Benotungshinweise",
+            "structuredGradingInstructions": "Strukturierte Benotungshinweise",
+            "usageCount": "Maximale Zählung in der Bewertung",
+            "DragDropInstruction": "Drag & Drop Benotungshinweis zum Feedback Element",
+            "gradingScale": "Benotungsskala",
+            "instrDescription": "Beschreibung der Anweisung",
+            "usageCountHint": "Diese Zahl gibt an, wie oft Punkte für diese Anweisung zur Endbewertung hinzugefügt werden",
             "title": "Titel",
+            "shortName": "Kurzname",
             "releaseDate": "Veröffentlichungsdatum",
-            "dueDate": "Abgabe Datum",
+            "dueDate": "Einreichungsfrist",
+            "dueDateError": "Einreichungsfrist muss nach dem Veröffentlichungsdatum sein. Bitte überprüfe deine Auswahl nochmal",
+            "assessmentDueDate": "Einreichungsfrist der Bewertung",
+            "assessmentDateError": "Einreichungsfrist der Bewertung muss nach dem Veröffentlichungsdatum und nach der Einreichungsfrist für Aufgaben sein. Bitte überprüfe deine Auswahl nochmal",
+            "dateNotSet": "Kein Datum gesetzt",
+            "maxScore": "Maximale Punktzahl",
+            "difficulty": "Schwierigkeit",
+            "noLevel": "Keine Angabe",
+            "easy": "Leicht",
+            "medium": "Mittel",
+            "hard": "Schwer",
+            "mode": "Modus",
+            "modeTooltip": "Der Bearbeitungsmodus einer Aufgabe bestimmt, ob Studenten alleine oder in Teams daran arbeiten. ACHTUNG: Dies kann später nicht mehr geändert werden!",
+            "teamModeBetaLabel": "Beta",
+            "modes": {
+                "individual": "Individuell",
+                "team": "Team"
+            },
+            "teamAssignmentConfig": {
+                "teamSize": "Team-Größe",
+                "teamSizeTooltip": "Empfehlung für die Tutoren bezüglich minimaler und maximaler Anzahl Studenten pro Team.",
+                "participants": "Mitglieder"
+            },
+            "categories": "Kategorien",
+            "noCategory": "Keine Kategorie",
             "participations": "Teilnahmen",
-            "course": "Kurs"
+            "teams": "Teams",
+            "exportNames": "Namen exportieren",
+            "exportResults": "Ergebnisse exportieren",
+            "refresh": "Aktualisieren",
+            "course": "Kurs",
+            "type": "Typ",
+            "mcqType": "Multiple Choice Fragen",
+            "dndType": "Drag und Drop Fragen",
+            "welcome": "<strong>Herzlich Willkommen bei Artemis!</strong> Wir haben automatisch einen Account für dich erstellt. Klicke auf den Button <i>Aufgabe starten</i>!",
+            "personalRepositoryClone": "Dein persönliches Repository wurde eingerichtet. Klicke auf den Button <i>Repository klonen</i>!",
+            "personalRepositoryOnline": "Dein persönliches Repository wurde eingerichtet. Klicke auf den Button <i>Programmier Editor öffnen</i>!",
+            "startError": "<strong>Uh oh! Etwas ist schief gelaufen... Bitte versuch es in wenigen Minuten noch einmal die Aufgabe zu starten.</strong>",
+            "studentName": "Name",
+            "studentId": "Login",
+            "teamName": "Team Name",
+            "teamShortName": "Kurzname",
+            "completionDate": "Abgabedatum",
+            "result": "Ergebnis",
+            "submissionCount": "Abgaben",
+            "score": "Punktzahl",
+            "duration": "Dauer",
+            "showBuildFailed": "Nur fehlgeschlagene Builds anzeigen",
+            "showFailed": "Nur fehlgeschlagene Einreichungen (ohne Ergebnis) anzeigen",
+            "showNoSubmissions": "Nur ohne Einreichungen anzeigen",
+            "showUnsuccessful": "Nur unerfolgreiche anzeigen",
+            "showSuccessful": "Nur erfolgreiche anzeigen",
+            "showManual": "Nur manuelle anzeigen",
+            "showAutomatic": "Nur automatische anzeigen",
+            "showAll": "Alle anzeigen",
+            "tagPlaceholder": "+Kategorie",
+            "tagSecondaryPlaceholder": "Neue Kategorie eingeben",
+            "isProgramming": "Das ist eine Programmierübung",
+            "isModeling": "Das ist eine Modelierungsübung",
+            "isQuiz": "Das ist eine Quizübung",
+            "isText": "Das ist eine Textübung",
+            "isFileUpload": "Das ist eine Datei-Upload-Übung",
+            "notificationText": "Optional: Mitteilung über die Änderung",
+            "submissionSuccessful": "Die Einreichung war erfolgreich",
+            "submissionUnsuccessful": "Die Einreichung war nicht erfolgreich",
+            "resultCreationSuccessful": "Das Ergebnis wurde erfolgreich erzeugt",
+            "resultCreationUnsuccessful": "Das Ergebnis wurde nicht erzeugt",
+            "presentationScoreEnabled": {
+                "title": "Präsentation",
+                "description": "Wenn das Präsentationsergebnis aktiviert ist, dann können Tutoren auf der Seite \"Teilnahmen\" dieser Übung eine Punkt für Präsentation von Studenten eintragen."
+            },
+            "errors": {
+                "exerciseNotFound": "Diese Übung konnte nicht gefunden werden"
+            },
+            "form": {
+                "title": {
+                    "pattern": "Der Titel darf nur aus Buchstaben, Zahlen und '_', '-' oder Leerzeichen bestehen!"
+                },
+                "shortName": {
+                    "pattern": "Der Kurzname muss mit einem Buchstaben beginnen und darf keine speziellen Zeichen enthalten!",
+                    "minlength": "Der Kurzname muss mindestens 3 Zeichen lang sein!"
+                },
+                "packageName": {
+                    "pattern": "Der Package Name muss aus einem oder mehreren gültigen Java-Bezeichnern bestehen, die mit '.' getrennt sind, z.B. \"net.java\"!"
+                },
+                "maxScore": {
+                    "pattern": "Die maximale Punktzahl muss zwischen 1 und 9999 liegen!"
+                }
+            }
         },
-        "exerciseLtiConfiguration" : {
+        "exerciseLtiConfiguration": {
             "lti": "LTI",
             "configurationForExercise": "LTI Konfiguration der Übung {{ title }}"
         }

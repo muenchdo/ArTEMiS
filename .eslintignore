@@ -1,6 +1,23 @@
-# more info here - http://eslint.org/docs/user-guide/configuring.html#ignoring-files-and-directories
-
-# node_modules ignored by default
-
-# ignore bower_components
-src/main/webapp/bower_components
+.git/
+.github/
+.gradle/
+.idea/
+.jhipster/
+build/
+coverage/
+docs/
+gradle/
+node_modules/
+out/
+repos/
+repos-download/
+src/main/docker/
+src/main/generated/
+src/main/java/
+src/main/jib/
+src/main/resources/
+uploads/
+webpack/
+target/
+node/
+postcss.config.js

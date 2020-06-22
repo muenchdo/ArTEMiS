@@ -1,0 +1,74 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "artemis": {
+      "root": "",
+      "sourceRoot": "src/main/webapp",
+      "projectType": "application",
+      "architect": {
+          "build": {
+              "builder": "@angular-devkit/build-angular:browser",
+              "options": {
+                  "outputPath": "dist/artemis",
+                  "index": "src/main/webapp/index.html",
+                  "main": "src/main/webapp/app/app.main.ts",
+                  "polyfills": "src/main/webapp/app/polyfills.ts",
+                  "tsConfig": "tsconfig.json",
+                  "assets": [
+                      "./src/main/resources/public/images/favicon.ico",
+                      "./src/main/webapp/content"
+                  ],
+                  "styles": [
+                      "src/main/webapp/content/scss/global.scss"
+                  ],
+                  "scripts": [
+                  ]
+              },
+              "configurations": {
+                  "production": {
+                      "fileReplacements": [
+                      ],
+                      "optimization": true,
+                      "outputHashing": "all",
+                      "sourceMap": true,
+                      "extractCss": true,
+                      "namedChunks": false,
+                      "aot": true,
+                      "extractLicenses": true,
+                      "vendorChunk": false,
+                      "buildOptimizer": true
+                  }
+              }
+          }
+      }
+    }
+  },
+  "defaultProject": "artemis",
+  "cli": {
+    "packageManager": "yarn"
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "inlineStyle": true,
+      "inlineTemplate": false,
+      "spec": false,
+      "prefix": "jhi",
+      "styleExt": "scss"
+    },
+    "@schematics/angular:directive": {
+      "spec": false,
+      "prefix": "jhi"
+    },
+    "@schematics/angular:guard": {
+      "spec": false
+    },
+    "@schematics/angular:pipe": {
+      "spec": false
+    },
+    "@schematics/angular:service": {
+      "spec": false
+    }
+  }
+}

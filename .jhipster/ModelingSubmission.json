@@ -1,15 +1,23 @@
 {
-    "fluentMethods": true,
-    "relationships": [],
+    "name": "ModelingSubmission",
     "fields": [
         {
-            "fieldName": "submissionPath",
+            "fieldName": "model",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "explanationText",
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170831094200",
+    "relationships": [],
+    "changelogDate": "20190315161934",
     "entityTableName": "modeling_submission",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

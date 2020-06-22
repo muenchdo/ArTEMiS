@@ -1,17 +1,21 @@
 {
-    "fluentMethods": true,
+    "name": "DragAndDropSubmittedAnswer",
+    "fields": [],
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "mappings",
             "otherEntityName": "dragAndDropMapping",
-            "otherEntityRelationshipName": "submittedAnswer"
+            "otherEntityRelationshipName": "submittedAnswer",
+            "relationshipName": "mappings"
         }
     ],
-    "fields": [],
-    "changelogDate": "20170831094202",
-    "entityTableName": "drag_and_drop_submitted_answer",
+    "changelogDate": "20190315161940",
+    "entityTableName": "dnd_submitted_answer",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

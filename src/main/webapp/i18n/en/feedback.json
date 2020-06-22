@@ -1,6 +1,6 @@
 {
     "artemisApp": {
-        "feedback" : {
+        "feedback": {
             "home": {
                 "title": "Feedbacks",
                 "createLabel": "Create a new Feedback",

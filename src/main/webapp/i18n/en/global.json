@@ -1,48 +1,75 @@
 {
     "global": {
-        "title": "ArTEMiS",
+        "title": "Artemis",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "generic": {
+            "yes": "Yes",
+            "no": "No",
+            "emptyList": "No items available"
+        },
         "menu": {
             "home": "Home",
+            "overview": "Course Overview",
             "courses": "Courses",
+            "course": "Course Management",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
                 "course": "Course",
                 "exercise": "Exercise",
-                "participation": "Participation",
-                "result": "Result",
-                "ltiUserId": "Lti User Id",
+                "textExercise": "Text Exercise",
+                "fileUploadExercise": "File Upload Exercise",
                 "programmingExercise": "Programming Exercise",
                 "modelingExercise": "Modeling Exercise",
                 "quizExercise": "Quiz Exercise",
+                "lecture": "Lecture",
+                "ltiOutcomeUrl": "Lti Outcome Url",
                 "submittedAnswer": "Submitted Answer",
-                "question": "Question",
+                "quizQuestion": "Question",
                 "multipleChoiceQuestion": "Multiple Choice Question",
                 "answerOption": "Answer Option",
                 "multipleChoiceSubmittedAnswer": "Multiple Choice Submitted Answer",
                 "dragAndDropQuestion": "Drag And Drop Question",
                 "dropLocation": "Drop Location",
                 "dragItem": "Drag Item",
+                "participation": "Participation",
+                "ltiUserId": "Lti User Id",
+                "exerciseResult": "Exercise Result",
+                "feedback": "Feedback",
                 "submission": "Submission",
                 "modelingSubmission": "Modeling Submission",
                 "quizSubmission": "Quiz Submission",
+                "programmingSubmission": "Programming Submission",
+                "textSubmission": "Text Submission",
+                "fileUploadSubmission": "File Upload Submission",
                 "dragAndDropSubmittedAnswer": "Drag And Drop Submitted Answer",
                 "dragAndDropAssignment": "Drag And Drop Assignment",
-                "feedback": "Feedback",
-                "ltiOutcomeUrl": "Lti Outcome Url",
-                "statistic": "Statistic",
+                "quizStatistic": "Statistic",
                 "quizPointStatistic": "Quiz Point Statistic",
-                "questionStatistic": "Question Statistic",
-                "multipleChoiceStatistic": "Multiple Choice Statistic",
-                "dragAndDropStatistic": "Drag And Drop Statistic",
+                "quizQuestionStatistic": "Question Statistic",
+                "multipleChoiceQuestionStatistic": "Multiple Choice Question Statistic",
+                "dragAndDropQuestionStatistic": "Drag And Drop Question Statistic",
+                "quizStatisticCounter": "Statistic Counter",
+                "pointCounter": "Point Counter",
                 "answerCounter": "Answer Counter",
                 "dropLocationCounter": "Drop Location Counter",
+                "apollonDiagram": "Apollon Diagram",
                 "dragAndDropMapping": "Drag And Drop Mapping",
+                "shortAnswerQuestionStatistic": "Short Answer Question Statistic",
+                "shortAnswerSpotCounter": "Short Answer Spot Counter",
+                "shortAnswerQuestion": "Short Answer Question",
+                "shortAnswerSpot": "Short Answer Spot",
+                "shortAnswerSolution": "Short Answer Solution",
+                "shortAnswerSubmittedAnswer": "Short Answer Submitted Answer",
+                "shortAnswerSubmittedText": "Short Answer Submitted Text",
+                "shortAnswerMapping": "Short Answer Mapping",
+                "programmingExerciseTestCase": "Programming Exercise Test Case",
+                "exerciseHint": "Exercise Hint",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
                 "main": "Account",
+                "profile": "Profile",
                 "settings": "Settings",
                 "password": "Password",
                 "sessions": "Sessions",
@@ -51,8 +78,10 @@
                 "register": "Register"
             },
             "admin": {
-                "main": "Administration",
+                "main": "Server Administration",
                 "userManagement": "User management",
+                "systemNotifications": "System notifications",
+                "featureToggles": "Feature Toggles",
                 "tracker": "User tracker",
                 "metrics": "Metrics",
                 "health": "Health",
@@ -63,22 +92,37 @@
                 "database": "Database",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-            "language": "Language"
+            "language": "Language",
+            "guidedTutorial": "Guided tutorial",
+            "startTutorial": "Start tutorial",
+            "restartTutorial": "Restart tutorial",
+            "continueTutorial": "Continue tutorial"
         },
         "form": {
-            "username": "TUM ID",
-            "username.placeholder": "Your TUM ID",
+            "username": "Username",
+            "username.placeholder": "Your Username",
+            "currentpassword": "Current password",
+            "currentpassword.placeholder": "Current password",
             "newpassword": "New password",
             "newpassword.placeholder": "New password",
             "confirmpassword": "New password confirmation",
             "confirmpassword.placeholder": "Confirm the new password",
             "email": "Email",
-            "email.placeholder": "Your email"
+            "email.placeholder": "Your email",
+            "cancel": "Cancel",
+            "confirm": "Confirm"
         },
         "messages": {
             "info": {
-                "authenticated": "Please <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">sign in</a> using your TUM credentials.",
-                "register": "You don't have an account yet? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Register a new account</a>"
+                "authenticated": {
+                    "prefix": "If you want to ",
+                    "link": "sign in",
+                    "suffix": ", you can try the default accounts:<br>- Administrator (login=\"admin\" and password=\"admin\") <br>- User (login=\"user\" and password=\"user\")."
+                },
+                "register": {
+                    "noaccount": "You don't have an account yet?",
+                    "link": "Register a new account"
+                }
             },
             "error": {
                 "dontmatch": "The password and its confirmation do not match!"
@@ -107,26 +151,68 @@
             "id": "ID"
         },
         "ribbon": {
-            "dev":"Development"
+            "dev": "Development",
+            "test": "Test Server"
         },
         "item-count": "Showing {{first}} - {{second}} of {{total}} items."
     },
     "entity": {
         "action": {
+            "add": "Add",
             "addblob": "Add blob",
             "addimage": "Add image",
             "back": "Back",
             "cancel": "Cancel",
+            "dashboard": "Dashboard",
+            "exportRepos": "Download Repositories",
             "delete": "Delete",
-            "reset" : "Reset",
+            "confirm": "Confirm",
+            "download": "Download",
             "edit": "Edit",
+            "editInEditor": "Edit in editor",
+            "editInIntelliJ": "Edit in IntelliJ",
+            "editEntity": "Edit {{entity}}",
+            "generate": "Generate",
             "open": "Open",
             "save": "Save",
+            "saving": "Saving...",
             "view": "View",
             "preview": "Preview",
             "cleanup": "Cleanup",
+            "remove": "Remove",
+            "purge": "Purge",
             "archive": "Archive",
-            "submit": "Submit"
+            "submit": "Submit",
+            "submitTooltip": "You can submit multiple times until the exercise deadline. Your last submission will count towards your score.",
+            "submitNoDeadlineTooltip": "You can submit multiple times. Your last submission will count towards your score.",
+            "submitDeadlineMissedTooltip": "The deadline has expired. Your submissions will not get graded!",
+            "deadlineMissedTooltip": "The deadline has expired. You can no longer submit any solutions!",
+            "submitDeadlineMissed": "Submit (deadline missed)",
+            "submitSuccessfulAlert": "Your submission was successful! You can change your submission or wait for your feedback.",
+            "submitDeadlineMissedAlert": "Your submission was successful! You can change your submission or wait for your feedback. As you missed the deadline the score will not be counted.",
+            "retry": "Retry",
+            "reset": "Reset",
+            "re-evaluate": "Re-evaluate",
+            "close": "Close",
+            "finish": "Finish",
+            "import": "Import",
+            "to-import": "Import",
+            "export": "Export",
+            "lecture": "Lectures",
+            "attachments": "Attachments",
+            "saveAttachment": "Save attachment",
+            "addAttachment": "Add attachment",
+            "tutorCourseDashboard": "Tutor Course Dashboard",
+            "exerciseDashboard": "Exercise Dashboard",
+            "newResult": "New Result",
+            "updateResult": "Update Result",
+            "viewResult": "View Result",
+            "cleanupBuildPlan": "Cleanup Build Plan",
+            "registerForCourse": "Register For Course",
+            "exercise": "Exercises",
+            "scores": "Scores",
+            "manageHints": "Manage Hints",
+            "addExternalSubmission": "Add External Submission"
         },
         "detail": {
             "field": "Field",
@@ -135,11 +221,20 @@
         "delete": {
             "title": "Confirm delete operation"
         },
+        "reset": {
+            "title": "Confirm reset operation"
+        },
         "cleanup": {
             "title": "Confirm cleanup operation"
         },
+        "remove": {
+            "title": "Confirm remove operation"
+        },
         "archive": {
             "title": "Confirm archive operation"
+        },
+        "exportRepos": {
+            "title": "Confirm download of repos"
         },
         "validation": {
             "required": "This field is required.",
@@ -151,7 +246,8 @@
             "maxbytes": "This field cannot be more than {{ max }} bytes.",
             "pattern": "This field should follow pattern for {{ pattern }}.",
             "number": "This field should be a number.",
-            "datetimelocal": "This field should be a date and time."
+            "datetimelocal": "This field should be a date and time.",
+            "patternLogin": "This field can only contain letters, digits and e-mail addresses."
         }
     },
     "error": {
@@ -161,11 +257,30 @@
         "NotNull": "Field {{ fieldName }} cannot be empty!",
         "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
         "userexists": "Login name already used!",
-        "emailexists": "E-mail is already in use!",
+        "emailexists": "Email is already in use!",
         "idexists": "A new {{ entityName }} cannot already have an ID",
-        "invalid.build.plan.id": "The Build Plan ID seems to be invalid. Please make sure it exists and is accessible for ArTEMiS.",
-        "invalid.repository.url": "The Repository URL seems to be invalid. Please make sure it exists and is accessible for ArTEMiS."
+        "invalid.template.build.plan.id": "The Template Build Plan ID seems to be invalid. Please make sure it exists and is accessible for Artemis.",
+        "invalid.solution.build.plan.id": "The Solution Build Plan ID seems to be invalid. Please make sure it exists and is accessible for Artemis.",
+        "invalid.template.repository.url": "The Template Repository URL seems to be invalid. Please make sure it exists and is accessible for Artemis.",
+        "invalid.solution.repository.url": "The Solution Repository URL seems to be invalid. Please make sure it exists and is accessible for Artemis.",
+        "unexpectedError": "An unexpected error occurred: {{error}}"
     },
-    "footer": "Found a bug or have some feedback? Please <a href=\"mailto:krusche@in.tum.de\">let us know</a>!",
-    "justNow": "just now"
+    "contact": "Contact us",
+    "bug": "Report a bug",
+    "feature": "Request a feature",
+    "releaseNotes": "Release Notes",
+    "justNow": "just now",
+    "pendingChanges": "WARNING: You have unsaved changes. Press Cancel to go back and save these changes, or OK to lose these changes.",
+    "overview": {
+        "title": "Course overview",
+        "course": "Course details",
+        "lectures": "Lectures",
+        "exercise": "Exercise details",
+        "statistics": "Course statistics",
+        "exams": "Exams"
+    },
+    "connectionStatus": {
+        "connected": "Connected",
+        "disconnected": "Disconnected"
+    }
 }

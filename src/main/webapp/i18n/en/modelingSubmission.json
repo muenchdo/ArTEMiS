@@ -1,6 +1,6 @@
 {
     "artemisApp": {
-        "modelingSubmission" : {
+        "modelingSubmission": {
             "home": {
                 "title": "Modeling Submissions",
                 "createLabel": "Create a new Modeling Submission",
@@ -15,7 +15,19 @@
             "detail": {
                 "title": "Modeling Submission"
             },
-            "submissionPath": "Submission Path"
+            "view": "View submission",
+            "model": "Model",
+            "explanationText": "Explanation Text",
+            "modelingEditor": "Modeling Editor",
+            "problemStatement": "<strong>Problem statement:</strong>",
+            "maxScore": "<strong>Max. Score: {{maxScore}}</strong>",
+            "assessment": {
+                "title": "Assessment",
+                "noAssessment": "There is no assessment available yet.",
+                "instructions": "Select elements in the editor to filter the assessment.",
+                "element": "Element",
+                "score": "Score"
+            }
         }
     }
 }

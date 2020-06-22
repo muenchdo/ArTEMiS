@@ -1,11 +1,15 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "4.10.2",
-    "baseName": "ArTEMiSApp",
-    "packageName": "de.tum.in.www1.exerciseapp",
-    "packageFolder": "de/tum/in/www1/exerciseapp",
+    "promptValues": {
+      "packageName": "de.tum.in.www1.artemis",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "6.9.0",
+    "baseName": "Artemis",
+    "packageName": "de.tum.in.www1.artemis",
+    "packageFolder": "de/tum/in/www1/artemis",
     "serverPort": "8080",
-    "authenticationType": "session",
+    "authenticationType": "jwt",
     "hibernateCache": "ehcache",
     "clusteredHttpSession": false,
     "websocket": "spring-websocket",
@@ -13,26 +17,22 @@
     "devDatabaseType": "mysql",
     "prodDatabaseType": "mysql",
     "searchEngine": false,
+    "messageBroker": false,
     "buildTool": "gradle",
     "enableSocialSignIn": false,
-    "rememberMeKey": "1e8ac98bc31f6bc463c70dace796da10dba1f4f3",
+    "jwtSecretKey": "ec6a94b26152dfa3450c291e774f82060362ca03",
+    "clientFramework": "angularX",
     "useSass": true,
+    "clientPackageManager": "yarn",
     "applicationType": "monolith",
-    "testFrameworks": [
-      "gatling",
-      "cucumber",
-      "protractor"
-    ],
+    "testFrameworks": ["gatling", "protractor"],
     "jhiPrefix": "jhi",
+    "otherModules": [],
     "enableTranslation": true,
     "nativeLanguage": "en",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "messageBroker": false,
-    "serviceDiscoveryType": false,
-    "clientFramework": "angular1",
-    "clientPackageManager": "yarn"
+    "languages": ["en", "de"],
+    "blueprints": [],
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true
   }
 }

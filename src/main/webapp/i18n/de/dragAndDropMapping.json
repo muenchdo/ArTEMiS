@@ -1,6 +1,6 @@
 {
     "artemisApp": {
-        "dragAndDropMapping" : {
+        "dragAndDropMapping": {
             "home": {
                 "title": "Drag And Drop Mappings",
                 "createLabel": "Drag And Drop Mapping erstellen",
@@ -17,6 +17,7 @@
             },
             "dragItemIndex": "Drag Item Index",
             "dropLocationIndex": "Drop Location Index",
+            "invalid": "Invalid",
             "dragItem": "Drag Item",
             "dropLocation": "Drop Location",
             "submittedAnswer": "Submitted Answer",

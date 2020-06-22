@@ -1,0 +1,18 @@
+{
+    "rulesDirectory": [
+        "node_modules/codelyzer"
+    ],
+    "extends": [
+        "tslint-config-prettier"
+    ],
+    "rules": {
+        "completed-docs": [
+            false,
+            {
+                "enums": { "visibilities": ["all"] },
+                "functions": { "visibilities": ["all"] },
+                "methods": { "privacies": ["public"]}
+            }
+        ]
+    }
+}

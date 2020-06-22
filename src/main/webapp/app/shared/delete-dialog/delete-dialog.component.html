@@ -1,0 +1,46 @@
+<form name="deleteForm" (ngSubmit)="confirmDelete()" #deleteForm="ngForm">
+    <div class="modal-header">
+        <h4 class="modal-title" [ngSwitch]="actionType">
+            <span *ngSwitchCase="actionTypes.Delete" jhiTranslate="entity.delete.title">Confirm delete operation</span>
+            <span *ngSwitchCase="actionTypes.Reset" jhiTranslate="entity.reset.title">Confirm reset operation</span>
+            <span *ngSwitchCase="actionTypes.Cleanup" jhiTranslate="entity.cleanup.title">Confirm cleanup operation</span>
+            <span *ngSwitchCase="actionTypes.Remove" jhiTranslate="entity.remove.title">Confirm remove operation</span>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert></jhi-alert>
+        <p [jhiTranslate]="deleteQuestion" [translateValues]="{ title: entityTitle }">Are you sure you want to delete?</p>
+        <div *ngIf="additionalChecks">
+            <div *ngFor="let checkKey of objectKeys(additionalChecks)">
+                <div class="checkbox" *ngIf="additionalChecks[checkKey]">
+                    <label class="control-label text-danger">
+                        <input type="checkbox" name="checkbox" [(ngModel)]="additionalChecksValues[checkKey]" />&nbsp;{{ additionalChecks[checkKey] | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="deleteConfirmationText">
+            <label class="text-danger" [jhiTranslate]="deleteConfirmationText">Please type in the name to confirm</label>
+            <input type="text" class="form-control" name="confirmExerciseName" [(ngModel)]="confirmEntityName" />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button
+            type="submit"
+            class="btn btn-danger"
+            [style.cursor]="deleteForm.form.invalid || (deleteConfirmationText && confirmEntityName != entityTitle) || submitDisabled ? 'not-allowed' : 'pointer'"
+            [disabled]="deleteForm.form.invalid || (deleteConfirmationText && confirmEntityName != entityTitle) || submitDisabled"
+            [ngSwitch]="actionType"
+        >
+            <fa-icon [icon]="'times'"></fa-icon>&nbsp;
+            <span *ngSwitchCase="actionTypes.Delete" jhiTranslate="entity.action.delete">Delete</span>
+            <span *ngSwitchCase="actionTypes.Reset" jhiTranslate="entity.action.reset">Reset</span>
+            <span *ngSwitchCase="actionTypes.Cleanup" jhiTranslate="entity.action.cleanup">Cleanup</span>
+            <span *ngSwitchCase="actionTypes.Remove" jhiTranslate="entity.action.remove">Remove</span>
+        </button>
+    </div>
+</form>

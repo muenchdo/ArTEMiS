@@ -1,31 +1,102 @@
 {
     "artemisApp": {
-        "course" : {
+        "course": {
             "home": {
                 "title": "Kurse",
                 "createLabel": "Kurs erstellen",
+                "editLabel": "Kurs bearbeiten",
                 "createOrEditLabel": "Kurs erstellen oder bearbeiten"
             },
-            "created": "Kurs erstellt mit ID {{ param }}",
-            "updated": "Kurs aktualisiert mit ID {{ param }}",
-            "deleted": "Kurs gelöscht mit ID {{ param }}",
+            "created": "Kurs erstellt mit Titel {{ param }}",
+            "updated": "Kurs aktualisiert mit Titel {{ param }}",
+            "deleted": "Kurs gelöscht mit Titel {{ param }}",
             "delete": {
-                "question": "Soll der Kurs {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll der Kurs <strong>{{ title }}</strong> wirklich dauerhaft gelöscht werden? Alle zugehörigen Elemente, inklusive der Klausuren werden gelöscht. Diese Aktion kann NICHT rückgängig gemacht werden!",
+                "typeNameToConfirm": "Bitte gib den Namen des Kurses zur Bestätigung ein."
             },
             "detail": {
                 "title": "Kurs"
             },
+            "showActive": "Nur aktive Kurse anzeigen",
+            "totalScore": "Gesamtergebnis:",
             "title": "Titel",
-            "studentGroupName": "Studenten Gruppen Name",
-            "teachingAssistantGroupName": "Tutor Gruppen Name",
-            "instructorGroupName": "Dozent Gruppenname",
-            "startDate": "Anfangsdatum",
-            "endDate": "Enddatum",
+            "color": "Farbe",
+            "courseIcon": "Kursicon",
+            "shortName": "Kurzname",
+            "maxComplaints": {
+                "title": "Maximale Anzahl an Beschwerden pro Student",
+                "description": "Erlaubte Anzahl an Beschwerden von Studierenden setzen. Wenn eine Beschwerde abgelehnt wird, verliert der Studierende sie. Wenn eine Beschwerde akzeptiert wird, behält der Studierende sie. Diese Begrenzung gilt für individuelle Übungen."
+            },
+            "maxTeamComplaints": {
+                "title": "Maximale Anzahl an Beschwerden pro Team",
+                "description": "Erlaubte Anzahl an Beschwerden von Teams setzen. Wenn eine Beschwerde abgelehnt wird, verliert das Team sie. Wenn eine Beschwerde akzeptiert wird, behält das Team sie. Diese Begrenzung gilt für Team-Übungen."
+            },
+            "maxComplaintTimeDays": {
+                "title": "Beschwerdefrist in Tagen nach dem Ergebnis",
+                "description": "Diese Zahl bezieht sich auf die Tage, nachdem das Ergebnis verfügbar ist (Einreichungsfrist der Bewertung oder Ergebnisdatum, je nachdem, welches später liegt). Studierende können sich nach Ablauf dieser Frist nicht mehr beschweren."
+            },
+            "studentQuestionsEnabled": {
+                "title": "Fragen und Antworten von Studierenden aktivieren",
+                "description": "Fragen und Antworten Abschnitt in Vorlesung- und Übungsseite aktivieren / deaktivieren"
+            },
+            "complaintsEnabled": {
+                "title": "Beschwerden von Studierenden aktivieren",
+                "description": "Wenn du diese Option aktivierst, können sich Studierende über Ergebnisse beschweren."
+            },
+            "customizeGroupNames": {
+                "title": "Passe Gruppen Namen an",
+                "description": "Stelle sicher, dass die Gruppen in der externen Nutzerverwaltung existieren, wenn du diese Option aktivierst. Die Gruppen werden dann nicht automatisch erzeugt."
+            },
+            "studentGroupName": "Studierende Gruppe",
+            "teachingAssistantGroupName": "Tutoren Gruppe",
+            "instructorGroupName": "Dozenten Gruppe",
+            "description": "Kurs Beschreibung",
+            "startDate": "Start",
+            "endDate": "Ende",
+            "accessGroups": "Zugriffsrechte",
             "onlineCourse": "Online Kurs",
+            "registrationEnabled": "Studierenden Registrierung aktiviert",
             "exercises": "Aufgaben",
             "programmingExercises": "Programmieraufgaben",
-            "quizExercises": "Quizaufgaben (Beta)",
-            "modelingExercises": "Modellierungsaufgaben (Beta)"
+            "quizExercises": "Quizaufgaben",
+            "modelingExercises": "Modellierungsaufgaben",
+            "textExercises": "Textaufgabe",
+            "upload": "Hochladen",
+            "uploading": "Lade hoch...",
+            "fileUploadExercises": "Datei Upload Aufgabe",
+            "students": "Studierende",
+            "tutors": "Tutoren",
+            "instructors": "Dozenten",
+            "student": "Student",
+            "tutor": "Tutor",
+            "instructor": "Dozent",
+            "onlineCourseFalse": "Nein",
+            "onlineCourseTrue": "Ja",
+            "form": {
+                "shortname": {
+                    "minlength": "Der Kurzname muss mindestens 3 Zeichen lang sein.",
+                    "forbidden": "Der Kurzname muss mit einem Buchstaben beginnen und darf keine Sonderzeichen beinhalten."
+                }
+            },
+            "instructorDashboard": "Instruktor Dashboard",
+            "presentationScoreEnabled": {
+                "title": "Präsentationsbewertung aktiviert",
+                "description": "Aktiviere diese Checkbox und definiere, wie viele Präsentationen ein Student halten muss, um den Notenbonus für die Vorlesung zu erhalten. Nach der Aktivierung kannst du bei der Erstellung jeder Übung definieren, ob dieses Feature dafür aktiviert sein soll."
+            },
+            "presentationScore": "Benötigtes Präsentationsergebnis für den Bonus",
+            "courseGroup": {
+                "outOf": "von",
+                "usersPerPage": "{{number}} Benutzer pro Seite",
+                "showAllUsers": "Alle Benutzer anzeigen",
+                "searchForUsers": "Benutzer zu dieser Kurs-Gruppe hinzufügen durch Suchen nach Login oder Namen",
+                "searchNoResults": "Keine Benutzer gefunden",
+                "login": "Login",
+                "name": "Name",
+                "email": "E-Mail",
+                "removeFromGroup": {
+                    "modalQuestion": "Soll der Nutzer mit dem Login <strong>{{ title }}</strong> wirklich aus dieser Kurs-Gruppe entfernt werden?"
+                }
+            }
         }
     }
 }

@@ -1,3 +1,5 @@
+package simulations
+
 import _root_.io.gatling.core.scenario.Simulation
 import ch.qos.logback.classic.LoggerContext
 import io.gatling.core.Predef._
@@ -20,12 +22,12 @@ class LtiOutcomeUrlGatlingTest extends Simulation {
     val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://127.0.0.1:8080"""
 
     val httpConf = http
-        .baseURL(baseURL)
+        .baseUrl(baseURL)
         .inferHtmlResources()
         .acceptHeader("*/*")
         .acceptEncodingHeader("gzip, deflate")
         .acceptLanguageHeader("fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3")
-        .connection("keep-alive")
+        .connectionHeader("keep-alive")
         .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0")
 
     val headers_http = Map(
@@ -67,7 +69,7 @@ class LtiOutcomeUrlGatlingTest extends Simulation {
             .exec(http("Create new ltiOutcomeUrl")
             .post("/api/lti-outcome-urls")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "url":"SAMPLE_TEXT", "sourcedId":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "url":"SAMPLE_TEXT", "sourcedId":"SAMPLE_TEXT"}""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_ltiOutcomeUrl_url"))).exitHereIfFailed
             .pause(10)
@@ -86,6 +88,6 @@ class LtiOutcomeUrlGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(100) during(1 minutes))
     ).protocols(httpConf)
 }

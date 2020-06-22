@@ -1,16 +1,16 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "exercises",
-            "otherEntityName": "exercise",
-            "otherEntityRelationshipName": "course"
-        }
-    ],
+    "name": "Course",
     "fields": [
         {
             "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "shortName",
             "fieldType": "String"
         },
         {
@@ -36,12 +36,51 @@
         {
             "fieldName": "onlineCourse",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "maxComplaints",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "color",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "courseIcon",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "registrationEnabled",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20160609093907",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "exercise",
+            "otherEntityRelationshipName": "course",
+            "relationshipName": "exercises"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "lecture",
+            "otherEntityRelationshipName": "course",
+            "relationshipName": "lectures"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "tutorGroup",
+            "otherEntityRelationshipName": "course",
+            "relationshipName": "tutorGroups"
+        }
+    ],
+    "changelogDate": "20190315161910",
     "entityTableName": "course",
     "dto": "no",
     "pagination": "no",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

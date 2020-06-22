@@ -1,0 +1,19 @@
+{
+    "assessmentInstructions": {
+        "instructions": {
+            "instructions": "Instruktionen",
+            "editor": {
+                "addCredits": "[credits] Punkte",
+                "addInstruction": "[instruction] Bewertung Instruktionen",
+                "addFeedback": "[feedback] Feedback",
+                "addGradingScale": "[gradingScale] Bewertungsmaßstab",
+                "addCountUsage": "[count] Anzahl Anwendung",
+                "addCriterion": "[criterion] Bewertung Kriterium"
+            }
+        },
+        "problemStatement": "Aufgabenstellung",
+        "sampleSolution": "Beispiel Lösung",
+        "gradingCriteria": "Bewertungskriterien",
+        "usageCount": "Anzahl Anwendungen"
+    }
+}

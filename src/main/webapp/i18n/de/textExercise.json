@@ -1,0 +1,31 @@
+{
+    "artemisApp": {
+        "textExercise": {
+            "home": {
+                "title": "Textaufgaben",
+                "createLabel": "Neue Textaufgabe erstellen",
+                "editLabel": "Textaufgabe bearbeiten",
+                "importLabel": "Neue Textaufgabe importieren"
+            },
+            "import": {
+                "exampleSubmissionsRequireExercise": "Um die Beispielabgaben zu bearbeiten, musst du zunächst den Import der Textaufgabe abschließen."
+            },
+            "wordCount": "Anzahl der Wörter: {{ count }}",
+            "characterCount": "Anzahl der Zeichen: {{ count }}",
+            "created": "Textaufgabe mit ID {{ param }} erstellt",
+            "updated": "Textaufgabe mit ID {{ param }} aktualisiert",
+            "deleted": "Textaufgabe mit ID {{ param }} gelöscht",
+            "detail": {
+                "title": "Textaufgabe"
+            },
+            "sampleSolution": "Beispiel Lösung",
+            "exampleSubmissions": "Beispielabgabe",
+            "assessedSubmission": "Deine bewertete Abgabe",
+            "createExampleSubmissions": "Beispielabgabe erstellen",
+            "automaticAssessmentEnabled": "Automatische Bewertungsvorschläge aktiviert",
+            "exampleSubmissionsRequireExercise": "Um eine Beispielabgabe zu erstellen, musst du zunächst die Erstellung der Textaufgabe abschließen.",
+            "saveSuccessful": "Dein Antwort wurde erfolgreich gespeichert!",
+            "error": "Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal."
+        }
+    }
+}

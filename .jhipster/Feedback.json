@@ -1,13 +1,5 @@
 {
-    "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "result",
-            "otherEntityName": "result",
-            "otherEntityField": "id"
-        }
-    ],
+    "name": "Feedback",
     "fields": [
         {
             "fieldName": "text",
@@ -18,15 +10,39 @@
             "fieldType": "String"
         },
         {
+            "fieldName": "reference",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "credits",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "positive",
+            "fieldType": "Boolean"
+        },
+        {
             "fieldName": "type",
             "fieldType": "FeedbackType",
             "fieldValues": "AUTOMATIC,MANUAL"
         }
     ],
-    "changelogDate": "20170930120856",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "exerciseResult",
+            "otherEntityRelationshipName": "feedbacks",
+            "relationshipName": "result",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190315161932",
     "entityTableName": "feedback",
     "dto": "no",
     "pagination": "no",
     "service": "no",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
 }

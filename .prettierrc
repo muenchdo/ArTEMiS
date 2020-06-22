@@ -1,0 +1,12 @@
+# Prettier configuration
+
+printWidth: 180
+singleQuote: true
+tabWidth: 4
+trailingComma: all
+
+# java rules:
+overrides:
+  - files: "*.java"
+    options:
+      tabWidth: 4

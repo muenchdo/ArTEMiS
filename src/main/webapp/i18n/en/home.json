@@ -1,9 +1,20 @@
 {
     "home": {
-        "title": "Welcome to ArTEMiS!",
-        "subtitle": "Interactive Learning with an AuTomated assEssment Management System",
+        "title": "Welcome to Artemis!",
+        "login": "Login",
+        "subtitle": "Interactive Learning with Individual Feedback",
+        "please": "Please",
+        "pleaseSignInTUM": "Please sign in with your TUM account.",
+        "pleaseSignIn": "Please sign in with your account.",
         "logged": {
-            "message": "You are logged in as user \"{{username}}\". Go to your <a class=\"alert-link\" ui-sref=\"courses\">courses</a> to get started."
+            "message": "You are logged in as user \"{{username}}\"."
+        },
+        "errors": {
+            "failedToLogin": "<span class='bold'>Failed to sign in!</span> Please check your username and password and try again.",
+            "usernameIncorrect": "<p class='text-primary small'>Invalid username</p>",
+            "tumWarning": "<p class='text-primary small'>If you are a TUM student, your username<br />should have the format <b>ab12xyz</b>.<br />Do <b>not</b> include '<b>@mytum.de</b>' or '<b>@tum.de</b>'.</p>",
+            "externalUserManagementWarning": "<span class='bold'>You have entered your password too often incorrectly :-(</span><br />Please go to <a href='{{ url }}' target='_blank'>{{ name }}</a>, sign in with your account and solve the <a href='{{ url }}' target='_blank'>CAPTCHA</a>. After you have solved it, try to login again here.",
+            "loginWarning": "Seems like you are having issues signing in :-(<br />Please go to <a href='{{ url }}'>{{ name }}</a> and try to sign in there.<br />After that, try again here."
         }
     }
 }

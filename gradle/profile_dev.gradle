@@ -1,48 +1,60 @@
-import org.gradle.internal.os.OperatingSystem
-
-apply plugin: 'org.springframework.boot'
-apply plugin: 'com.moowork.node'
-apply plugin: 'com.moowork.gulp'
-
-ext {
-    logbackLoglevel = "DEBUG"
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-devtools"
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
 }
 
 def profiles = 'dev'
 if (project.hasProperty('no-liquibase')) {
     profiles += ',no-liquibase'
 }
+if (project.hasProperty('tls')) {
+    profiles += ',tls'
+}
+
+springBoot {
+    buildInfo {
+        properties {
+            time = null
+        }
+    }
+}
 
 bootRun {
     args = []
 }
 
-task gulpConstantDev(type: GulpTask) {
-    args = ["ngconstant:dev", "--no-notification"]
-}
+task webpack(type: YarnTask, dependsOn: 'yarn_install') {
+    inputs.dir("src/main/webapp/")
+    inputs.files("yarn.lock")
+    inputs.files("build.gradle")
 
-war {
-    webAppDirName = 'src/main/webapp/'
+    def webpackDevFiles = fileTree("webpack//")
+    webpackDevFiles.exclude("webpack.prod.js")
+    inputs.files(webpackDevFiles)
+
+    outputs.dir("build/resources/main/static/")
+
+    args = ["run", "webpack:build"]
+    environment = [APP_VERSION: project.version]
 }
 
 processResources {
-    filesMatching('**/logback-spring.xml') {
+    inputs.property('version', version)
+    inputs.property('springProfiles', profiles)
+    filesMatching("**/application.yml") {
         filter {
-            it.replace('#logback.loglevel#', logbackLoglevel)
-        }
-    }
-    filesMatching('**/application.yml') {
-        filter {
-            it.replace('#project.version#', version)
+            it.replace("#project.version#", version)
         }
         filter {
-            it.replace('#spring.profiles.active#', profiles)
+            it.replace("#spring.profiles.active#", profiles)
         }
     }
 }
 
-processResources.dependsOn gulpConstantDev
+bootJar.dependsOn processResources

@@ -1,0 +1,11 @@
+#### General Tasks
+1. [task][Compile](TestCompile)
+
+#### Adress Sanitizer
+1. [task][Compile Address Sanitizer](TestCompileASan)
+
+#### Undefined Behavior Sanitizer
+1. [task][Compile Undefined Behavior Sanitizer](TestCompileUBSan)
+
+#### Leak Sanitizer
+1. [task][Compile Leak Sanitizer](TestCompileLeak)
